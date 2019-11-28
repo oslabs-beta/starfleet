@@ -1,0 +1,32 @@
+{
+  "name": "starfleet",
+  "version": "0.0.1",
+  "description": "Create GraphQL schemas with full CRUD functionality from Mongoose schemas and deploy them to the cloud",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+	"start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Traversal-Labs/starfleet.git"
+  },
+  "keywords": [
+    "GraphQL",
+    "MongoDB",
+    "mongoose",
+    "NodeJS"
+  ],
+  "author": "Traversal Labs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Traversal-Labs/starfleet/issues"
+  },
+  "homepage": "https://github.com/Traversal-Labs/starfleet#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "graphql": "^14.5.8",
+    "mongoose": "^5.7.12"
+  }
+}

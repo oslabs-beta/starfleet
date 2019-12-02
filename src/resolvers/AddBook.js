@@ -14,7 +14,7 @@ exports.addBook = {
 	}
   },
   resolve: async (root, args) => {
-	const uModel = new bookModel(args);
+	const uModel = new BookModel(args);
 	const newBook = await uModel.save();
 	if (!newBook) {
 	  throw new Error('error');

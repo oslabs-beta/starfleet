@@ -8,7 +8,7 @@ const bookSchema = require('./src/resolvers/BookSchema').BookSchema;
 
 
 // db connection 
-const mongoURI = 'mongodb://localhost:27017/starfleet' //require('./response.json');
+const mongoURI = 'mongodb://mongo:27017/starfleet' //require('./response.json');
 
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology:	true })
   .then( () => console.log('MongoDB successfully connected'))

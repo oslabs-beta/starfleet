@@ -1,0 +1,30 @@
+{
+  "name": "starfleet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrewsnapz/starfleet.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andrewsnapz/starfleet/issues"
+  },
+  "bin": {
+    "createfile": "./bin/createFile.js",
+    "mongoDB": "./bin/mongoDB.js",
+    "fileStructure": "./bin/createFileStructure.js"
+  },
+  "homepage": "https://github.com/andrewsnapz/starfleet#readme",
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "figlet": "^1.2.4",
+    "inquirer": "^7.0.0",
+    "shelljs": "^0.8.3"
+  }
+}

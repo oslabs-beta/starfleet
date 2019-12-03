@@ -1,4 +1,4 @@
-    #!/usr/bin/env node
+#!/usr/bin/env node
 
 const inquirer = require("inquirer"); //a collection of common interactive command line user interfaces
 const chalk = require("chalk"); //terminal string styling done right
@@ -9,13 +9,6 @@ const path = require('path');
 
 
 const init = () => {
-    // console.log(process.argv)
-    // const filename = process.argv[2];
-    // fs.readFile(filename, 'utf8', function(err, data) {
-    //     if (err) throw err;
-    //     console.log('OK: ' + filename);
-    //     console.log(data)
-    // });
     console.log(
         chalk.red(
             figlet.textSync("Creating a DockerFile", { 

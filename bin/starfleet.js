@@ -45,8 +45,7 @@ program
   .alias('init')
   .description('Initializing GraphQL services')
   .action( file => {
-
-	const workdir = 'models';
+    const workdir = 'models';
 
 	fs.readdirSync('./'+workdir).forEach( file => {
 	  const filename = path.parse(file).name;

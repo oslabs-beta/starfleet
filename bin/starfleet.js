@@ -13,6 +13,9 @@ const createGQL = require('./createGQL');
 // Temp
 const Book = require('../models/Book');
 
+// inqurier
+const inqurier = require('./inquirer')
+
 program
   .version(version)
   .description(description)
@@ -23,6 +26,8 @@ program
   .description('Initializing GraphQL services')
   .action( file => {
 
+  inqurier()
+  
 	const workdir = 'models';
 
 	fs.readdirSync('./'+workdir).forEach( file => {

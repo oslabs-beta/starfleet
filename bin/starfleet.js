@@ -2,7 +2,6 @@
 const program = require('commander');
 const fs = require('fs');
 const path = require('path');
-const shell = require('shelljs')
 
 // Metadata
 const { version } = require('../package.json');
@@ -11,6 +10,7 @@ const { description } = require('../package.json');
 // Subcommands
 const createGQL = require('./createGQL');
 const createDockerfile = require('./createDockerfile');
+const createFileStructure = require('./createFileStructure');
 
 // Temp
 const Book = require('../models/Book');
@@ -29,16 +29,7 @@ program
   .alias('i')
   .description('Initializing GraphQL services')
   .action(file => {
-    // creates new src folder
-    const srcText = `graphqlsrc`
-    shell.mkdir(srcText);
-
-    // creates file structure in the new src folder
-    const text = ['data', 'models', 'resolvers', 'typeDefs'];
-    text.forEach(element => {
-        let filepath = `${process.cwd()}/graphqlsrc/${element}`
-        shell.mkdir(filepath);
-    })
+    createFileStructure();
 
     // change this to be user inputted; with default being models
 	const workdir = 'models';

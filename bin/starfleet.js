@@ -9,6 +9,7 @@ const { description } = require('../package.json');
 
 // Subcommands
 const createGQL = require('./createGQL');
+const createDockerfile = require('./createDockerfile');
 
 // Temp
 const Book = require('../models/Book');
@@ -21,8 +22,8 @@ program
   .description(description)
 
 program
-  .command('initialize')
-  .alias('init')
+  .command('init')
+  .alias('i')
   .description('Initializing GraphQL services')
   .action( file => {
 
@@ -35,6 +36,14 @@ program
 	  const model = require('../'+workdir+'/'+file);
 	  createGQL(model, filename);
 	});
+  });
+
+program
+  .command('deploy')
+  .alias('d')
+  .description('Deploy newly created microservices')
+  .action( () => {
+	createDockerfile();
   });
 
 

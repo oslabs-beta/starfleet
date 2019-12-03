@@ -14,7 +14,7 @@ const createGQL = require('./createGQL');
 const Book = require('../models/Book');
 
 // inqurier
-const inqurier = require('./inquirer')
+const inquirer = require("inquirer");
 
 program
   .version(version)
@@ -24,18 +24,27 @@ program
   .command('initialize')
   .alias('init')
   .description('Initializing GraphQL services')
-  .action( file => {
+  .action(file => {  
+    const questions = [
+      {
+          name: "USERINPUT",
+          message: "Please enter the name of the folder where your schema is in:",
+          type: "input",
+          default: "models"
+      }
+    ];
 
-  inqurier()
-  
-	const workdir = 'models';
+    inquirer.prompt(questions)
+    .then(answers => {
+      const workdir = `${answers.USERINPUT}`
 
-	fs.readdirSync('./'+workdir).forEach( file => {
-	  const filename = path.parse(file).name;
-	  const model = require('../'+workdir+'/'+file);
-	  createGQL(model, filename);
-	});
+      fs.readdirSync('./'+workdir).forEach( file => {
+        const filename = path.parse(file).name;
+        const model = require('../'+workdir+'/'+file);
+        createGQL(model, filename);
+      });
+    })
   });
 
 
-program.parse(process.argv);
+  program.parse(process.argv);

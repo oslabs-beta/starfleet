@@ -1,12 +1,21 @@
-#!/usr/bin/env node
+    #!/usr/bin/env node
 
 const inquirer = require("inquirer"); //a collection of common interactive command line user interfaces
 const chalk = require("chalk"); //terminal string styling done right
 const figlet = require("figlet"); // program for making large letters our of ordinary text
 const shell = require("shelljs"); // portable unix shell commands for node.js 
 const fs = require("fs");
+const path = require('path');
+
 
 const init = () => {
+    // console.log(process.argv)
+    // const filename = process.argv[2];
+    // fs.readFile(filename, 'utf8', function(err, data) {
+    //     if (err) throw err;
+    //     console.log('OK: ' + filename);
+    //     console.log(data)
+    // });
     console.log(
         chalk.red(
             figlet.textSync("Creating a DockerFile", { 
@@ -18,10 +27,15 @@ const init = () => {
     );
 }
 
-const projectname = () => {
+const createProject = () => {
     const questions = [{   
         name: "USERINPUT",
         message: "Please enter a name for your project: ",
+        type: "input",
+    },
+    {
+        name: "SCHEMALOCATION",
+        message: "Please enter a name of path for your schemas:",
         type: "input",
     },
     {
@@ -34,8 +48,10 @@ const projectname = () => {
 
     inquirer.prompt(questions)
     .then(answers => {
-        const filePath = `${process.cwd()}/${answers.USERINPUT}.txt`
+        const filePath = `${process.cwd()}/${answers.USERINPUT}.js`
         const text = `FROM node: latest \n WORKDIR /usr/src/app/${answers.USERINPUT} \n COPY package.json /usr/src/app/${answers.USERINPUT}/  \n\n RUN npm install \n COPY . /usr/src/${answers.USERINPUT} \n EXPOSE ${answers.PORT} \n CMD npm start`;
+
+        const fileLocation = path.resolve(__dirname, `${answers.SCHEMALOCATION}`)
         shell.touch(filePath);
         fs.writeFile(filePath, text, (err) => {
             if (err) { 
@@ -49,30 +65,30 @@ const projectname = () => {
     })
 }
 
-// const createFile = () => {
-//     const filePath = `${process.cwd()}/${project_name}.txt`
-//     const text = `FROM node: latest \n WORKDIR /usr/src/app/${project_name} \n COPY package.json /usr/src/app/${project_name}/  \n\n RUN npm install \n COPY . /usr/src/${project_name} \n EXPOSE 4000 \n CMD npm start`;
-//     shell.touch(filePath);
-//     fs.writeFile(filePath, text, (err) => {
-//         if (err) { 
-//             throw err;
-//         }
-//     })
-//     return filePath;
-// }
+const createFile = () => {
+    const filePath = `${process.cwd()}/${project_name}.txt`
+    const text = `FROM node: latest \n WORKDIR /usr/src/app/${project_name} \n COPY package.json /usr/src/app/${project_name}/  \n\n RUN npm install \n COPY . /usr/src/${project_name} \n EXPOSE 4000 \n CMD npm start`;
+    shell.touch(filePath);
+    fs.writeFile(filePath, text, (err) => {
+        if (err) { 
+            throw err;
+        }
+    })
+    return filePath;
+}
 
-// const success = (filepath) => {
-//     console.log(
-//         chalk.white.bgGreen.bold(`Done! File created at ${filepath}`)
-//     );
-// };
+const success = (filepath) => {
+    console.log(
+        chalk.white.bgGreen.bold(`Done! File created at ${filepath}`)
+    );
+};
 
 const run = async() => { 
     //show script information
     init();
 
     //ask for project name:
-    projectname();
+    createProject();
 
     //create the file
     // const filePath = createFile();

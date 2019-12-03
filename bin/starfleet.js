@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 const program = require('commander');
 const fs = require('fs');
 const path = require('path');
@@ -11,9 +10,13 @@ const { description } = require('../package.json');
 
 // Subcommands
 const createGQL = require('./createGQL');
+const createDockerfile = require('./createDockerfile');
 
 // Temp
 const Book = require('../models/Book');
+
+// inqurier
+const inqurier = require('./inquirer')
 
 program
   .version(version)
@@ -22,8 +25,8 @@ program
 // starfleet init
 // add creating folder structure before parsing
 program
-  .command('initialize')
-  .alias('init')
+  .command('init')
+  .alias('i')
   .description('Initializing GraphQL services')
   .action(file => {
     // creates new src folder
@@ -48,13 +51,13 @@ program
 	});
   });
 
-// starfleet deploy (flags)
-// program
-//     .command('deploy')
-//     .option('-d, --deploy <type>', 'where to deploy', 'docker')
-//     .action( () => {
-//         console.log('hello');
-//     })
+program
+  .command('deploy')
+  .alias('d')
+  .description('Deploy newly created microservices')
+  .action( () => {
+	createDockerfile();
+  });
 
 
 program.parse(process.argv);

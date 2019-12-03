@@ -38,7 +38,6 @@ const createGQL = (model, modelName) => {
 	}
 	console.log(filename, 'saved');
   });
-
 };
 
 module.exports = createGQL;

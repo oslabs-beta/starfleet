@@ -23,7 +23,7 @@
     "url": "https://github.com/Traversal-Labs/starfleet/issues"
   },
   "bin": {
-    "create file": "./bin/createFile.js",
+    "createfile": "./bin/createFile.js",
     "mongoDB": "./bin/mongoDB.js",
     "fileStructure": "./bin/createFileStructure.js",
     "starfleet": "./bin/starfleet.js"

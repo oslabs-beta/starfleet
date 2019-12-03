@@ -8,7 +8,7 @@ const fs = require("fs");
 
 //creating
 const createFolderStructure = () => {
-    const srcText = `src`
+    const srcText = `graphqlsrc`
     const modelsText = `models`
     shell.mkdir(srcText);
     shell.mkdir(modelsText);
@@ -17,7 +17,7 @@ const createFolderStructure = () => {
 const foldersInsideSrc = () => { 
     const text = ['data', 'models', 'resolvers', 'typeDefs'];
     text.forEach(element => {
-        let filepath = `${process.cwd()}/src/${element}.js`
+        let filepath = `${process.cwd()}/graphlsrc/${element}`
         shell.mkdir(filepath);
     })
 }

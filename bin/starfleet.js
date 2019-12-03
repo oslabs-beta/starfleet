@@ -16,7 +16,7 @@ const createFileStructure = require('./createFileStructure');
 const Book = require('../models/Book');
 
 // inqurier
-const inqurier = require('./inquirer')
+const inquirer = require("inquirer");
 
 program
   .version(version)
@@ -28,26 +28,35 @@ program
   .command('init')
   .alias('i')
   .description('Initializing GraphQL services')
-  .action(file => {
+  .action(file => {  
     createFileStructure();
+    const questions = [
+      {
+          name: "USERINPUT",
+          message: "Please enter the name of the folder where your schema is in:",
+          type: "input",
+          default: "models"
+      }
+    ];
 
-    // change this to be user inputted; with default being models
-	const workdir = 'models';
+    inquirer.prompt(questions)
+    .then(answers => {
+      const workdir = `${answers.USERINPUT}`
 
-    // reads each file in the provided workdir, grabs the name of the file and the model from the file and runs it through createGQL
-	fs.readdirSync('./' + workdir).forEach(file => {
-	  const filename = path.parse(file).name;
-	  const model = require('../' + workdir + '/' + file);
-	  createGQL(model, filename);
-	});
-  });
+      fs.readdirSync('./'+workdir).forEach( file => {
+        const filename = path.parse(file).name;
+        const model = require('../'+workdir+'/'+file);
+        createGQL(model, filename);
+      });
+    })
+  })
 
 program
   .command('deploy')
   .alias('d')
   .description('Deploy newly created microservices')
-  .action( () => {
-	createDockerfile();
+  .action(() => {
+	  createDockerfile();
   });
 
 

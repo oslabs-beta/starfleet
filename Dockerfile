@@ -1,13 +1,13 @@
-FROM node:latest
+FROM node:latest 
 
-WORKDIR /usr/src/app/starfleet
+WORKDIR /usr/src/app/starfleet 
 
-COPY package.json /usr/src/app/starfleet
+COPY package.json /usr/src/app/starfleet/  
 
-RUN npm install
+RUN npm install 
 
-COPY . /usr/src/app/starfleet
+COPY . /usr/src/app/starfleet 
 
-EXPOSE 4000
+EXPOSE 4000 
 
-CMD npm start 
+CMD npm start

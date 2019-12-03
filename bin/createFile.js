@@ -1,4 +1,4 @@
-    #!/usr/bin/env node
+#!/usr/bin/env node
 
 const inquirer = require("inquirer"); //a collection of common interactive command line user interfaces
 const chalk = require("chalk"); //terminal string styling done right

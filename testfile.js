@@ -1,3 +1,0 @@
-const obj = {
-    'Hello': 'World'
-}

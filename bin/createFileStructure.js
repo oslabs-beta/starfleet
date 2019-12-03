@@ -17,7 +17,7 @@ const createFolderStructure = () => {
 const foldersInsideSrc = () => { 
     const text = ['data', 'models', 'resolvers', 'typeDefs'];
     text.forEach(element => {
-        let filepath = `${process.cwd()}/src/${element}.js`
+        let filepath = `${process.cwd()}/src/${element}`
         shell.mkdir(filepath);
     })
 }

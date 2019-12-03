@@ -32,7 +32,7 @@ const createGQL = (model, modelName) => {
   const graphqlSDL = printSchema(graphqlSchemaObj);
   const filename = modelName + '.graphql';
 
-  fs.writeFile(`./graphqlsrc/models/${filename}`, graphqlSDL, err => {
+  fs.writeFile(`./src/models/${filename}`, graphqlSDL, err => {
 	if (err) {
 	  return console.log(err);
 	}

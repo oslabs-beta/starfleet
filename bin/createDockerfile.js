@@ -18,11 +18,12 @@ const init = () => {
     );
 }
 
-const projectname = () => {
+const createDockerfile = () => {
     const questions = [{   
         name: "USERINPUT",
         message: "Please enter a name for your project: ",
-        type: "input",
+	    type: "input",
+	    default: "gql-project"
     },
     {
         name: "PORT",
@@ -34,8 +35,8 @@ const projectname = () => {
 
     inquirer.prompt(questions)
     .then(answers => {
-        const filePath = `${process.cwd()}/${answers.USERINPUT}.txt`
-        const text = `FROM node: latest \n WORKDIR /usr/src/app/${answers.USERINPUT} \n COPY package.json /usr/src/app/${answers.USERINPUT}/  \n\n RUN npm install \n COPY . /usr/src/${answers.USERINPUT} \n EXPOSE ${answers.PORT} \n CMD npm start`;
+	  const filePath = `${process.cwd()}/Dockerfile`
+	  const text = `FROM node:latest \n\nWORKDIR /usr/src/app/${answers.USERINPUT} \n\nCOPY package.json /usr/src/app/${answers.USERINPUT}/  \n\nRUN npm install \n\nCOPY . /usr/src/app/${answers.USERINPUT} \n\nEXPOSE ${answers.PORT} \n\nCMD npm start`;
         shell.touch(filePath);
         fs.writeFile(filePath, text, (err) => {
             if (err) { 
@@ -49,25 +50,8 @@ const projectname = () => {
     })
 }
 
-// const createFile = () => {
-//     const filePath = `${process.cwd()}/${project_name}.txt`
-//     const text = `FROM node: latest \n WORKDIR /usr/src/app/${project_name} \n COPY package.json /usr/src/app/${project_name}/  \n\n RUN npm install \n COPY . /usr/src/${project_name} \n EXPOSE 4000 \n CMD npm start`;
-//     shell.touch(filePath);
-//     fs.writeFile(filePath, text, (err) => {
-//         if (err) { 
-//             throw err;
-//         }
-//     })
-//     return filePath;
-// }
 
-// const success = (filepath) => {
-//     console.log(
-//         chalk.white.bgGreen.bold(`Done! File created at ${filepath}`)
-//     );
-// };
-
-const run = async() => { 
+const run = async () => { 
     //show script information
     init();
 
@@ -83,4 +67,4 @@ const run = async() => {
     // success(filePath);
 };
 
-run();
+module.exports =  createDockerfile;

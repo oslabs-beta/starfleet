@@ -1,0 +1,38 @@
+version: "2"
+
+services:
+#define a service called app
+  app:
+#adding a container name
+    container_name: starfleet
+#restart the container automatically if it fails
+    restart: always
+#building the app image using the Dockerfile in the current directory
+    build: .
+#mapping the host port to the container port.
+    ports:
+      - "4000:4000"
+    links:
+      - mongo
+#create another service called mongo
+  mongo:
+    container_name: mongo
+#pull the official mongodb image from DockerHub registry
+    image: mongo
+#mount the host directory for persistent storage
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
+#creating a service called admin-mongo
+  admin-mongo:
+#pull down the official image from DockerHub registry
+    image: 0x59/admin-mongo:latest
+    ports:
+      - "8082:8082"
+    environment:
+      - PORT=8082
+      - CONN_NAME=mongo
+      - DB_HOST=mongo
+    links:
+      - mongo

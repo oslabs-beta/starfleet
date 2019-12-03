@@ -10,6 +10,7 @@ const { description } = require('../package.json');
 // Subcommands
 const createGQL = require('./createGQL');
 const createDockerfile = require('./createDockerfile');
+const createFileStructure = require('./createFileStructure');
 
 // Temp
 const Book = require('../models/Book');
@@ -21,11 +22,14 @@ program
   .version(version)
   .description(description)
 
+// starfleet init
+// add creating folder structure before parsing
 program
   .command('init')
   .alias('i')
   .description('Initializing GraphQL services')
   .action(file => {  
+    createFileStructure();
     const questions = [
       {
           name: "USERINPUT",
@@ -45,15 +49,15 @@ program
         createGQL(model, filename);
       });
     })
-  });
+  })
 
 program
   .command('deploy')
   .alias('d')
   .description('Deploy newly created microservices')
-  .action( () => {
+  .action(() => {
 	  createDockerfile();
   });
 
 
-  program.parse(process.argv);
+program.parse(process.argv);

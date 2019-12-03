@@ -1,30 +1,39 @@
 {
   "name": "starfleet",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "Create GraphQL schemas with full CRUD functionality from Mongoose schemas and deploy them to the cloud",
   "main": "index.js",
   "scripts": {
-    "buildSchema": "node ./buildSchema.js",
-    "createfile": "node ./bin/createFile.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "test",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andrewsnapz/starfleet.git"
+    "url": "git+https://github.com/Traversal-Labs/starfleet.git"
   },
-  "author": "",
+  "keywords": [
+    "GraphQL",
+    "MongoDB",
+    "mongoose",
+    "NodeJS"
+  ],
+  "author": "Traversal Labs",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/andrewsnapz/starfleet/issues"
+    "url": "https://github.com/Traversal-Labs/starfleet/issues"
   },
   "bin": {
-    "starfleet": "./bin/starfleet.js",
+    "create file": "./bin/createFile.js",
     "mongoDB": "./bin/mongoDB.js",
-    "fileStructure": "./bin/createFileStructure.js"
+    "fileStructure": "./bin/createFileStructure.js",
+    "starfleet": "./bin/starfleet.js"
   },
-  "homepage": "https://github.com/andrewsnapz/starfleet#readme",
+  "homepage": "https://github.com/Traversal-Labs/starfleet#readme",
   "dependencies": {
     "chalk": "^3.0.0",
+    "commander": "^4.0.1",
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
     "figlet": "^1.2.4",
     "graphql": "^14.5.8",
     "graphql-compose": "^7.6.1",

@@ -1,0 +1,613 @@
+"""Provides default value for input field."""
+directive @default(value: JSON!) on INPUT_FIELD_DEFINITION
+
+input _idOperatorsFilterFindManyspeciesInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+}
+
+input _idOperatorsFilterFindOnespeciesInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+}
+
+input _idOperatorsFilterRemoveManyspeciesInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+}
+
+input _idOperatorsFilterRemoveOnespeciesInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+}
+
+input _idOperatorsFilterspeciesInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+}
+
+input _idOperatorsFilterUpdateManyspeciesInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+}
+
+input _idOperatorsFilterUpdateOnespeciesInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+}
+
+input CreateManyspeciesInput {
+  name: String
+  classification: String
+  average_height: String
+  average_lifespan: String
+  hair_colors: String
+  skin_colors: String
+  eye_colors: String
+  language: String
+  homeworld: String
+  homeworld_id: MongoID
+}
+
+type CreateManyspeciesPayload {
+  """Created document ID"""
+  recordIds: [MongoID]!
+
+  """Created documents"""
+  records: [species]!
+
+  """Count of all documents created"""
+  createCount: Int!
+}
+
+input CreateOnespeciesInput {
+  name: String
+  classification: String
+  average_height: String
+  average_lifespan: String
+  hair_colors: String
+  skin_colors: String
+  eye_colors: String
+  language: String
+  homeworld: String
+  homeworld_id: MongoID
+}
+
+type CreateOnespeciesPayload {
+  """Created document ID"""
+  recordId: MongoID
+
+  """Created document"""
+  record: species
+}
+
+input FilterFindManyspeciesInput {
+  name: String
+  classification: String
+  average_height: String
+  average_lifespan: String
+  hair_colors: String
+  skin_colors: String
+  eye_colors: String
+  language: String
+  homeworld: String
+  homeworld_id: MongoID
+  _id: MongoID
+  _ids: [MongoID]
+
+  """List of *indexed* fields that can be filtered via operators."""
+  _operators: OperatorsFilterFindManyspeciesInput
+  OR: [FilterFindManyspeciesInput!]
+  AND: [FilterFindManyspeciesInput!]
+}
+
+input FilterFindOnespeciesInput {
+  name: String
+  classification: String
+  average_height: String
+  average_lifespan: String
+  hair_colors: String
+  skin_colors: String
+  eye_colors: String
+  language: String
+  homeworld: String
+  homeworld_id: MongoID
+  _id: MongoID
+  _ids: [MongoID]
+
+  """List of *indexed* fields that can be filtered via operators."""
+  _operators: OperatorsFilterFindOnespeciesInput
+  OR: [FilterFindOnespeciesInput!]
+  AND: [FilterFindOnespeciesInput!]
+}
+
+input FilterRemoveManyspeciesInput {
+  name: String
+  classification: String
+  average_height: String
+  average_lifespan: String
+  hair_colors: String
+  skin_colors: String
+  eye_colors: String
+  language: String
+  homeworld: String
+  homeworld_id: MongoID
+  _id: MongoID
+  _ids: [MongoID]
+
+  """List of *indexed* fields that can be filtered via operators."""
+  _operators: OperatorsFilterRemoveManyspeciesInput
+  OR: [FilterRemoveManyspeciesInput!]
+  AND: [FilterRemoveManyspeciesInput!]
+}
+
+input FilterRemoveOnespeciesInput {
+  name: String
+  classification: String
+  average_height: String
+  average_lifespan: String
+  hair_colors: String
+  skin_colors: String
+  eye_colors: String
+  language: String
+  homeworld: String
+  homeworld_id: MongoID
+  _id: MongoID
+  _ids: [MongoID]
+
+  """List of *indexed* fields that can be filtered via operators."""
+  _operators: OperatorsFilterRemoveOnespeciesInput
+  OR: [FilterRemoveOnespeciesInput!]
+  AND: [FilterRemoveOnespeciesInput!]
+}
+
+input FilterspeciesInput {
+  name: String
+  classification: String
+  average_height: String
+  average_lifespan: String
+  hair_colors: String
+  skin_colors: String
+  eye_colors: String
+  language: String
+  homeworld: String
+  homeworld_id: MongoID
+  _id: MongoID
+  _ids: [MongoID]
+
+  """List of *indexed* fields that can be filtered via operators."""
+  _operators: OperatorsFilterspeciesInput
+  OR: [FilterspeciesInput!]
+  AND: [FilterspeciesInput!]
+}
+
+input FilterUpdateManyspeciesInput {
+  name: String
+  classification: String
+  average_height: String
+  average_lifespan: String
+  hair_colors: String
+  skin_colors: String
+  eye_colors: String
+  language: String
+  homeworld: String
+  homeworld_id: MongoID
+  _id: MongoID
+  _ids: [MongoID]
+
+  """List of *indexed* fields that can be filtered via operators."""
+  _operators: OperatorsFilterUpdateManyspeciesInput
+  OR: [FilterUpdateManyspeciesInput!]
+  AND: [FilterUpdateManyspeciesInput!]
+}
+
+input FilterUpdateOnespeciesInput {
+  name: String
+  classification: String
+  average_height: String
+  average_lifespan: String
+  hair_colors: String
+  skin_colors: String
+  eye_colors: String
+  language: String
+  homeworld: String
+  homeworld_id: MongoID
+  _id: MongoID
+  _ids: [MongoID]
+
+  """List of *indexed* fields that can be filtered via operators."""
+  _operators: OperatorsFilterUpdateOnespeciesInput
+  OR: [FilterUpdateOnespeciesInput!]
+  AND: [FilterUpdateOnespeciesInput!]
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""
+The `ID` scalar type represents a unique MongoDB identifier in collection.
+MongoDB by default use 12-byte ObjectId value
+(https://docs.mongodb.com/manual/reference/bson-types/#objectid). But MongoDB
+also may accepts string or integer as correct values for _id field.
+"""
+scalar MongoID
+
+type Mutation {
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  userCreateOne(record: CreateOnespeciesInput!): CreateOnespeciesPayload
+
+  """
+  Creates Many documents with mongoose defaults, setters, hooks and validation
+  """
+  userCreateMany(records: [CreateManyspeciesInput!]!): CreateManyspeciesPayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to
+  mongoose document. 3) Mongoose applies defaults, setters, hooks and
+  validation. 4) And save it.
+  """
+  userUpdateById(record: UpdateByIdspeciesInput!): UpdateByIdspeciesPayload
+
+  """
+  Update one document: 1) Retrieve one document via findOne. 2) Apply updates to
+  mongoose document. 3) Mongoose applies defaults, setters, hooks and
+  validation. 4) And save it.
+  """
+  userUpdateOne(
+    record: UpdateOnespeciesInput!
+
+    """Filter by fields"""
+    filter: FilterUpdateOnespeciesInput
+    sort: SortUpdateOnespeciesInput
+    skip: Int
+  ): UpdateOnespeciesPayload
+
+  """
+  Update many documents without returning them: Use Query.update mongoose
+  method. Do not apply mongoose defaults, setters, hooks and validation. 
+  """
+  userUpdateMany(
+    record: UpdateManyspeciesInput!
+
+    """Filter by fields"""
+    filter: FilterUpdateManyspeciesInput
+    sort: SortUpdateManyspeciesInput
+    skip: Int
+    limit: Int = 1000
+  ): UpdateManyspeciesPayload
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  userRemoveById(_id: MongoID!): RemoveByIdspeciesPayload
+
+  """
+  Remove one document: 1) Remove with hooks via findOneAndRemove. 2) Return removed document.
+  """
+  userRemoveOne(
+    """Filter by fields"""
+    filter: FilterRemoveOnespeciesInput
+    sort: SortRemoveOnespeciesInput
+  ): RemoveOnespeciesPayload
+
+  """
+  Remove many documents without returning them: Use Query.remove mongoose
+  method. Do not apply mongoose defaults, setters, hooks and validation. 
+  """
+  userRemoveMany(
+    """Filter by fields"""
+    filter: FilterRemoveManyspeciesInput!
+  ): RemoveManyspeciesPayload
+}
+
+"""For performance reason this type contains only *indexed* fields."""
+input OperatorsFilterFindManyspeciesInput {
+  _id: _idOperatorsFilterFindManyspeciesInput
+}
+
+"""For performance reason this type contains only *indexed* fields."""
+input OperatorsFilterFindOnespeciesInput {
+  _id: _idOperatorsFilterFindOnespeciesInput
+}
+
+"""For performance reason this type contains only *indexed* fields."""
+input OperatorsFilterRemoveManyspeciesInput {
+  _id: _idOperatorsFilterRemoveManyspeciesInput
+}
+
+"""For performance reason this type contains only *indexed* fields."""
+input OperatorsFilterRemoveOnespeciesInput {
+  _id: _idOperatorsFilterRemoveOnespeciesInput
+}
+
+"""For performance reason this type contains only *indexed* fields."""
+input OperatorsFilterspeciesInput {
+  _id: _idOperatorsFilterspeciesInput
+}
+
+"""For performance reason this type contains only *indexed* fields."""
+input OperatorsFilterUpdateManyspeciesInput {
+  _id: _idOperatorsFilterUpdateManyspeciesInput
+}
+
+"""For performance reason this type contains only *indexed* fields."""
+input OperatorsFilterUpdateOnespeciesInput {
+  _id: _idOperatorsFilterUpdateOnespeciesInput
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type PaginationInfo {
+  currentPage: Int!
+  perPage: Int!
+  pageCount: Int
+  itemCount: Int
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+}
+
+type Query {
+  userById(_id: MongoID!): species
+  userByIds(_ids: [MongoID]!, limit: Int = 1000, sort: SortFindByIdsspeciesInput): [species]
+  userOne(
+    """Filter by fields"""
+    filter: FilterFindOnespeciesInput
+    skip: Int
+    sort: SortFindOnespeciesInput
+  ): species
+  userMany(
+    """Filter by fields"""
+    filter: FilterFindManyspeciesInput
+    skip: Int
+    limit: Int = 1000
+    sort: SortFindManyspeciesInput
+  ): [species]
+  userCount(
+    """Filter by fields"""
+    filter: FilterspeciesInput
+  ): Int
+  userConnection(
+    """Forward pagination argument for returning at most first edges"""
+    first: Int
+
+    """Forward pagination argument for returning at most first edges"""
+    after: String
+
+    """Backward pagination argument for returning at most last edges"""
+    last: Int
+
+    """Backward pagination argument for returning at most last edges"""
+    before: String
+
+    """Filter by fields"""
+    filter: FilterFindManyspeciesInput
+
+    """Sort argument for data ordering"""
+    sort: SortConnectionspeciesEnum = _ID_DESC
+  ): speciesConnection
+  userPagination(
+    """Page number for displaying"""
+    page: Int
+    perPage: Int = 20
+
+    """Filter by fields"""
+    filter: FilterFindManyspeciesInput
+    sort: SortFindManyspeciesInput
+  ): speciesPagination
+}
+
+type RemoveByIdspeciesPayload {
+  """Removed document ID"""
+  recordId: MongoID
+
+  """Removed document"""
+  record: species
+}
+
+type RemoveManyspeciesPayload {
+  """Affected documents number"""
+  numAffected: Int
+}
+
+type RemoveOnespeciesPayload {
+  """Removed document ID"""
+  recordId: MongoID
+
+  """Removed document"""
+  record: species
+}
+
+enum SortConnectionspeciesEnum {
+  _ID_DESC
+  _ID_ASC
+}
+
+enum SortFindByIdsspeciesInput {
+  _ID_ASC
+  _ID_DESC
+}
+
+enum SortFindManyspeciesInput {
+  _ID_ASC
+  _ID_DESC
+}
+
+enum SortFindOnespeciesInput {
+  _ID_ASC
+  _ID_DESC
+}
+
+enum SortRemoveOnespeciesInput {
+  _ID_ASC
+  _ID_DESC
+}
+
+enum SortUpdateManyspeciesInput {
+  _ID_ASC
+  _ID_DESC
+}
+
+enum SortUpdateOnespeciesInput {
+  _ID_ASC
+  _ID_DESC
+}
+
+type species {
+  name: String
+  classification: String
+  average_height: String
+  average_lifespan: String
+  hair_colors: String
+  skin_colors: String
+  eye_colors: String
+  language: String
+  homeworld: String
+  homeworld_id: MongoID
+  _id: MongoID!
+}
+
+"""A connection to a list of items."""
+type speciesConnection {
+  """Total object count."""
+  count: Int!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """Information to aid in pagination."""
+  edges: [speciesEdge!]!
+}
+
+"""An edge in a connection."""
+type speciesEdge {
+  """The item at the end of the edge"""
+  node: species!
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+"""List of items with pagination."""
+type speciesPagination {
+  """Total object count."""
+  count: Int
+
+  """Array of objects."""
+  items: [species]
+
+  """Information to aid in pagination."""
+  pageInfo: PaginationInfo!
+}
+
+input UpdateByIdspeciesInput {
+  name: String
+  classification: String
+  average_height: String
+  average_lifespan: String
+  hair_colors: String
+  skin_colors: String
+  eye_colors: String
+  language: String
+  homeworld: String
+  homeworld_id: MongoID
+  _id: MongoID!
+}
+
+type UpdateByIdspeciesPayload {
+  """Updated document ID"""
+  recordId: MongoID
+
+  """Updated document"""
+  record: species
+}
+
+input UpdateManyspeciesInput {
+  name: String
+  classification: String
+  average_height: String
+  average_lifespan: String
+  hair_colors: String
+  skin_colors: String
+  eye_colors: String
+  language: String
+  homeworld: String
+  homeworld_id: MongoID
+}
+
+type UpdateManyspeciesPayload {
+  """Affected documents number"""
+  numAffected: Int
+}
+
+input UpdateOnespeciesInput {
+  name: String
+  classification: String
+  average_height: String
+  average_lifespan: String
+  hair_colors: String
+  skin_colors: String
+  eye_colors: String
+  language: String
+  homeworld: String
+  homeworld_id: MongoID
+}
+
+type UpdateOnespeciesPayload {
+  """Updated document ID"""
+  recordId: MongoID
+
+  """Updated document"""
+  record: species
+}

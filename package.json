@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "buildSchema": "node ./buildSchema.js",
+    "createfile": "node ./bin/createFile.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,7 +18,7 @@
     "url": "https://github.com/andrewsnapz/starfleet/issues"
   },
   "bin": {
-    "createfile": "./bin/createFile.js",
+    "starfleet": "./bin/starfleet.js",
     "mongoDB": "./bin/mongoDB.js",
     "fileStructure": "./bin/createFileStructure.js"
   },
@@ -24,7 +26,13 @@
   "dependencies": {
     "chalk": "^3.0.0",
     "figlet": "^1.2.4",
+    "graphql": "^14.5.8",
+    "graphql-compose": "^7.6.1",
+    "graphql-compose-connection": "^6.0.3",
+    "graphql-compose-mongoose": "^7.3.0",
+    "graphql-compose-pagination": "^6.0.3",
     "inquirer": "^7.0.0",
+    "mongoose": "^5.7.13",
     "shelljs": "^0.8.3"
   }
 }

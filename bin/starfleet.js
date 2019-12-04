@@ -11,6 +11,7 @@ const { description } = require('../package.json');
 const createGQL = require('./createGQL');
 const createDockerfile = require('./createDockerfile');
 const createFileStructure = require('./createFileStructure');
+const chalk = require("chalk"); //terminal string styling done right
 
 // Temp
 const Book = require('../models/Book');
@@ -28,8 +29,16 @@ program
   .command('init')
   .alias('i')
   .description('Initializing GraphQL services')
-  .action(file => {  
-    createFileStructure();
+  .action(file => {
+    
+    const srcPath = path.resolve(__dirname, '../graphqlsrc') 
+    console.log(srcPath)
+    if(!fs.existsSync(srcPath)) {
+      createFileStructure();
+    } else {
+      console.log('GraphQL structure already exists. Skipping...')
+    }
+
     const questions = [
       {
           name: "USERINPUT",

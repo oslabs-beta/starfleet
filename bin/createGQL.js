@@ -4,6 +4,7 @@ const chalk = require("chalk");
 const { printSchema } = require('graphql');
 const { composeWithMongoose } = require('graphql-compose-mongoose');
 const { schemaComposer } = require('graphql-compose');
+const chalk = require("chalk"); //terminal string styling done right
 
 
 const customizationOptions = {};

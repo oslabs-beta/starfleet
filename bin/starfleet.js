@@ -64,9 +64,13 @@ program
   .command('deploy')
   .alias('d')
   .description('Deploy newly created microservices')
+  .option("-d, --docker", "deploy to docker")
+  .option("-l, --lambda", "deploy to lambda")
   .action(() => {
-	  createDockerfile();
+      const env = process.argv[3].toLowerCase() || 'docker'
+      if (env === 'docker' || env === '-d') createDockerfile();
+      else if (env === 'lambda' || env === '-l') console.log('deploying to lambda');
+      else console.log('Please enter a valid env, docker (-d) or lambda (-l), to deploy to')
   });
-
 
 program.parse(process.argv);

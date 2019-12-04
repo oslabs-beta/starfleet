@@ -4,8 +4,6 @@ const chalk = require("chalk");
 const { printSchema } = require('graphql');
 const { composeWithMongoose } = require('graphql-compose-mongoose');
 const { schemaComposer } = require('graphql-compose');
-const chalk = require("chalk"); //terminal string styling done right
-
 
 const customizationOptions = {};
 const createGQL = (model, modelName) => {
@@ -35,6 +33,7 @@ const createGQL = (model, modelName) => {
   const graphqlSchemaObj = schemaComposer.buildSchema();
   const graphqlSDL = printSchema(graphqlSchemaObj);
   const filename = modelName + '.graphql';
+  
 
   fs.writeFile(`./graphqlsrc/models/${filename}`, graphqlSDL, err => {
 		if (err) {

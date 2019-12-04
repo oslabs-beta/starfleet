@@ -42,4 +42,5 @@ const createGQL = (model, modelName) => {
   });
 };
 
-module.exports = createGQL;
+module.exports = { createGQL }
+

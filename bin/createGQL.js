@@ -2,6 +2,7 @@ const fs = require('fs');
 const { printSchema } = require('graphql');
 const { composeWithMongoose } = require('graphql-compose-mongoose');
 const { schemaComposer } = require('graphql-compose');
+const chalk = require("chalk"); //terminal string styling done right
 
 const customizationOptions = {};
 const createGQL = (model, modelName) => {
@@ -36,7 +37,7 @@ const createGQL = (model, modelName) => {
 		if (err) {
 			return console.log(err);
 		}
-		console.log(filename, 'saved');
+    console.log(chalk.white.bgGreen.bold(`Done! Your graphqlSchema has been created and put into your working directory!`))
   });
 };
 

@@ -1,12 +1,12 @@
 FROM node:latest 
 
-WORKDIR /usr/src/app/starfleet 
+WORKDIR /usr/src/app/gql-project 
 
-COPY package.json /usr/src/app/starfleet/  
+COPY package.json /usr/src/app/gql-project/  
 
 RUN npm install 
 
-COPY . /usr/src/app/starfleet 
+COPY . /usr/src/app/gql-project 
 
 EXPOSE 4000 
 

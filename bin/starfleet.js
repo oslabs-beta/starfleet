@@ -14,9 +14,6 @@ const createFileStructure = require('./createFileStructure');
 const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
 
-// Temp
-const Book = require('../models/Book');
-
 program
   .version(version)
   .description(description)
@@ -28,18 +25,35 @@ program
   .alias('i')
   .description('Initializing GraphQL services')
   .action(file => {
-    createFileStructure();
+    
+    const srcPath = path.resolve(__dirname, '../graphqlsrc') 
+    console.log(srcPath)
+    if(!fs.existsSync(srcPath)) {
+      createFileStructure();
+    } else {
+      console.log('GraphQL structure already exists. Skipping...')
+    }
 
-    // change this to be user inputted; with default being models
-	const workdir = 'models';
+    const questions = [
+      {
+          name: "USERINPUT",
+          message: "Please enter the name of the folder where your schema is in:",
+          type: "input",
+          default: "models"
+      }
+    ];
 
-    // reads each file in the provided workdir, grabs the name of the file and the model from the file and runs it through createGQL
-	fs.readdirSync('./' + workdir).forEach(file => {
-	  const filename = path.parse(file).name;
-	  const model = require('../' + workdir + '/' + file);
-	  createGQL(model, filename);
-	});
-  });
+    inquirer.prompt(questions)
+    .then(answers => {
+      const workdir = `${answers.USERINPUT}`
+
+      fs.readdirSync('./'+workdir).forEach( file => {
+        const filename = path.parse(file).name;
+        const model = require('../'+workdir+'/'+file);
+        createGQL(model, filename);
+      });
+    })
+  })
 
 program
   .command('deploy')

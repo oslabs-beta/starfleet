@@ -37,8 +37,10 @@ const createGQL = (model, modelName) => {
 		if (err) {
 			return console.log(err);
 		}
-		console.log(chalk.white.bgGreen.bold(`Done! A GraphQL file structure has been added to your working directory.`));
-  })
+	console.log(chalk.white.bgGreen.bold(`Done! Your graphqlSchema has been created and put into your working directory!`, String.fromCharCode(10003)))
+	console.log(String.fromCharCode(10003));
+  });
 };
 
-module.exports = createGQL;
+module.exports = { createGQL }
+

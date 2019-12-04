@@ -2,6 +2,7 @@
 const program = require('commander');
 const fs = require('fs');
 const path = require('path');
+const inquirer = require('inquirer');
 
 // Metadata
 const { version } = require('../package.json');
@@ -9,15 +10,9 @@ const { description } = require('../package.json');
 
 // Subcommands
 const createGQL = require('./createGQL');
-const createDockerfile = require('./createDockerfile');
 const createFileStructure = require('./createFileStructure');
-const chalk = require("chalk"); //terminal string styling done right
-
-// Temp
-const Book = require('../models/Book');
-
-// inqurier
-const inquirer = require("inquirer");
+const createDockerfile = require('./createDockerfile');
+const createDockerCompose= require('./createDockerCompose');
 
 program
   .version(version)
@@ -64,8 +59,27 @@ program
   .command('deploy')
   .alias('d')
   .description('Deploy newly created microservices')
-  .action(() => {
-	  createDockerfile();
+  .action( () => {
+	const prompts = [
+		{
+			  name: 'PROJECTNAME',
+			  message: 'Please enter a name for your project: ',
+			  type: 'input',
+			  default: 'gql-project'
+			},
+		{
+			  name: 'PORT',
+			  message: 'Please specify a port (press ENTER to accept default port 4000): ',
+			  type: 'number',
+			  default: 4000
+			}
+	]
+
+	inquirer.prompt(prompts)
+	  .then( async answers => {
+ 		await createDockerfile(answers.PROJECTNAME, answers.PORT);
+		await createDockerCompose(answers.PROJECTNAME, answers.PORT);
+	  });
   });
 
 

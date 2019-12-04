@@ -3,6 +3,8 @@ const program = require('commander');
 const fs = require('fs');
 const path = require('path');
 const inquirer = require('inquirer');
+const chalk = require("chalk");
+const CFonts = require('cfonts');
 
 // Metadata
 const { version } = require('../package.json');
@@ -59,28 +61,45 @@ program
   .command('deploy')
   .alias('d')
   .description('Deploy newly created microservices')
+  .option("-d, --docker", "deploy to docker")
+  .option("-l, --lambda", "deploy to lambda")
   .action( () => {
-	const prompts = [
-		{
-			  name: 'PROJECTNAME',
-			  message: 'Please enter a name for your project: ',
-			  type: 'input',
-			  default: 'gql-project'
-			},
-		{
-			  name: 'PORT',
-			  message: 'Please specify a port (press ENTER to accept default port 4000): ',
-			  type: 'number',
-			  default: 4000
-			}
-	]
+    const env = process.argv[3].toLowerCase() || 'docker';
+    if (env === 'docker' || env === '-d') {
+        const prompts = [
+            {
+                name: 'PROJECTNAME',
+                message: 'Please enter a name for your project: ',
+                type: 'input',
+                default: 'gql-project'
+                },
+            {
+                name: 'PORT',
+                message: 'Please specify a port (press ENTER to accept default port 4000): ',
+                type: 'number',
+                default: 4000
+                }
+        ]
 
-	inquirer.prompt(prompts)
-	  .then( async answers => {
- 		await createDockerfile(answers.PROJECTNAME, answers.PORT);
-		await createDockerCompose(answers.PROJECTNAME, answers.PORT);
-	  });
+        inquirer.prompt(prompts)
+        .then( async answers => {
+            await createDockerfile(answers.PROJECTNAME, answers.PORT);
+            await createDockerCompose(answers.PROJECTNAME, answers.PORT);
+        });
+    }
+    else if (env === 'lambda' || env === '-l') console.log('deploying to lambda');
+    else console.log('Please enter a valid env, docker (-d) or lambda (-l), to deploy to')
   });
 
-
 program.parse(process.argv);
+
+CFonts.say('Starfleet', {
+  font: '3d',              
+  align: 'left',              
+  colors: ['yellow', 'blue'],         
+  background: 'black',  
+  letterSpacing: 1,           
+  lineHeight: 1,              
+  space: true,               
+  maxLength: '0',            
+});

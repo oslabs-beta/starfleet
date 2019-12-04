@@ -9,7 +9,7 @@ const fs = require("fs");
 const doesDbExist = () => { 
 inquirer.prompt({
     name: "MONGODB",
-    message: "Do you have a existing MongoDB table?",
+    message: chalk.blue("Do you have a existing MongoDB table?"),
     type: "confirm",
 })
 .then( answers => {

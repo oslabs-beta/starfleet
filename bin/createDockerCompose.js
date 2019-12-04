@@ -1,3 +1,4 @@
+// Helper function used in starfleet.js; check subcommands sections of starfleet.js file
 const fs = require('fs');
 const shell = require('shelljs');
 const chalk = require('chalk');

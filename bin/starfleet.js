@@ -18,8 +18,7 @@ program
   .version(version)
   .description(description)
 
-// starfleet init
-// add creating folder structure before parsing
+// cli command: "starfleet init" or "starfleet i"
 program
   .command('init')
   .alias('i')

@@ -8,7 +8,6 @@ const graphqlExpress = require('express-graphql');
 const { buildSchema } = require('graphql');
 //const bookSchema = require('./src/resolvers/BookSchema').BookSchema;
 const book = fs.readFileSync('./graphqlsrc/models/Book.graphql', 'utf-8');
-console.log(book);
 const bookSchema = buildSchema(book, { commentDescription: true });
 
 

@@ -13,6 +13,7 @@ const createGQL = require('./createGQL');
 const createFileStructure = require('./createFileStructure');
 const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
+const { build, up } = require('./runDocker')
 
 program
   .version(version)
@@ -27,7 +28,6 @@ program
   .action(file => {
     
     const srcPath = path.resolve(__dirname, '../graphqlsrc') 
-    console.log(srcPath)
     if(!fs.existsSync(srcPath)) {
       createFileStructure();
     } else {
@@ -81,9 +81,11 @@ program
 
         inquirer.prompt(prompts)
         .then( async answers => {
-            await createDockerfile(answers.PROJECTNAME, answers.PORT);
-            await createDockerCompose(answers.PROJECTNAME, answers.PORT);
-        });
+          await createDockerfile(answers.PROJECTNAME, answers.PORT);
+		  await createDockerCompose(answers.PROJECTNAME, answers.PORT);
+		  await build();
+		  await up();
+		});
     }
     else if (env === 'lambda' || env === '-l') console.log('deploying to lambda');
     else console.log('Please enter a valid env, docker (-d) or lambda (-l), to deploy to')

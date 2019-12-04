@@ -35,6 +35,8 @@ program
     console.log(srcPath)
     if(!fs.existsSync(srcPath)) {
       createFileStructure();
+    } else {
+      console.log('GraphQL structure already exists. Skipping...')
     }
 
     const questions = [

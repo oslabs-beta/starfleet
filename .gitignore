@@ -1,4 +1,7 @@
-data/
-node_modules/
 *.swp
 *.swo
+data/
+node_modules/
+Dockerfile
+docker-compose.yml
+graphqlsrc/

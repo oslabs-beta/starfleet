@@ -1,6 +1,6 @@
 {
   "name": "starfleet",
-  "version": "0.0.1",
+  "version": "0.0.8",
   "description": "Create GraphQL schemas with full CRUD functionality from Mongoose schemas and deploy them to the cloud",
   "main": "index.js",
   "scripts": {
@@ -23,9 +23,7 @@
     "url": "https://github.com/Traversal-Labs/starfleet/issues"
   },
   "bin": {
-    "createfile": "./bin/createFile.js",
     "mongoDB": "./bin/mongoDB.js",
-    "fileStructure": "./bin/createFileStructure.js",
     "starfleet": "./bin/starfleet.js"
   },
   "homepage": "https://github.com/Traversal-Labs/starfleet#readme",

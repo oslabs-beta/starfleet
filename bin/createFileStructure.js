@@ -7,7 +7,7 @@ const createFileStructure = () => {
     shell.mkdir(srcText);
     
     // creates file structure in the new src folder
-    const text = ['data', 'models', 'resolvers', 'typeDefs'];
+    const text = ['data', 'models'];
     text.forEach(element => {
         let filepath = `${process.cwd()}/graphqlsrc/${element}`
         shell.mkdir(filepath);

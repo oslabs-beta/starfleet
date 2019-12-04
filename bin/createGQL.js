@@ -1,8 +1,9 @@
 const fs = require('fs');
+const chalk = require("chalk");
+
 const { printSchema } = require('graphql');
 const { composeWithMongoose } = require('graphql-compose-mongoose');
 const { schemaComposer } = require('graphql-compose');
-const chalk = require("chalk"); //terminal string styling done right
 
 const customizationOptions = {};
 
@@ -33,13 +34,14 @@ const createGQL = (model, modelName) => {
   const graphqlSchemaObj = schemaComposer.buildSchema();
   const graphqlSDL = printSchema(graphqlSchemaObj);
   const filename = modelName + '.graphql';
+  
 
   fs.writeFile(`./graphqlsrc/models/${filename}`, graphqlSDL, err => {
 		if (err) {
 			return console.log(err);
 		}
-    console.log(chalk.white.bgGreen.bold(`Done! Your graphqlSchema has been created and put into your working directory!`))
-	});
+		console.log(chalk.white.bgGreen.bold(`Done! A GraphQL file structure has been added to your working directory.`));
+  })
 };
 
 module.exports = createGQL 

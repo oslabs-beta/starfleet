@@ -3,6 +3,8 @@ const program = require('commander');
 const fs = require('fs');
 const path = require('path');
 const inquirer = require('inquirer');
+const chalk = require("chalk");
+const CFonts = require('cfonts');
 
 // Metadata
 const { version } = require('../package.json');
@@ -90,3 +92,14 @@ program
   });
 
 program.parse(process.argv);
+
+CFonts.say('Starfleet', {
+  font: '3d',              
+  align: 'left',              
+  colors: ['yellow', 'blue'],         
+  background: 'black',  
+  letterSpacing: 1,           
+  lineHeight: 1,              
+  space: true,               
+  maxLength: '0',            
+});

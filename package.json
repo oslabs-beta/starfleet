@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/Traversal-Labs/starfleet#readme",
   "dependencies": {
+    "cfonts": "^2.4.5",
     "chalk": "^3.0.0",
     "commander": "^4.0.1",
     "express": "^4.17.1",

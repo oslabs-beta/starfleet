@@ -1,13 +1,16 @@
 const fs = require('fs');
-const { printSchema } = require('graphql');
+const path = require('path');
 const { composeWithMongoose } = require('graphql-compose-mongoose');
 const { schemaComposer } = require('graphql-compose');
-const chalk = require("chalk"); //terminal string styling done right
 
 const customizationOptions = {};
 
-const createGQL = (model, modelName) => {
-  const ModelTC = composeWithMongoose(model, customizationOptions);
+const workdir = 'models';
+
+fs.readdirSync('./'+workdir).forEach( file => {
+	const modelName = path.parse(file).name;
+	const model = require('../'+workdir+'/'+file);
+	const ModelTC = composeWithMongoose(model, customizationOptions);
 
   schemaComposer.Query.addFields({
 	[modelName+"ById"] : ModelTC.getResolver('findById'),
@@ -29,17 +32,8 @@ const createGQL = (model, modelName) => {
 	[modelName+"RemoveOne"] : ModelTC.getResolver('removeOne'),
 	[modelName+"RemoveMany"] : ModelTC.getResolver('removeMany'),
   });
+	const graphqlSchema = schemaComposer.buildSchema();
+	module.exports = graphqlSchema;
+});
 
-  const graphqlSchemaObj = schemaComposer.buildSchema();
-  const graphqlSDL = printSchema(graphqlSchemaObj);
-  const filename = modelName + '.graphql';
-
-  fs.writeFile(`./graphqlsrc/models/${filename}`, graphqlSDL, err => {
-		if (err) {
-			return console.log(err);
-		}
-    console.log(chalk.white.bgGreen.bold(`Done! Your graphqlSchema has been created and put into your working directory!`))
-	});
-};
-
-module.exports = createGQL 
+// module.exports = graphqlObj;

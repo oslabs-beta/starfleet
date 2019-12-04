@@ -9,6 +9,7 @@ const { description } = require('../package.json');
 
 // Subcommands
 const createGQL = require('./createGQL');
+const graphqlObj = require('./graphqlObj');
 const createDockerfile = require('./createDockerfile');
 const createFileStructure = require('./createFileStructure');
 const chalk = require("chalk"); //terminal string styling done right
@@ -32,7 +33,7 @@ program
   .action(file => {
     
     const srcPath = path.resolve(__dirname, '../graphqlsrc') 
-    console.log(srcPath)
+    
     if(!fs.existsSync(srcPath)) {
       createFileStructure();
     } else {
@@ -56,6 +57,7 @@ program
         const filename = path.parse(file).name;
         const model = require('../'+workdir+'/'+file);
         createGQL(model, filename);
+        graphqlObj(model, filename);
       });
     })
   })

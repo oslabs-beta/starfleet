@@ -1,11 +1,13 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const { buildSchema } = require('graphql');
+const { makeExecutableSchema } = require('graphql-tools')
+const graphqlObj = require('./bin/graphqlObj');
+// const bookGraphql = require('./bin')
 
 // GraphQL dependecies and schemas
 const graphqlExpress = require('express-graphql');
-const bookSchema = require('./src/resolvers/BookSchema').BookSchema;
-
 
 // db connection 
 const mongoURI = 'mongodb://mongo:27017/starfleet' //require('./response.json');
@@ -14,12 +16,16 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology:	true })
   .then( () => console.log('MongoDB successfully connected'))
   .catch( err => console.log('Error connecting to db: ', err));
 
+console.log(graphqlObj)
+
 // GraphQL endpoint
 app.use('/graphql', graphqlExpress({
-  schema: bookSchema,
+  schema: graphqlObj,
+  // schema: JSON.parse(JSON.stringify(bookGraphql)),
   rootValue: global,
   graphiql: true
 }));
+
 
 
 const PORT = process.env.PORT || 4000;

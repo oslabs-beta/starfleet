@@ -31,10 +31,8 @@ const createGQL = (model, modelName) => {
   });
 
   const graphqlSchemaObj = schemaComposer.buildSchema();
-  const graphqlSDL = printSchema(graphqlSchemaObj);
+  const graphqlSDL = printSchema(graphqlSchemaObj, { commentDescriptions: true });
   const filename = modelName + '.graphql';
-  
-
   fs.writeFile(`./graphqlsrc/models/${filename}`, graphqlSDL, err => {
 		if (err) {
 			return console.log(err);

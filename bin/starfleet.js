@@ -90,7 +90,7 @@ program
     const env = process.argv[3].toLowerCase() || 'docker';
     if (env === 'docker' || env === '-d') {
       
-      CFonts.say('Now Deploying the Docker', {
+      CFonts.say('Now Deploying Dockers', {
         font: 'chrome',              
         align: 'left',              
         colors: ['blue', 'yellow', 'cyan'],         

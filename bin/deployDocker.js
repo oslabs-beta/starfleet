@@ -5,7 +5,7 @@ const createDockerCompose= require('./createDockerCompose.js');
 const { build, up } = require('./runDocker.js');
 const CFonts = require('cfonts');
 
-CFonts.say('Now Deploying the Docker', {
+CFonts.say('Now Deploying Dockers', {
     font: 'chrome',              
     align: 'left',              
     colors: ['blue', 'yellow', 'cyan'],         

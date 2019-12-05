@@ -12,6 +12,7 @@ const { description } = require('../package.json');
 
 // Subcommands
 const createGQL = require('./createGQL');
+const passingGQL = require('./passingGQL');
 const createFileStructure = require('./createFileStructure');
 const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
@@ -30,6 +31,7 @@ program
   .action(file => {
     
     const srcPath = path.resolve(__dirname, '../graphqlsrc') 
+
     if(!fs.existsSync(srcPath)) {
       createFileStructure();
     } else {
@@ -49,13 +51,22 @@ program
     .then(answers => {
       const workdir = `${answers.USERINPUT}`
 
+      fs.writeFile(`./bin/config.js`, workdir, err => {
+        if (err) {
+          return console.log(err);
+        }
+      })
+
       fs.readdirSync('./'+workdir).forEach( file => {
         const filename = path.parse(file).name;
         const model = require('../'+workdir+'/'+file);
         createGQL(model, filename);
+        // module.exports = pass(model, filename)
       });
     })
   })
+
+
 
 program
   .command('deploy')
@@ -64,7 +75,8 @@ program
   .option("-d, --docker", "deploy to docker")
   .option("-l, --lambda", "deploy to lambda")
   .action( () => {
-    const env = process.argv[3].toLowerCase() || 'docker';
+    console.log(process.argv)
+    const env = process.argv[3].toLowerCase() || 'deploy';
     if (env === 'docker' || env === '-d') {
         const prompts = [
             {
@@ -92,6 +104,7 @@ program
     else if (env === 'lambda' || env === '-l') console.log('deploying to lambda');
     else console.log('Please enter a valid env, docker (-d) or lambda (-l), to deploy to')
   });
+
 
 program.parse(process.argv);
 

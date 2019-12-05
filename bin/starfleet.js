@@ -3,7 +3,6 @@ const program = require('commander');
 const fs = require('fs');
 const path = require('path');
 const inquirer = require('inquirer');
-const chalk = require("chalk");
 const CFonts = require('cfonts');
 
 // Metadata
@@ -21,17 +20,27 @@ program
   .version(version)
   .description(description)
 
-// starfleet init
-// add creating folder structure before parsing
+// "starfleet init" command for converting mongoose schema to gql pieces
 program
   .command('init')
   .alias('i')
   .description('Initializing GraphQL services')
-  .action(file => {
+  .action(() => {
     
+    CFonts.say('Starfleet', {
+      font: '3d',              
+      align: 'left',              
+      colors: ['yellow', 'blue'],         
+      background: 'black',  
+      letterSpacing: 1,           
+      lineHeight: 1,              
+      space: true,               
+      maxLength: '0',            
+    });
+
     const srcPath = path.resolve(__dirname, '../graphqlsrc') 
     if(!fs.existsSync(srcPath)) {
-      createFileStructure();
+      createFileStructure(); // first creates file structure
     } else {
       console.log('GraphQL structure already exists. Skipping...')
     }
@@ -45,6 +54,7 @@ program
       }
     ];
 
+    // creates SDL file after reading from user-inputted models file path
     inquirer.prompt(questions)
     .then(answers => {
       const workdir = `${answers.USERINPUT}`
@@ -57,10 +67,11 @@ program
     })
   })
 
+// "starfleet deploy/d ['-d', '--docker', '-l', '--l']" command to deploy to desired service; default docker"
 program
   .command('deploy')
   .alias('d')
-  .description('Deploy newly created microservices')
+  .description('Deploy newly created GQL service')
   .option("-d, --docker", "deploy to docker")
   .option("-l, --lambda", "deploy to lambda")
   .action( () => {
@@ -94,14 +105,3 @@ program
   });
 
 program.parse(process.argv);
-
-CFonts.say('Starfleet', {
-  font: '3d',              
-  align: 'left',              
-  colors: ['yellow', 'blue'],         
-  background: 'black',  
-  letterSpacing: 1,           
-  lineHeight: 1,              
-  space: true,               
-  maxLength: '0',            
-});

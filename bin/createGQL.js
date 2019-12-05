@@ -5,10 +5,12 @@ const { printSchema } = require('graphql');
 const { composeWithMongoose } = require('graphql-compose-mongoose');
 const { schemaComposer } = require('graphql-compose');
 
-const customizationOptions = {};
 const createGQL = (model, modelName) => {
-  const ModelTC = composeWithMongoose(model, customizationOptions);
+  // converts passed in mongoose schemas to graphql pieces
+  const customizationOptions = {};
+  const ModelTC = composeWithMongoose(model, customizationOptions); 
 
+  // adds basic CRUD operations to converted schema
   schemaComposer.Query.addFields({
 	[modelName+"ById"] : ModelTC.getResolver('findById'),
 	[modelName+"ByIds"] : ModelTC.getResolver('findByIds'),
@@ -30,6 +32,7 @@ const createGQL = (model, modelName) => {
 	[modelName+"RemoveMany"] : ModelTC.getResolver('removeMany'),
   });
 
+  // .buildSchema() func is different than graphql's native .buildSchema() func; native one only adds default resolvers
   const graphqlSchemaObj = schemaComposer.buildSchema();
   const graphqlSDL = printSchema(graphqlSchemaObj, { commentDescriptions: true });
   const filename = modelName + '.graphql';

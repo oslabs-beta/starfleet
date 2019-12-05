@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+// Helper function used in starfleet.js; check subcommands sections of starfleet.js file
 const shell = require("shelljs"); // portable unix shell commands for node.js 
 
 const createFileStructure = () => {

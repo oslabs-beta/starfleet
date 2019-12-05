@@ -1,9 +1,10 @@
+// Helper function used in starfleet.js; check subcommands sections of starfleet.js file
 const fs = require('fs');
 const chalk = require("chalk");
 
-const { printSchema } = require('graphql');
 const { composeWithMongoose } = require('graphql-compose-mongoose');
 const { schemaComposer } = require('graphql-compose');
+const { printSchema } = require('graphql');
 
 const createGQL = (model, modelName) => {
   // converts passed in mongoose schemas to graphql pieces
@@ -32,10 +33,14 @@ const createGQL = (model, modelName) => {
 	[modelName+"RemoveMany"] : ModelTC.getResolver('removeMany'),
   });
 
-  // .buildSchema() func is different than graphql's native .buildSchema() func; native one only adds default resolvers
+  // utilizes schemaComposer library's .buildSchema to add CRUD operations
+  // this is different than graphql's native buildSchema() - that only adds default resolvers
   const graphqlSchemaObj = schemaComposer.buildSchema();
+  // printSchema is graphQL's built in GraphQL to SDL converter
   const graphqlSDL = printSchema(graphqlSchemaObj, { commentDescriptions: true });
   const filename = modelName + '.graphql';
+
+  // writes created SDL file to desginated path
   fs.writeFile(`./graphqlsrc/models/${filename}`, graphqlSDL, err => {
 		if (err) {
 			return console.log(err);

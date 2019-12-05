@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// shebang line needed for running starfleet commands (reference bin lines in package.json file)
+
 const program = require('commander');
 const fs = require('fs');
 const path = require('path');
@@ -45,26 +47,28 @@ program
       console.log('GraphQL structure already exists. Skipping...')
     }
 
-    const questions = [
-      {
-          name: "USERINPUT",
-          message: "Please enter the name of the folder where your schema is in:",
-          type: "input",
-          default: "models"
-      }
-    ];
+  const questions = [
+    {
+      name: "USERINPUT",
+      message: "Please enter the name of the folder where your schema is in:",
+      type: "input",
+      default: "models"
+    }
+  ];
 
     // creates SDL file after reading from user-inputted models file path
     inquirer.prompt(questions)
     .then(answers => {
       const workdir = `${answers.USERINPUT}`
 
-      fs.readdirSync('./'+workdir).forEach( file => {
-        const filename = path.parse(file).name;
-        const model = require('../'+workdir+'/'+file);
-        createGQL(model, filename);
-      });
-    })
+    // user's answer used to locate folder containing mongoose schemas
+    fs.readdirSync('./'+workdir).forEach( file => {
+    const filename = path.parse(file).name;
+    // each file name is passed in to createGQL; will be the prefix for all corresponding GQL types and resolvers
+    const model = require('../'+workdir+'/'+file);
+    createGQL(model, filename);
+    });
+  })
   })
 
 // "starfleet deploy/d ['-d', '--docker', '-l', '--l']" command to deploy to desired service; default docker"
@@ -75,22 +79,23 @@ program
   .option("-d, --docker", "deploy to docker")
   .option("-l, --lambda", "deploy to lambda")
   .action( () => {
-    const env = process.argv[3].toLowerCase() || 'docker';
-    if (env === 'docker' || env === '-d') {
-        const prompts = [
-            {
-                name: 'PROJECTNAME',
-                message: 'Please enter a name for your project: ',
-                type: 'input',
-                default: 'gql-project'
-                },
-            {
-                name: 'PORT',
-                message: 'Please specify a port (press ENTER to accept default port 4000): ',
-                type: 'number',
-                default: 4000
-                }
-        ]
+  // process.argv is the array holding all typed words in command line
+  const env = process.argv[3].toLowerCase() || 'docker';
+  if (env === 'docker' || env === '-d') {
+    const prompts = [
+      {
+        name: 'PROJECTNAME',
+        message: 'Please enter a name for your project: ',
+        type: 'input',
+        default: 'gql-project'
+        },
+      {
+        name: 'PORT',
+        message: 'Please specify a port (press ENTER to accept default port 4000): ',
+        type: 'number',
+        default: 4000
+        }
+    ]
 
         inquirer.prompt(prompts)
         .then( async answers => {

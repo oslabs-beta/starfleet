@@ -18,6 +18,17 @@ const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
 const { build, up } = require('./runDocker')
 
+// CFonts.say('Starfleet', {
+//   font: '3d',              
+//   align: 'left',              
+//   colors: ['yellow', 'blue'],         
+//   background: 'black',  
+//   letterSpacing: 1,           
+//   lineHeight: 1,              
+//   space: true,               
+//   maxLength: '0',            
+// });
+
 program
   .version(version)
   .description(description)
@@ -29,6 +40,16 @@ program
   .alias('i')
   .description('Initializing GraphQL services')
   .action(file => {
+    CFonts.say('Starfleet', {
+      font: '3d',              
+      align: 'left',              
+      colors: ['yellow', 'blue'],         
+      background: 'black',  
+      letterSpacing: 1,           
+      lineHeight: 1,              
+      space: true,               
+      maxLength: '0',            
+    });
     
     const srcPath = path.resolve(__dirname, '../graphqlsrc') 
 
@@ -78,24 +99,36 @@ program
     console.log(process.argv)
     const env = process.argv[3].toLowerCase() || 'deploy';
     if (env === 'docker' || env === '-d') {
-        const prompts = [
-            {
-                name: 'PROJECTNAME',
-                message: 'Please enter a name for your project: ',
-                type: 'input',
-                default: 'gql-project'
-                },
-            {
-                name: 'PORT',
-                message: 'Please specify a port (press ENTER to accept default port 4000): ',
-                type: 'number',
-                default: 4000
-                }
-        ]
+      
+      CFonts.say('Now Deploying Dockers', {
+        font: 'chrome',              
+        align: 'left',              
+        colors: ['blue', 'yellow', 'cyan'],         
+        background: 'black',  
+        letterSpacing: 1,           
+        lineHeight: 1,              
+        space: true,               
+        maxLength: '0',  
+    })
+    
+    const prompts = [
+      {
+        name: 'PROJECTNAME',
+        message: 'Please enter a name for your project: ',
+        type: 'input',
+        default: 'gql-project'
+      },
+      {
+        name: 'PORT',
+        message: 'Please specify a port (press ENTER to accept default port 4000): ',
+        type: 'number',
+        default: 4000
+      }
+    ]
 
         inquirer.prompt(prompts)
         .then( async answers => {
-          await createDockerfile(answers.PROJECTNAME, answers.PORT);
+      await createDockerfile(answers.PROJECTNAME, answers.PORT);
 		  await createDockerCompose(answers.PROJECTNAME, answers.PORT);
 		  await build();
 		  await up();
@@ -108,13 +141,3 @@ program
 
 program.parse(process.argv);
 
-CFonts.say('Starfleet', {
-  font: '3d',              
-  align: 'left',              
-  colors: ['yellow', 'blue'],         
-  background: 'black',  
-  letterSpacing: 1,           
-  lineHeight: 1,              
-  space: true,               
-  maxLength: '0',            
-});

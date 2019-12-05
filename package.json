@@ -24,13 +24,20 @@
   },
   "bin": {
     "mongoDB": "./bin/mongoDB.js",
-    "starfleet": "./bin/starfleet.js"
+    "starfleet": "./bin/starfleet.js",
+    "starfleet-docker": "./bin/deployDocker.js",
+    "starfleet-d": "./bin/deployDocker.js",
+    "starfleet-lambda": "./bin/deployLambda.js",
+    "starfleet-l": "./bin/deployLambda.js"
   },
   "homepage": "https://github.com/Traversal-Labs/starfleet#readme",
   "dependencies": {
+    "apollo-server": "^2.9.12",
     "cfonts": "^2.4.5",
     "chalk": "^3.0.0",
     "commander": "^4.0.1",
+    "docker": "^1.0.0",
+    "docker-compose": "^0.23.1",
     "express": "^4.17.1",
     "express-graphql": "^0.9.0",
     "figlet": "^1.2.4",

@@ -22,8 +22,13 @@ const up = () => {
   };
 
   const newDeploy = spawn('docker-compose', ['up'], options);
+
   newDeploy.on('data', data => {
 	console.log(`Deploying fleet: ${data}`);
+  });
+
+  newDeploy.on('exit', (code, signal) => {
+	console.log('Deploy process exited with ' + `code ${code} and signal ${signal}`);
   });
 
 };

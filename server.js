@@ -8,7 +8,6 @@ const path = require('path');
 const graphqlExpress = require('express-graphql');
 
 const passingGQL = require('./bin/passingGQL') //require this to run the function
-const mongoURI = 'mongodb://localhost:27017/natours-test' //require('./response.json');
 
 // this will grab graphqlObj and user needs to put this in their server file.
 const userInput = fs.readFileSync(`./bin/config.js`, 'utf-8');

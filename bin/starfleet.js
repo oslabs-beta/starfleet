@@ -96,11 +96,14 @@ program
   .option("-d, --docker", "deploy to docker")
   .option("-l, --lambda", "deploy to lambda")
   .action( () => {
-    console.log(process.argv)
+	if (!process.argv[3]) {
+	  console.log(chalk.red('\nPlease enter a valid deployment option. See'),chalk.white('--help'), chalk.red(' for assistance\n'));
+	  return;
+	}
     const env = process.argv[3].toLowerCase() || 'deploy';
     if (env === 'docker' || env === '-d') {
       
-      CFonts.say('Now Deploying Dockers', {
+      CFonts.say('Now Deploying to Docker', {
         font: 'chrome',              
         align: 'left',              
         colors: ['blue', 'yellow', 'cyan'],         
@@ -135,7 +138,6 @@ program
 		});
     }
     else if (env === 'lambda' || env === '-l') console.log('deploying to lambda');
-    else console.log('Please enter a valid env, docker (-d) or lambda (-l), to deploy to')
   });
 
 

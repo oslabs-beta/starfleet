@@ -2,14 +2,16 @@
 const fs = require('fs');
 const chalk = require("chalk");
 
-const { printSchema } = require('graphql');
 const { composeWithMongoose } = require('graphql-compose-mongoose');
 const { schemaComposer } = require('graphql-compose');
+const { printSchema } = require('graphql');
 
-const customizationOptions = {};
 const createGQL = (model, modelName) => {
+  // converts mongoose schema to graphQL pieces 
+  const customizationOptions = {};
   const ModelTC = composeWithMongoose(model, customizationOptions);
 
+  // adds CRUD User operations to the GraphQL Schema
   schemaComposer.Query.addFields({
 	[modelName+"ById"] : ModelTC.getResolver('findById'),
 	[modelName+"ByIds"] : ModelTC.getResolver('findByIds'),
@@ -31,15 +33,22 @@ const createGQL = (model, modelName) => {
 	[modelName+"RemoveMany"] : ModelTC.getResolver('removeMany'),
   });
 
+  // utilizes schemaComposer library's .buildSchema to add CRUD operations
+  // this is different than graphql's native buildSchema() - that only adds default resolvers
   const graphqlSchemaObj = schemaComposer.buildSchema();
+  // printSchema is graphQL's built in GraphQL to SDL converter
   const graphqlSDL = printSchema(graphqlSchemaObj, { commentDescriptions: true });
   const filename = modelName + '.graphql';
+
+  // writes created SDL file to desginated path
   fs.writeFile(`./graphqlsrc/models/${filename}`, graphqlSDL, err => {
 		if (err) {
 			return console.log(err);
 		}
-		console.log(chalk.white.bgGreen.bold(`Done! A GraphQL file structure has been added to your working directory.`));
-  })
+	console.log(chalk.white.bgGreen.bold(`Done! Your graphqlSchema has been created and put into your working directory!`, String.fromCharCode(10003)))
+	console.log(String.fromCharCode(10003));
+  });
 };
 
-module.exports = createGQL;
+module.exports = { createGQL }
+

@@ -27,27 +27,25 @@ program
   .command('init')
   .alias('i')
   .description('Initializing GraphQL services')
-  .action( () => {
-  
-  CFonts.say('Starfleet', {
-    font: '3d',              
-    align: 'left',              
-    colors: ['yellow', 'blue'],         
-    background: 'black',  
-    letterSpacing: 1,           
-    lineHeight: 1,              
-    space: true,               
-    maxLength: '0',            
-  });
+  .action(() => {
+    
+    CFonts.say('Starfleet', {
+      font: '3d',              
+      align: 'left',              
+      colors: ['yellow', 'blue'],         
+      background: 'black',  
+      letterSpacing: 1,           
+      lineHeight: 1,              
+      space: true,               
+      maxLength: '0',            
+    });    
 
-  const srcPath = path.resolve(__dirname, '../graphqlsrc')
-  // doesn't create new file structure if starfleet init has already been run
-  // this does not skip creating the SDL file (createGQL func)
-  if(!fs.existsSync(srcPath)) {
-    createFileStructure();
-  } else {
-    console.log('GraphQL structure already exists. Skipping...')
-  }
+    const srcPath = path.resolve(__dirname, '../graphqlsrc') 
+    if(!fs.existsSync(srcPath)) {
+      createFileStructure();
+    } else {
+      console.log('GraphQL structure already exists. Skipping...')
+    }
 
   const questions = [
     {
@@ -98,17 +96,16 @@ program
         }
     ]
 
-    inquirer.prompt(prompts)
-    .then( async answers => {
-      await createDockerfile(answers.PROJECTNAME, answers.PORT);
-        await createDockerCompose(answers.PROJECTNAME, answers.PORT);
-        await build();
-        await up();
-    });
-  }
-  else if (env === 'lambda' || env === '-l') console.log('deploying to lambda');
-  else console.log('Please enter a valid env, docker (-d) or lambda (-l), to deploy to')
+        inquirer.prompt(prompts)
+        .then( async answers => {
+          await createDockerfile(answers.PROJECTNAME, answers.PORT);
+		  await createDockerCompose(answers.PROJECTNAME, answers.PORT);
+		  await build();
+		  await up();
+		});
+    }
+    else if (env === 'lambda' || env === '-l') console.log('deploying to lambda');
+    else console.log('Please enter a valid env, docker (-d) or lambda (-l), to deploy to')
   });
 
 program.parse(process.argv);
-

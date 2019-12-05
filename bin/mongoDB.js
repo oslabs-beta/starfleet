@@ -3,8 +3,6 @@
 // feeling cute might delete later
 // might not need this file
 
-// const inquirer = require("inquirer"); //a collection of common interactive command line user interfaces
-
 // const doesDbExist = () => { 
 // inquirer.prompt({
 //     name: "MONGODB",
@@ -26,11 +24,6 @@
 //         })
 //     }
 // })
-// };
-
-// const run = async() => { 
-//     doesDbExist();
-//     // askForMongoDBUrl();
 // };
 
 // run();

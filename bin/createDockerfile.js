@@ -25,10 +25,11 @@ const createDockerfile = (PROJECT_NAME, PORT) => {
 		if (err) { 
 			throw err;
 		} else { 
-		 console.log(chalk.green('✔'), chalk.cyan.bold(`Done! Your docker file has been created and put into your working directory!`))
+		  console.log(chalk.green('✔'), chalk.cyan.bold(`Done! Your docker file has been created and put into your working directory!`))
+		  return;
 		}
 	});
-	return;
+  //return;
 }
 
 module.exports =  createDockerfile;

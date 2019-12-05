@@ -1,16 +1,11 @@
-const fs = require('fs');
-const chalk = require("chalk");
-
-const { printSchema } = require('graphql');
 const { composeWithMongoose } = require('graphql-compose-mongoose');
 const { schemaComposer } = require('graphql-compose');
-
 const customizationOptions = {};
 
-const createGQL = (model, modelName) => {
-  const ModelTC = composeWithMongoose(model, customizationOptions);
+const passingGQL = (model, modelName) => {
+	const ModelTC = composeWithMongoose(model, customizationOptions);
 
-  schemaComposer.Query.addFields({
+	schemaComposer.Query.addFields({
 		[modelName+"ById"] : ModelTC.getResolver('findById'),
 		[modelName+"ByIds"] : ModelTC.getResolver('findByIds'),
 		[modelName+"One"] : ModelTC.getResolver('findOne'),
@@ -18,9 +13,9 @@ const createGQL = (model, modelName) => {
 		[modelName+"Count"] : ModelTC.getResolver('count'),
 		[modelName+"Connection"] : ModelTC.getResolver('connection'),
 		[modelName+"Pagination"] : ModelTC.getResolver('pagination'),
-  });
+	});
 
-  schemaComposer.Mutation.addFields({
+	schemaComposer.Mutation.addFields({
 		[modelName+"CreateOne"] : ModelTC.getResolver('createOne'),
 		[modelName+"CreateMany"] : ModelTC.getResolver('createMany'),
 		[modelName+"UpdateById"] : ModelTC.getResolver('updateById'),
@@ -29,17 +24,10 @@ const createGQL = (model, modelName) => {
 		[modelName+"RemoveById"] : ModelTC.getResolver('removeById'),
 		[modelName+"RemoveOne"] : ModelTC.getResolver('removeOne'),
 		[modelName+"RemoveMany"] : ModelTC.getResolver('removeMany'),
-  });
+	});
+	const graphqlSchema = schemaComposer.buildSchema();
+	return graphqlSchema
+}
 
-  let graphqlSchemaObj = schemaComposer.buildSchema();
-  const graphqlSDL = printSchema(graphqlSchemaObj, { commentDescriptions: true });
-  const filename = modelName + '.graphql';
-  fs.writeFile(`./graphqlsrc/models/${filename}`, graphqlSDL, err => {
-		if (err) {
-			return console.log(err);
-		}
-		console.log(chalk.white.bgGreen.bold(`Done! A GraphQL file structure has been added to your working directory.`));
-	})
-};
+module.exports = passingGQL
 
-module.exports = createGQL 

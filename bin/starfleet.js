@@ -3,6 +3,7 @@ const program = require('commander');
 const fs = require('fs');
 const path = require('path');
 const inquirer = require('inquirer');
+const CFonts = require('cfonts');
 
 // Metadata
 const { version } = require('../package.json');
@@ -14,6 +15,7 @@ const passingGQL = require('./passingGQL');
 const createFileStructure = require('./createFileStructure');
 const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
+const { build, up } = require('./runDocker')
 
 program
   .version(version)
@@ -28,7 +30,6 @@ program
   .action(file => {
     
     const srcPath = path.resolve(__dirname, '../graphqlsrc') 
-    
     if(!fs.existsSync(srcPath)) {
       createFileStructure();
     } else {
@@ -92,12 +93,25 @@ program
 
         inquirer.prompt(prompts)
         .then( async answers => {
-            await createDockerfile(answers.PROJECTNAME, answers.PORT);
-            await createDockerCompose(answers.PROJECTNAME, answers.PORT);
-        });
+          await createDockerfile(answers.PROJECTNAME, answers.PORT);
+		  await createDockerCompose(answers.PROJECTNAME, answers.PORT);
+		  await build();
+		  await up();
+		});
     }
     else if (env === 'lambda' || env === '-l') console.log('deploying to lambda');
     else console.log('Please enter a valid env, docker (-d) or lambda (-l), to deploy to')
   });
 
 program.parse(process.argv);
+
+CFonts.say('Starfleet', {
+  font: '3d',              
+  align: 'left',              
+  colors: ['yellow', 'blue'],         
+  background: 'black',  
+  letterSpacing: 1,           
+  lineHeight: 1,              
+  space: true,               
+  maxLength: '0',            
+});

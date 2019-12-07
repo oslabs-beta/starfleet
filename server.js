@@ -17,6 +17,7 @@ fs.readdirSync('./'+userInput)
   const filename = path.parse(file).name;
   const model = require('./'+userInput+'/'+file);
   graphqlSchema = passingGQL(model, filename);
+  console.log(graphqlSchema)
 });
 //
 

@@ -18,17 +18,6 @@ const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
 const { build, up } = require('./runDocker')
 
-// CFonts.say('Starfleet', {
-//   font: '3d',              
-//   align: 'left',              
-//   colors: ['yellow', 'blue'],         
-//   background: 'black',  
-//   letterSpacing: 1,           
-//   lineHeight: 1,              
-//   space: true,               
-//   maxLength: '0',            
-// });
-
 program
   .version(version)
   .description(description)
@@ -138,6 +127,7 @@ program
     else console.log('Please enter a valid env, docker (-d) or lambda (-l), to deploy to')
   });
 
-
+// program
+//   .command()
 program.parse(process.argv);
 

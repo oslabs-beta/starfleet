@@ -30,6 +30,10 @@ program
   .action(file => {
     
     const srcPath = path.resolve(__dirname, '../graphqlsrc') 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin
     if(!fs.existsSync(srcPath)) {
       createFileStructure();
     } else {
@@ -103,6 +107,10 @@ program
     else console.log('Please enter a valid env, docker (-d) or lambda (-l), to deploy to')
   });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin
 program.parse(process.argv);
 
 CFonts.say('Starfleet', {
@@ -114,4 +122,8 @@ CFonts.say('Starfleet', {
   lineHeight: 1,              
   space: true,               
   maxLength: '0',            
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> origin

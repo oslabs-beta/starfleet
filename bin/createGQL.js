@@ -43,5 +43,9 @@ const createGQL = (model, modelName) => {
   });
 };
 
+<<<<<<< HEAD
 module.exports = createGQL 
 
+=======
+module.exports = createGQL; 
+>>>>>>> origin

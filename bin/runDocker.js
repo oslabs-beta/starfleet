@@ -35,10 +35,36 @@ const up = () => {
 
 };
 
+const stop = containers => {
+  if (!containers) return console.log('There are currently no Starfleet generated containers to stop');
+  const options = {
+	encoding: 'utf-8'
+  }
+
+  containers = containers.replace(/,/g, ' ');
+  exec(`docker stop ${containers}`, {shell: '/bin/bash'}, console.log('Stopping Starfleet containers: ', containers));
+
+  /*
+  const args = ['stop', ...containers.split(' ')];
+  console.log('Stopping containers: ', args);
+  const newTerminator = spawn('docker', args, options);
+
+  newTerminator.on('data', data => {
+	console.log(`Stopping containers: ${data}`);
+  });
+
+  newTerminator.on('exit', (code, signal) => {
+	console.log('Stopping containers exited with code ', code, 'and signal ', signal);
+  });
+  */
+
+};
+
 
 module.exports = {
   build,
-  up
+  up,
+  stop
 }
 
 

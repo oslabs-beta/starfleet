@@ -16,8 +16,8 @@ const passingGQL = require('./passingGQL');
 const createFileStructure = require('./createFileStructure');
 const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
-const { build, up } = require('./runDocker')
-let fileArr = [];
+const createContainerInventory = require('./createContainerInventory');
+const { build, up, stop } = require('./runDocker')
 
 program
   .version(version)
@@ -116,8 +116,16 @@ program
 
         inquirer.prompt(prompts)
         .then( async answers => {
-      await createDockerfile(answers.PROJECTNAME, answers.PORT);
+      	  await createDockerfile(answers.PROJECTNAME, answers.PORT);
 		  await createDockerCompose(answers.PROJECTNAME, answers.PORT);
+		  if (!fs.existsSync('inventory.txt')) {
+			const default_containers = 'mongo, starfleet_admin-mongo_1, ';
+			fs.writeFileSync('inventory.txt', default_containers, err => {
+			  if (err) return console.log(err);
+			  console.log('Created inventory file');
+			});
+		  } 
+		  await createContainerInventory(answers.PROJECTNAME);
 		  await build();
 		  await up();
 		});
@@ -125,8 +133,45 @@ program
     else if (env === 'lambda' || env === '-l') console.log('deploying to lambda');
   });
 
-// program
-//   .command()
+program
+  .command('land')
+  .alias('l')
+  .description('Stop all created microservices')
+  .option('-d, --docker', 'terminate docker containers')
+  .action( () => {
+	if (!process.argv[3]) {
+	  console.log(chalk.red('\nPlease enter a valid deployment option. See'),chalk.white('--help'), chalk.red(' for assistance\n'));
+	  return;
+	}
+
+	// if inventory file doesn't exist, bootstrap file
+	fs.access('./inventory.txt', fs.constants.F_OK, err => {
+
+	  const takeInventory = cb => {
+		const options = { encoding: 'utf-8' };
+		fs.readFile('./inventory.txt', options, (err, content) => {
+		  if (err) return cb(err);
+		  cb(null, content);
+		});
+	  }
+
+	  takeInventory( async (err, content) => {
+		await stop(content);
+		fs.unlink('inventory.txt', err => {
+		  if (err) return console.log('Error unlinking inventory: ', err);
+		  return console.log('Successfully cleaned up inventory');
+		});
+	  });
+
+	  
+	
+	});
+	  
+
+	
+
+  });
+
 
 program.parse(process.argv);
 

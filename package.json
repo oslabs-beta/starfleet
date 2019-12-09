@@ -1,5 +1,5 @@
 {
-  "name": "starfleet",
+  "name": "starfleet2",
   "version": "0.0.8",
   "description": "Create GraphQL schemas with full CRUD functionality from Mongoose schemas and deploy them to the cloud",
   "main": "index.js",

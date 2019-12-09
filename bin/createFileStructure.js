@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const shell = require("shelljs"); // portable unix shell commands for node.js 
 
+console.log("this is the current working directory: ", process.cwd())
 const createFileStructure = () => {
     // creates new src folder
     const srcText = `graphqlsrc`

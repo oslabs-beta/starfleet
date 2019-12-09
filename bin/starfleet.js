@@ -17,6 +17,7 @@ const createFileStructure = require('./createFileStructure');
 const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
 const { build, up } = require('./runDocker')
+let fileArr = [];
 
 program
   .version(version)
@@ -40,9 +41,11 @@ program
       maxLength: '0',            
     });
     
-    const srcPath = path.resolve(__dirname, '../graphqlsrc') 
+    // const srcPath = path.resolve(__dirname, '../graphqlsrc') 
+    const srcPath = `${process.cwd()}/graphqlsrc`
 
     if(!fs.existsSync(srcPath)) {
+      console.log("this is the source path for the currnet working directory: ",srcPath)
       createFileStructure();
     } else {
       console.log('GraphQL structure already exists. Skipping...')
@@ -61,20 +64,13 @@ program
     .then(answers => {
       const workdir = `${answers.USERINPUT}`
 
-      fs.writeFile(`./bin/config.js`, workdir, err => {
-        if (err) {
-          return console.log(err);
-        }
-      })
-
-      fs.readdirSync('./'+workdir).forEach( file => {
-        const filename = path.parse(file).name;
-        const model = require('../'+workdir+'/'+file);
-        createGQL(model, filename);
-        // module.exports = pass(model, filename)
-      });
-    })
-  })
+  fs.readdirSync('./'+workdir).forEach( file => {
+    const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name
+    const model = require(`${process.cwd()}/${workdir}/${file}`);
+    createGQL(model, filename);
+  });
+})
+})
 
 
 
@@ -131,5 +127,6 @@ program
 
 // program
 //   .command()
+
 program.parse(process.argv);
 

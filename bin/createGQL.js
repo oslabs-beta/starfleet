@@ -38,7 +38,8 @@ const createGQL = (model, modelName) => {
 		if (err) {
 			return console.log(err);
 		}
-	console.log(chalk.white.bgGreen.bold(`Done! Your graphqlSchema has been created and put into your working directory!`, String.fromCharCode(10003)))
+	// console.log(chalk.white.bgGreen.bold(`Done! Your graphqlSchema has been created and put into your working directory!`, String.fromCharCode(10003)))
+	console.log(chalk.white.bgGreen.bold(`Done! Your ${modelName} graphqlSchema has been created and put into your working directory!`, String.fromCharCode(10003)))
   });
 };
 

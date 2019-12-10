@@ -3,7 +3,6 @@ const program = require('commander');
 const fs = require('fs');
 const path = require('path');
 const inquirer = require('inquirer');
-const chalk = require("chalk");
 const CFonts = require('cfonts');
 
 // Metadata
@@ -53,7 +52,6 @@ program
     });
     
     const srcPath = path.resolve(__dirname, '../graphqlsrc') 
-
     if(!fs.existsSync(srcPath)) {
       createFileStructure();
     } else {
@@ -155,39 +153,42 @@ program
   .description('Stop all created microservices')
   .option('-d, --docker', 'terminate docker containers')
   .action( () => {
-	if (!process.argv[3]) {
-	  console.log(chalk.red('\nPlease enter a valid deployment option. See'),chalk.white('--help'), chalk.red(' for assistance\n'));
-	  return;
-	}
+  if (!process.argv[3]) {
+    console.log(chalk.red('\nPlease enter a valid deployment option. See'),chalk.white('--help'), chalk.red(' for assistance\n'));
+    return;
+  }
 
-	// if inventory file doesn't exist, bootstrap file
-	fs.access('./inventory.txt', fs.constants.F_OK, err => {
+  // if inventory file doesn't exist, bootstrap file
+  fs.access('./inventory.txt', fs.constants.F_OK, err => {
 
-	  const takeInventory = cb => {
-		const options = { encoding: 'utf-8' };
-		fs.readFile('./inventory.txt', options, (err, content) => {
-		  if (err) return cb(err);
-		  cb(null, content);
-		});
-	  }
+    const takeInventory = cb => {
+    const options = { encoding: 'utf-8' };
+    fs.readFile('./inventory.txt', options, (err, content) => {
+      if (err) return cb(err);
+      cb(null, content);
+    });
+    }
 
-	  takeInventory( async (err, content) => {
-		await stop(content);
-		fs.unlink('inventory.txt', err => {
-		  if (err) return console.log('Error unlinking inventory: ', err);
-		  return console.log('Successfully cleaned up inventory');
-		});
-	  });
-
-	  
-	
-	});
-	  
-
-	
-
-  });
-
+    takeInventory( async (err, content) => {
+      await stop(content);
+      fs.unlink('inventory.txt', err => {
+        if (err) return console.log('Error unlinking inventory: ', err);
+        return console.log('Successfully cleaned up inventory');
+      });
+      });
+    });
+});
 
 program.parse(process.argv);
 
+
+CFonts.say('Starfleet', {
+  font: '3d',              
+  align: 'left',              
+  colors: ['yellow', 'blue'],         
+  background: 'black',  
+  letterSpacing: 1,           
+  lineHeight: 1,              
+  space: true,               
+  maxLength: '0',            
+});

@@ -28,6 +28,6 @@ const passingGQL = (model, modelName) => {
 	const graphqlSchema = schemaComposer.buildSchema();
 	return graphqlSchema
 }
-
+	
 module.exports = passingGQL
 

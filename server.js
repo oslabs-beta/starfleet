@@ -1,50 +1,30 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const fs = require('fs');
 const path = require('path');
+const fs = require('fs');
+const { ApolloServer } = require('apollo-server');
+const typeDefs = `${fs.readFileSync(__dirname.concat('/graphqlsrc/models/tourModel.graphql'), 'utf8')}` // this path is for testing purpose and should be dynamic on fix.
+const resolvers = require('./resolvers')
+const dotenv = require('dotenv');
 
-// GraphQL dependecies and schemas
-const graphqlExpress = require('express-graphql');
-
-const passingGQL = require('./bin/passingGQL') //require this to run the function
-
-// this will grab graphqlObj and user needs to put this in their server file.
-const userInput = fs.readFileSync(`./bin/config.js`, 'utf-8');
-let graphqlSchema;
-fs.readdirSync('./'+userInput)
-.forEach(file => {
-  const filename = path.parse(file).name;
-  const model = require('./'+userInput+'/'+file);
-  graphqlSchema = passingGQL(model, filename);
+dotenv.config({
+  path: './config.env'
 });
 
-/*
-const { buildSchema } = require('graphql');
-//const bookSchema = require('./src/resolvers/BookSchema').BookSchema;
-const book = fs.readFileSync('./graphqlsrc/models/Book.graphql', 'utf-8');
-const bookSchema = buildSchema(book, { commentDescription: true });
-*/
-
 // db connection 
-const mongoURI = 'mongodb://mongo:27017/starfleet' //require('./response.json');
+const DB = process.env.DATABASE.replace(
+  '<PASSWORD>',
+  process.env.DATABASE_PASSWORD
+);
 
-
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology:	true, dbName: 'natours-test' })
+mongoose.connect(DB, { useNewUrlParser: true, useUnifiedTopology:	true, dbName: 'natours' })
   .then(() => console.log('MongoDB successfully connected'))
   .catch( err => console.log('Error connecting to db: ', err));
 
-// GraphQL endpoint
-app.use('/graphql', graphqlExpress({
-  schema: graphqlSchema,
-  rootValue: global,
-  graphiql: true
-}));
+const server = new ApolloServer({ typeDefs, resolvers });
 
-
-const PORT = process.env.PORT || 4000;
-app.set('port', PORT);
-
-app.listen(app.get('port'), () => {
-  console.log(`Listening on port ${PORT}`);
+// The `listen` method launches a web server.
+server.listen().then(({ url }) => {
+  console.log(`🚀  Server ready at ${url}`);
 });

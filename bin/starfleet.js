@@ -17,6 +17,17 @@ const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
 const { build, up } = require('./runDocker')
 
+// CFonts.say('Starfleet', {
+//   font: '3d',              
+//   align: 'left',              
+//   colors: ['yellow', 'blue'],         
+//   background: 'black',  
+//   letterSpacing: 1,           
+//   lineHeight: 1,              
+//   space: true,               
+//   maxLength: '0',            
+// });
+
 program
   .version(version)
   .description(description)
@@ -28,12 +39,18 @@ program
   .alias('i')
   .description('Initializing GraphQL services')
   .action(file => {
+    CFonts.say('Starfleet', {
+      font: '3d',              
+      align: 'left',              
+      colors: ['yellow', 'blue'],         
+      background: 'black',  
+      letterSpacing: 1,           
+      lineHeight: 1,              
+      space: true,               
+      maxLength: '0',            
+    });
     
     const srcPath = path.resolve(__dirname, '../graphqlsrc') 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin
     if(!fs.existsSync(srcPath)) {
       createFileStructure();
     } else {
@@ -77,41 +94,52 @@ program
   .option("-d, --docker", "deploy to docker")
   .option("-l, --lambda", "deploy to lambda")
   .action( () => {
-    console.log(process.argv)
+	if (!process.argv[3]) {
+	  console.log(chalk.red('\nPlease enter a valid deployment option. See'),chalk.white('--help'), chalk.red(' for assistance\n'));
+	  return;
+	}
     const env = process.argv[3].toLowerCase() || 'deploy';
     if (env === 'docker' || env === '-d') {
-        const prompts = [
-            {
-                name: 'PROJECTNAME',
-                message: 'Please enter a name for your project: ',
-                type: 'input',
-                default: 'gql-project'
-                },
-            {
-                name: 'PORT',
-                message: 'Please specify a port (press ENTER to accept default port 4000): ',
-                type: 'number',
-                default: 4000
-                }
-        ]
+      
+      CFonts.say('Now Deploying to Docker', {
+        font: 'chrome',              
+        align: 'left',              
+        colors: ['blue', 'yellow', 'cyan'],         
+        background: 'black',  
+        letterSpacing: 1,           
+        lineHeight: 1,              
+        space: true,               
+        maxLength: '0',  
+    })
+    
+    const prompts = [
+      {
+        name: 'PROJECTNAME',
+        message: 'Please enter a name for your project: ',
+        type: 'input',
+        default: 'gql-project'
+      },
+      {
+        name: 'PORT',
+        message: 'Please specify a port (press ENTER to accept default port 4000): ',
+        type: 'number',
+        default: 4000
+      }
+    ]
 
         inquirer.prompt(prompts)
         .then( async answers => {
-          await createDockerfile(answers.PROJECTNAME, answers.PORT);
+      await createDockerfile(answers.PROJECTNAME, answers.PORT);
 		  await createDockerCompose(answers.PROJECTNAME, answers.PORT);
 		  await build();
 		  await up();
 		});
     }
     else if (env === 'lambda' || env === '-l') console.log('deploying to lambda');
-    else console.log('Please enter a valid env, docker (-d) or lambda (-l), to deploy to')
   });
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin
 program.parse(process.argv);
+
 
 CFonts.say('Starfleet', {
   font: '3d',              
@@ -122,8 +150,4 @@ CFonts.say('Starfleet', {
   lineHeight: 1,              
   space: true,               
   maxLength: '0',            
-<<<<<<< HEAD
 });
-=======
-});
->>>>>>> origin

@@ -69,7 +69,15 @@ program
     const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name
     // each file name is passed in to createGQL; will be the prefix for all corresponding GQL types and resolvers
     const model = require(`${process.cwd()}/${workdir}/${file}`);
-    createGQL(model, filename);
+
+    // if the model file is only exporting one model, it will hit the function if block
+    if (typeof model === "function") {
+      createGQL(model, filename);
+    } else if (typeof model === 'object') { // if the model file has multiple, it will be an object containing all the different schemas inside
+        for (const key in model) {
+          createGQL(model[key], key);
+        }
+     }
     });
   })
 })

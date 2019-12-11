@@ -13,10 +13,12 @@ const { description } = require('../package.json');
 
 // Subcommands
 const createGQL = require('./createGQL');
+const passingGQL = require('./passingGQL');
 const createFileStructure = require('./createFileStructure');
 const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
-const { build, up } = require('./runDocker')
+const createContainerInventory = require('./createContainerInventory');
+const { build, up, stop } = require('./runDocker')
 
 program
   .version(version)
@@ -69,7 +71,7 @@ program
     createGQL(model, filename);
     });
   })
-  })
+})
 
 // "starfleet deploy/d ['-d', '--docker', '-l', '--l']" command to deploy to desired service; default docker"
 program
@@ -79,34 +81,88 @@ program
   .option("-d, --docker", "deploy to docker")
   .option("-l, --lambda", "deploy to lambda")
   .action( () => {
-  // process.argv is the array holding all typed words in command line
-  const env = process.argv[3].toLowerCase() || 'docker';
-  if (env === 'docker' || env === '-d') {
+	if (!process.argv[3]) {
+	  console.log(chalk.red('\nPlease enter a valid deployment option. See'),chalk.white('--help'), chalk.red(' for assistance\n'));
+	  return;
+	}
+    const env = process.argv[3].toLowerCase() || 'deploy';
+    if (env === 'docker' || env === '-d') {
+      
+      CFonts.say('Now Deploying to Docker', {
+        font: 'chrome',              
+        align: 'left',              
+        colors: ['blue', 'yellow', 'cyan'],         
+        background: 'black',  
+        letterSpacing: 1,           
+        lineHeight: 1,              
+        space: true,               
+        maxLength: '0',  
+    })
+    
     const prompts = [
       {
         name: 'PROJECTNAME',
         message: 'Please enter a name for your project: ',
         type: 'input',
         default: 'gql-project'
-        },
+      },
       {
         name: 'PORT',
         message: 'Please specify a port (press ENTER to accept default port 4000): ',
         type: 'number',
         default: 4000
-        }
+      }
     ]
 
         inquirer.prompt(prompts)
         .then( async answers => {
-          await createDockerfile(answers.PROJECTNAME, answers.PORT);
+      	  await createDockerfile(answers.PROJECTNAME, answers.PORT);
 		  await createDockerCompose(answers.PROJECTNAME, answers.PORT);
+		  if (!fs.existsSync('inventory.txt')) {
+			const default_containers = 'mongo, starfleet_admin-mongo_1, ';
+			fs.writeFileSync('inventory.txt', default_containers, err => {
+			  if (err) return console.log(err);
+			  console.log('Created inventory file');
+			});
+		  } 
+		  await createContainerInventory(answers.PROJECTNAME);
 		  await build();
 		  await up();
 		});
     }
     else if (env === 'lambda' || env === '-l') console.log('deploying to lambda');
-    else console.log('Please enter a valid env, docker (-d) or lambda (-l), to deploy to')
   });
+
+program
+  .command('land')
+  .alias('l')
+  .description('Stop all created microservices')
+  .option('-d, --docker', 'terminate docker containers')
+  .action( () => {
+  if (!process.argv[3]) {
+    console.log(chalk.red('\nPlease enter a valid deployment option. See'),chalk.white('--help'), chalk.red(' for assistance\n'));
+    return;
+  }
+
+  // if inventory file doesn't exist, bootstrap file
+  fs.access('./inventory.txt', fs.constants.F_OK, err => {
+
+    const takeInventory = cb => {
+    const options = { encoding: 'utf-8' };
+    fs.readFile('./inventory.txt', options, (err, content) => {
+      if (err) return cb(err);
+      cb(null, content);
+    });
+    }
+
+    takeInventory( async (err, content) => {
+      await stop(content);
+      fs.unlink('inventory.txt', err => {
+        if (err) return console.log('Error unlinking inventory: ', err);
+        return console.log('Successfully cleaned up inventory');
+      });
+      });
+    });
+});
 
 program.parse(process.argv);

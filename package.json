@@ -1,5 +1,5 @@
 {
-  "name": "starfleet",
+  "name": "starfleet2",
   "version": "0.0.8",
   "description": "Create GraphQL schemas with full CRUD functionality from Mongoose schemas and deploy them to the cloud",
   "main": "index.js",
@@ -24,13 +24,21 @@
   },
   "bin": {
     "mongoDB": "./bin/mongoDB.js",
-    "starfleet": "./bin/starfleet.js"
+    "starfleet": "./bin/starfleet.js",
+    "starfleet-docker": "./bin/deployDocker.js",
+    "starfleet-d": "./bin/deployDocker.js",
+    "starfleet-lambda": "./bin/deployLambda.js",
+    "starfleet-l": "./bin/deployLambda.js"
   },
   "homepage": "https://github.com/Traversal-Labs/starfleet#readme",
   "dependencies": {
+    "apollo-server": "^2.9.13",
     "cfonts": "^2.4.5",
     "chalk": "^3.0.0",
     "commander": "^4.0.1",
+    "docker": "^1.0.0",
+    "docker-compose": "^0.23.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-graphql": "^0.9.0",
     "figlet": "^1.2.4",
@@ -39,6 +47,7 @@
     "graphql-compose-connection": "^6.0.3",
     "graphql-compose-mongoose": "^7.3.0",
     "graphql-compose-pagination": "^6.0.3",
+    "graphql-tools": "^4.0.6",
     "inquirer": "^7.0.0",
     "mongoose": "^5.7.13",
     "shelljs": "^0.8.3"

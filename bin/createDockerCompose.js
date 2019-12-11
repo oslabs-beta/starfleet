@@ -47,7 +47,7 @@ services:
 	return;
   });
 
-  console.log(chalk.green('✔'),chalk.cyan.bold('Done! Your docker-compose.yml file has been created and put into your working directory'));
+  console.log(chalk.green('✔'),chalk.cyan.bold('Done! Your docker-compose.yml file has been created and put into your working directory!'));
 };
 
 module.exports = createDockerCompose;

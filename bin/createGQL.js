@@ -38,19 +38,22 @@ const createGQL = (model, modelName) => {
   const graphqlSchemaObj = schemaComposer.buildSchema();
   // printSchema is graphQL's built in GraphQL to SDL converter
   const graphqlSDL = printSchema(graphqlSchemaObj, { commentDescriptions: true });
-//   const filename = modelName + '.graphql';
 
-//   const createSDLFile = (graphQLObj) => {
-// 	  fs.writeFile(`./graphqlsrc`)
-//   }
-
-  // writes created SDL file to desginated path
-  fs.writeFile(`./graphQLsrc/models/graphQLSDL`, graphqlSDL, err => {
+  // generates SDL file and writes to desginated path
+  fs.writeFile('./graphqlsrc/models/gqlSDL.gql', graphqlSDL, err => {
 		if (err) {
 			return console.log(err);
 		}
-	console.log(chalk.green('✔'), chalk.cyan.bold('Done! Your GraphQL'), chalk.blue(modelName),chalk.cyan.bold('schema has been created and put into the'), chalk.blue('graphQLsrc'), chalk.cyan.bold('directory!'));
+		console.log(chalk.green('✔'), chalk.cyan.bold('Done! Your GraphQL'), chalk.blue(modelName),chalk.cyan.bold('schema has been created and added to your'), chalk.blue('graphqlsrc'), chalk.cyan.bold('directory!'));
   });
+
+  // generates resolver file and writes to designated path
+//   fs.writeFile('./graphqlsrc/resolvers/gqlResolvers.js', graphqlResolvers, err => {
+// 	  if (err) {
+// 		  return console.log(err);
+// 	  }
+// 	  console.log(chalk.green('✔'), chalk.cyan.bold('Done! Your GraphQL'), chalk.blue(modelName),chalk.cyan.bold('resolver has been created and added to your'), chalk.blue('graphqlsrc'), chalk.cyan.bold('directory!'));
+//   })
 };
 
 

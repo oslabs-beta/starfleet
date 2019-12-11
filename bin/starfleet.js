@@ -13,7 +13,6 @@ const { description } = require('../package.json');
 
 // Subcommands
 const createGQL = require('./createGQL');
-const passingGQL = require('./passingGQL');
 const createFileStructure = require('./createFileStructure');
 const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
@@ -41,10 +40,13 @@ program
       space: true,               
       maxLength: '0',            
     });
+    
+    // const srcPath = path.resolve(__dirname, '../graphqlsrc') 
+    const srcPath = `${process.cwd()}/graphqlsrc`
 
-    const srcPath = path.resolve(__dirname, '../graphqlsrc') 
     if(!fs.existsSync(srcPath)) {
-      createFileStructure(); // first creates file structure
+      console.log("this is the source path for the currnet working directory: ",srcPath)
+      createFileStructure();
     } else {
       console.log('GraphQL structure already exists. Skipping...')
     }
@@ -63,11 +65,10 @@ program
     .then(answers => {
       const workdir = `${answers.USERINPUT}`
 
-    // user's answer used to locate folder containing mongoose schemas
-    fs.readdirSync('./'+workdir).forEach( file => {
-    const filename = path.parse(file).name;
+  fs.readdirSync('./'+workdir).forEach( file => {
+    const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name
     // each file name is passed in to createGQL; will be the prefix for all corresponding GQL types and resolvers
-    const model = require('../'+workdir+'/'+file);
+    const model = require(`${process.cwd()}/${workdir}/${file}`);
     createGQL(model, filename);
     });
   })
@@ -166,3 +167,5 @@ program
 });
 
 program.parse(process.argv);
+
+

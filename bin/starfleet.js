@@ -69,34 +69,7 @@ program
     createGQL(model, filename);
   });
 })
-}) //ORIGINAL
-
-// const questions = [
-//   {
-//       name: "USERINPUT",
-//       message: "Please enter the name of the folder where your schema is in:",
-//       type: "input",
-//       default: "models"
-//   },
-//   {
-//     name: "MONGODB",
-//     message: "Do you have a existing MongoDB table?",
-//     type: "confirm"
-//   }
-// ]; //asking for mongoDB
-
-inquirer.prompt(questions)
-.then(answers => {
-  const workdir = `${answers.USERINPUT}`
-
-fs.readdirSync('./'+workdir).forEach( file => {
-const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name
-const model = require(`${process.cwd()}/${workdir}/${file}`);
-createGQL(model, filename);
-});
 })
-
-
 
 program
   .command('deploy')

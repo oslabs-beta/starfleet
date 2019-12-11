@@ -1,20 +1,6 @@
-const inquirer = require("inquirer"); //a collection of common interactive command line user interfaces
 const chalk = require("chalk"); //terminal string styling done right
-const figlet = require("figlet"); // program for making large letters our of ordinary text
 const shell = require("shelljs"); // portable unix shell commands for node.js 
 const fs = require("fs");
-
-const init = () => {
-    console.log(
-        chalk.red(
-            figlet.textSync("Creating a DockerFile", { 
-                font: "Standard",
-                horizontalLayout: "default",
-                verticalLayout: "default"
-            })
-        )
-    );
-}
 
 const createDockerfile = (PROJECT_NAME, PORT) => {
 

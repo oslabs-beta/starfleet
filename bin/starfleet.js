@@ -3,7 +3,6 @@ const program = require('commander');
 const fs = require('fs');
 const path = require('path');
 const inquirer = require('inquirer');
-const chalk = require("chalk");
 const CFonts = require('cfonts');
 
 // Metadata
@@ -70,6 +69,31 @@ program
     createGQL(model, filename);
   });
 })
+}) //ORIGINAL
+
+// const questions = [
+//   {
+//       name: "USERINPUT",
+//       message: "Please enter the name of the folder where your schema is in:",
+//       type: "input",
+//       default: "models"
+//   },
+//   {
+//     name: "MONGODB",
+//     message: "Do you have a existing MongoDB table?",
+//     type: "confirm"
+//   }
+// ]; //asking for mongoDB
+
+inquirer.prompt(questions)
+.then(answers => {
+  const workdir = `${answers.USERINPUT}`
+
+fs.readdirSync('./'+workdir).forEach( file => {
+const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name
+const model = require(`${process.cwd()}/${workdir}/${file}`);
+createGQL(model, filename);
+});
 })
 
 
@@ -139,39 +163,32 @@ program
   .description('Stop all created microservices')
   .option('-d, --docker', 'terminate docker containers')
   .action( () => {
-	if (!process.argv[3]) {
-	  console.log(chalk.red('\nPlease enter a valid deployment option. See'),chalk.white('--help'), chalk.red(' for assistance\n'));
-	  return;
-	}
+  if (!process.argv[3]) {
+    console.log(chalk.red('\nPlease enter a valid deployment option. See'),chalk.white('--help'), chalk.red(' for assistance\n'));
+    return;
+  }
 
-	// if inventory file doesn't exist, bootstrap file
-	fs.access('./inventory.txt', fs.constants.F_OK, err => {
+  // if inventory file doesn't exist, bootstrap file
+  fs.access('./inventory.txt', fs.constants.F_OK, err => {
 
-	  const takeInventory = cb => {
-		const options = { encoding: 'utf-8' };
-		fs.readFile('./inventory.txt', options, (err, content) => {
-		  if (err) return cb(err);
-		  cb(null, content);
-		});
-	  }
+    const takeInventory = cb => {
+    const options = { encoding: 'utf-8' };
+    fs.readFile('./inventory.txt', options, (err, content) => {
+      if (err) return cb(err);
+      cb(null, content);
+    });
+    }
 
-	  takeInventory( async (err, content) => {
-		await stop(content);
-		fs.unlink('inventory.txt', err => {
-		  if (err) return console.log('Error unlinking inventory: ', err);
-		  return console.log('Successfully cleaned up inventory');
-		});
-	  });
-
-	  
-	
-	});
-	  
-
-	
-
-  });
-
+    takeInventory( async (err, content) => {
+      await stop(content);
+      fs.unlink('inventory.txt', err => {
+        if (err) return console.log('Error unlinking inventory: ', err);
+        return console.log('Successfully cleaned up inventory');
+      });
+      });
+    });
+});
 
 program.parse(process.argv);
+
 

@@ -12,9 +12,4 @@ const BookSchema = new Schema({
   }
 });
 
-const model = mongoose.model('book', BookSchema);
-module.exports = model;
-
-const resolvers = { 
-  
-}
+module.exports = mongoose.model('book', BookSchema);

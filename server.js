@@ -1,16 +1,9 @@
-const express = require('express');
-const app = express();
 const mongoose = require('mongoose');
-const path = require('path');
 const fs = require('fs');
 const { ApolloServer } = require('apollo-server');
 const typeDefs = `${fs.readFileSync(__dirname.concat('/graphqlsrc/models/tourModel.graphql'), 'utf8')}` // this path is for testing purpose and should be dynamic on fix.
 const resolvers = require('./resolvers')
-const dotenv = require('dotenv');
 
-dotenv.config({
-  path: './config.env'
-});
 
 // db connection 
 const DB = process.env.DATABASE.replace(

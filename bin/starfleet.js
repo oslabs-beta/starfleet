@@ -18,17 +18,6 @@ const createDockerCompose= require('./createDockerCompose');
 const createContainerInventory = require('./createContainerInventory');
 const { build, up, stop } = require('./runDocker')
 
-// CFonts.say('Starfleet', {
-//   font: '3d',              
-//   align: 'left',              
-//   colors: ['yellow', 'blue'],         
-//   background: 'black',  
-//   letterSpacing: 1,           
-//   lineHeight: 1,              
-//   space: true,               
-//   maxLength: '0',            
-// });
-
 program
   .version(version)
   .description(description)
@@ -51,8 +40,11 @@ program
       maxLength: '0',            
     });
     
-    const srcPath = path.resolve(__dirname, '../graphqlsrc') 
+    // const srcPath = path.resolve(__dirname, '../graphqlsrc') 
+    const srcPath = `${process.cwd()}/graphqlsrc`
+
     if(!fs.existsSync(srcPath)) {
+      console.log("this is the source path for the currnet working directory: ",srcPath)
       createFileStructure();
     } else {
       console.log('GraphQL structure already exists. Skipping...')
@@ -71,22 +63,13 @@ program
     .then(answers => {
       const workdir = `${answers.USERINPUT}`
 
-      fs.writeFile(`./bin/config.js`, workdir, err => {
-        if (err) {
-          return console.log(err);
-        }
-      })
-
-      fs.readdirSync('./'+workdir).forEach( file => {
-        const filename = path.parse(file).name;
-        const model = require('../'+workdir+'/'+file);
-        createGQL(model, filename);
-        // module.exports = pass(model, filename)
-      });
-    })
-  })
-
-
+  fs.readdirSync('./'+workdir).forEach( file => {
+    const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name
+    const model = require(`${process.cwd()}/${workdir}/${file}`);
+    createGQL(model, filename);
+  });
+})
+})
 
 program
   .command('deploy')
@@ -182,13 +165,3 @@ program
 program.parse(process.argv);
 
 
-CFonts.say('Starfleet', {
-  font: '3d',              
-  align: 'left',              
-  colors: ['yellow', 'blue'],         
-  background: 'black',  
-  letterSpacing: 1,           
-  lineHeight: 1,              
-  space: true,               
-  maxLength: '0',            
-});

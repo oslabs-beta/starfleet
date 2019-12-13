@@ -1,9 +1,10 @@
 #!/usr/bin/env node
+// shebang line needed for running starfleet commands (reference bin lines in package.json file)
+
 const program = require('commander');
 const fs = require('fs');
 const path = require('path');
 const inquirer = require('inquirer');
-const chalk = require("chalk");
 const CFonts = require('cfonts');
 
 // Metadata
@@ -12,35 +13,23 @@ const { description } = require('../package.json');
 
 // Subcommands
 const createGQL = require('./createGQL');
-const passingGQL = require('./passingGQL');
 const createFileStructure = require('./createFileStructure');
 const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
 const createContainerInventory = require('./createContainerInventory');
 const { build, up, stop } = require('./runDocker')
 
-// CFonts.say('Starfleet', {
-//   font: '3d',              
-//   align: 'left',              
-//   colors: ['yellow', 'blue'],         
-//   background: 'black',  
-//   letterSpacing: 1,           
-//   lineHeight: 1,              
-//   space: true,               
-//   maxLength: '0',            
-// });
-
 program
   .version(version)
   .description(description)
 
-// starfleet init
-// add creating folder structure before parsing
+// "starfleet init" command for converting mongoose schema to gql pieces
 program
   .command('init')
   .alias('i')
   .description('Initializing GraphQL services')
-  .action(file => {
+  .action(() => {
+    
     CFonts.say('Starfleet', {
       font: '3d',              
       align: 'left',              
@@ -52,48 +41,52 @@ program
       maxLength: '0',            
     });
     
-    const srcPath = path.resolve(__dirname, '../graphqlsrc') 
+    // const srcPath = path.resolve(__dirname, '../graphqlsrc') 
+    const srcPath = `${process.cwd()}/graphqlsrc`
 
     if(!fs.existsSync(srcPath)) {
+      console.log("this is the source path for the currnet working directory: ",srcPath)
       createFileStructure();
     } else {
       console.log('GraphQL structure already exists. Skipping...')
     }
 
-    const questions = [
-      {
-          name: "USERINPUT",
-          message: "Please enter the name of the folder where your schema is in:",
-          type: "input",
-          default: "models"
-      }
-    ];
+  const questions = [
+    {
+      name: "USERINPUT",
+      message: "Please enter the name of the folder where your schema is in:",
+      type: "input",
+      default: "models"
+    }
+  ];
 
+    // creates SDL file after reading from user-inputted models file path
     inquirer.prompt(questions)
     .then(answers => {
       const workdir = `${answers.USERINPUT}`
 
-      fs.writeFile(`./bin/config.js`, workdir, err => {
-        if (err) {
-          return console.log(err);
+  fs.readdirSync('./'+workdir).forEach( file => {
+    const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name
+    // each file name is passed in to createGQL; will be the prefix for all corresponding GQL types and resolvers
+    const model = require(`${process.cwd()}/${workdir}/${file}`);
+
+    // if the model file is only exporting one model, it will hit the function if block
+    if (typeof model === "function") {
+      createGQL(model, filename);
+    } else if (typeof model === 'object') { // if the model file has multiple, it will be an object containing all the different schemas inside
+        for (const key in model) {
+          createGQL(model[key], key);
         }
-      })
-
-      fs.readdirSync('./'+workdir).forEach( file => {
-        const filename = path.parse(file).name;
-        const model = require('../'+workdir+'/'+file);
-        createGQL(model, filename);
-        // module.exports = pass(model, filename)
-      });
-    })
+     }
+    });
   })
+})
 
-
-
+// "starfleet deploy/d ['-d', '--docker', '-l', '--l']" command to deploy to desired service; default docker"
 program
   .command('deploy')
   .alias('d')
-  .description('Deploy newly created microservices')
+  .description('Deploy newly created GQL service')
   .option("-d, --docker", "deploy to docker")
   .option("-l, --lambda", "deploy to lambda")
   .action( () => {
@@ -155,6 +148,7 @@ program
   .description('Stop all created microservices')
   .option('-d, --docker', 'terminate docker containers')
   .action( () => {
+
 	if (!process.argv[3]) {
 	  console.log(chalk.red('\nPlease enter a valid deployment option. See'),chalk.white('--help'), chalk.red(' for assistance\n'));
 	  return;
@@ -163,9 +157,10 @@ program
 	const dockerComposeStarfleet = fs.access('./docker-compose-starfleet.yml', fs.constants.F_OK, err => {
 	  if (err) console.log('Missing file docker-compose-starfleet.yml, run command `starfleet deploy -d` to generate Docker containers');
 	  stop();
-	});
   });
 
+});
 
 program.parse(process.argv);
+
 

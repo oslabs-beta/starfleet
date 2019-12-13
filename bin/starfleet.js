@@ -160,32 +160,10 @@ program
 	  return;
 	}
 
-	// if inventory file doesn't exist, bootstrap file
-	fs.access('./inventory.txt', fs.constants.F_OK, err => {
-
-	  const takeInventory = cb => {
-		const options = { encoding: 'utf-8' };
-		fs.readFile('./inventory.txt', options, (err, content) => {
-		  if (err) return cb(err);
-		  cb(null, content);
-		});
-	  }
-
-	  takeInventory( async (err, content) => {
-		await stop(content);
-		fs.unlink('inventory.txt', err => {
-		  if (err) return console.log('Error unlinking inventory: ', err);
-		  return console.log('Successfully cleaned up inventory');
-		});
-	  });
-
-	  
-	
+	const dockerComposeStarfleet = fs.access('./docker-compose-starfleet.yml', fs.constants.F_OK, err => {
+	  if (err) console.log('Missing file docker-compose-starfleet.yml, run command `starfleet deploy -d` to generate Docker containers');
+	  stop();
 	});
-	  
-
-	
-
   });
 
 

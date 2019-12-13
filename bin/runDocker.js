@@ -7,7 +7,7 @@ const build = () => {
 	encoding: 'utf-8'
   };
 
-  const newBuild = spawn('docker-compose', ['build'], options);
+  const newBuild = spawn('docker-compose', ['-f','docker-compose-starfleet.yml','build'], options);
   newBuild.stdout.on('data', data => {
 	console.log(`Building docker images: ${data}`);
   });
@@ -23,7 +23,7 @@ const up = () => {
 	encoding: 'utf-8'
   };
 
-  const newDeploy = spawn('docker-compose', ['up'], options);
+  const newDeploy = spawn('docker-compose', ['-f','docker-compose-starfleet.yml','up','-d'], options);
 
   newDeploy.on('data', data => {
 	console.log(`Deploying fleet: ${data}`);
@@ -35,29 +35,12 @@ const up = () => {
 
 };
 
-const stop = containers => {
-  if (!containers) return console.log('There are currently no Starfleet generated containers to stop');
-  const options = {
-	encoding: 'utf-8'
-  }
-
-  containers = containers.replace(/,/g, ' ');
-  exec(`docker stop ${containers}`, {shell: '/bin/bash'}, console.log('Stopping Starfleet containers: ', containers));
-
-  /*
-  const args = ['stop', ...containers.split(' ')];
-  console.log('Stopping containers: ', args);
-  const newTerminator = spawn('docker', args, options);
-
-  newTerminator.on('data', data => {
-	console.log(`Stopping containers: ${data}`);
+const stop = () => {
+  console.log('Stopping Starfleet containers')
+  exec(`docker-compose -f docker-compose-starfleet.yml down`, {shell: '/bin/bash'}, (err, stdout, stderr) => {
+	if (err) console.log('Error stopping containers: ', err);
+	console.log('Successfully landed')
   });
-
-  newTerminator.on('exit', (code, signal) => {
-	console.log('Stopping containers exited with code ', code, 'and signal ', signal);
-  });
-  */
-
 };
 
 

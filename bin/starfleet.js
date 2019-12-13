@@ -16,6 +16,7 @@ const createGQL = require('./createGQL');
 const createFileStructure = require('./createFileStructure');
 const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
+const createGeneratedServer = require('./createGeneratedServer');
 const createContainerInventory = require('./createContainerInventory');
 const { build, up, stop } = require('./runDocker')
 
@@ -41,7 +42,6 @@ program
       maxLength: '0',            
     });
     
-    // const srcPath = path.resolve(__dirname, '../graphqlsrc') 
     const srcPath = `${process.cwd()}/graphqlsrc`
 
     if(!fs.existsSync(srcPath)) {
@@ -57,30 +57,60 @@ program
       message: "Please enter the name of the folder where your schema is in:",
       type: "input",
       default: "models"
-    }
+    },
+    {
+      name: "MONGODB",
+      message: "Do you have a existing MongoDB table?",
+      type: "confirm",
+    },
+    {
+      when: function(answer) {
+        if (answer.MONGODB === true) { 
+          return answer.MONGODB;
+        }
+      },
+      name: "URL",
+      message: "Please enter your MongoDB url: ",
+      type: "input"
+    },
+    {
+      when: function(answer) { 
+        if (answer.MONGODB === false) { 
+          return answer.MONGODB;
+        }
+    },
+      name: "DATABASENAME",
+      message: "What would you like to call your database: ",
+      type: "input"
+    },
   ];
 
     // creates SDL file after reading from user-inputted models file path
     inquirer.prompt(questions)
     .then(answers => {
+
+      console.log("this is the answers ", answers)
+      
       const workdir = `${answers.USERINPUT}`
-
-  fs.readdirSync('./'+workdir).forEach( file => {
-    const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name
-    // each file name is passed in to createGQL; will be the prefix for all corresponding GQL types and resolvers
-    const model = require(`${process.cwd()}/${workdir}/${file}`);
-
-    // if the model file is only exporting one model, it will hit the function if block
-    if (typeof model === "function") {
-      createGQL(model, filename);
-    } else if (typeof model === 'object') { // if the model file has multiple, it will be an object containing all the different schemas inside
-        for (const key in model) {
-          createGQL(model[key], key);
+      
+      fs.readdirSync('./'+workdir).forEach( file => {
+        const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name
+        // each file name is passed in to createGQL; will be the prefix for all corresponding GQL types and resolvers
+        const model = require(`${process.cwd()}/${workdir}/${file}`);
+        
+        // if the model file is only exporting one model, it will hit the function if block
+        if (typeof model === "function") {
+          createGQL(model, filename);
+        } else if (typeof model === 'object') { // if the model file has multiple, it will be an object containing all the different schemas inside
+          for (const key in model) {
+            createGQL(model[key], key);
+          }
         }
-     }
-    });
-  })
+      });
+       createGeneratedServer(answers.URL, answers.DATABASENAME);
+    })
 })
+
 
 // "starfleet deploy/d ['-d', '--docker', '-l', '--l']" command to deploy to desired service; default docker"
 program

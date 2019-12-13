@@ -11,7 +11,7 @@
       );
 
 
-    mongoose.connect('Enter your MongoDB Uri here', { useNewUrlParser: true, useUnifiedTopology:	true, dbName: 'natours' })
+    mongoose.connect('Enter your MongoDB Uri here', { useNewUrlParser: true, useUnifiedTopology:	true, dbName: '' })
 
     .then(() => console.log('MongoDB successfully connected')) 
 

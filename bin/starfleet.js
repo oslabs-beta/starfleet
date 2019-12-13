@@ -64,25 +64,17 @@ program
       type: "confirm",
     },
     {
-      when: function(answer) {
-        if (answer.MONGODB === true) { 
-          return answer.MONGODB;
-        }
-      },
+      when: (answers) => answers.MONGODB === true,
       name: "URL",
       message: "Please enter your MongoDB url: ",
       type: "input"
     },
     {
-      when: function(answer) { 
-        if (answer.MONGODB === false) { 
-          return answer.MONGODB;
-        }
-    },
+      when: (answers) => answers.MONGODB === false,
       name: "DATABASENAME",
-      message: "What would you like to call your database: ",
+      message: "What would you like to call the name of your database?: ",
       type: "input"
-    },
+    }
   ];
 
     // creates SDL file after reading from user-inputted models file path

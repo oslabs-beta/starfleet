@@ -148,30 +148,17 @@ program
   .description('Stop all created microservices')
   .option('-d, --docker', 'terminate docker containers')
   .action( () => {
-  if (!process.argv[3]) {
-    console.log(chalk.red('\nPlease enter a valid deployment option. See'),chalk.white('--help'), chalk.red(' for assistance\n'));
-    return;
-  }
 
-  // if inventory file doesn't exist, bootstrap file
-  fs.access('./inventory.txt', fs.constants.F_OK, err => {
+	if (!process.argv[3]) {
+	  console.log(chalk.red('\nPlease enter a valid deployment option. See'),chalk.white('--help'), chalk.red(' for assistance\n'));
+	  return;
+	}
 
-    const takeInventory = cb => {
-    const options = { encoding: 'utf-8' };
-    fs.readFile('./inventory.txt', options, (err, content) => {
-      if (err) return cb(err);
-      cb(null, content);
-    });
-    }
+	const dockerComposeStarfleet = fs.access('./docker-compose-starfleet.yml', fs.constants.F_OK, err => {
+	  if (err) console.log('Missing file docker-compose-starfleet.yml, run command `starfleet deploy -d` to generate Docker containers');
+	  stop();
+  });
 
-    takeInventory( async (err, content) => {
-      await stop(content);
-      fs.unlink('inventory.txt', err => {
-        if (err) return console.log('Error unlinking inventory: ', err);
-        return console.log('Successfully cleaned up inventory');
-      });
-      });
-    });
 });
 
 program.parse(process.argv);

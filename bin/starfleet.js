@@ -166,7 +166,7 @@ program
   .command('resolve')
   .action( async () => {
 	console.log('Generating resolvers');
-	await createResolvers('book');
+	await createResolvers('Book');
 
 	fs.readFile('resolvers-test.js', { encoding: 'utf-8' }, (err, data) => {
 	  console.log('Resolvers: ', data);

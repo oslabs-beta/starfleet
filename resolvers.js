@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Tour = require('./models/tourModel');
+const Book = require('./models/Book');
 
 module.exports = resolvers = {
   Query: {
@@ -27,6 +28,7 @@ module.exports = resolvers = {
 	},
 	BookById: async (parent, args) => {
 	  return {
+		_id: args._id,
 		name: 'Walden',
 		author: 'Thoreau'
 	  }
@@ -59,11 +61,15 @@ module.exports = resolvers = {
 	},
 
 	BookCreateOne: async (parent, args) => {
-	  return {
-		record: {
-		  name: 'Walden',
-		  author: 'H.D.T'
+	  const record = {}
+	  for (key in args) {
+		const uModel = new Book(args[key]);
+		const newDoc = await uModel.save();
+		if (!newDoc) {
+		  throw new Error('error');
 		}
+		record[key] = newDoc;
+		return record;
 	  }
 	}
   }

@@ -5,10 +5,25 @@ const createResolver = (modelName) => {
   const modelResolver = `
   {
     Query: {
-	  ${modelName}ById: async (parent, args) => {
+	  ${modelName}ById: async (obj, args) => {
 	    return {
-		  name: 'Walden',
+		  name: args,
 		  author: 'Thoreau',
+		}
+	  },
+	  ${modelName}ByIds: async (obj, args
+	},
+	Mutation: {
+	  ${modelName}CreateOne: async (obj, args) => {
+		const record = {};
+		for (key in args) {
+		  const uModel = new ${modelName}(args[key]);
+		  const newDoc = await uModel.save();
+		  if (!newDoc) {
+			throw new Error('error saving document');
+		  }
+		  record[key] = newDoc;
+		  return record;
 		}
 	  }
 	}

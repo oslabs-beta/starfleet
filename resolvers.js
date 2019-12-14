@@ -24,7 +24,13 @@ module.exports = resolvers = {
     },
     tourModelCount: async () => {
 
-    }
+	},
+	BookById: async (parent, args) => {
+	  return {
+		name: 'Walden',
+		author: 'Thoreau'
+	  }
+	}
   },
   Mutation: {
     tourModelCreateOne: async (_, args) => {
@@ -50,6 +56,15 @@ module.exports = resolvers = {
     },
     tourModelRemoveMany: async () => {
 
-    }
+	},
+
+	BookCreateOne: async (parent, args) => {
+	  return {
+		record: {
+		  name: 'Walden',
+		  author: 'H.D.T'
+		}
+	  }
+	}
   }
 };

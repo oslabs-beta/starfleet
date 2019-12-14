@@ -18,6 +18,7 @@ const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
 const createContainerInventory = require('./createContainerInventory');
 const { build, up, stop } = require('./runDocker')
+const createResolvers = require('./createResolvers');
 
 program
   .version(version)
@@ -160,6 +161,19 @@ program
   });
 
 });
+
+program
+  .command('resolve')
+  .action( async () => {
+	console.log('Generating resolvers');
+	await createResolvers('book');
+
+	fs.readFile('resolvers-test.js', { encoding: 'utf-8' }, (err, data) => {
+	  console.log('Resolvers: ', data);
+	});
+
+
+  });
 
 program.parse(process.argv);
 

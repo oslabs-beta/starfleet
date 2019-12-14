@@ -6,12 +6,9 @@ const resolvers = require('./resolvers')
 
 
 // db connection 
-const DB = process.env.DATABASE.replace(
-  '<PASSWORD>',
-  process.env.DATABASE_PASSWORD
-);
+const DB = 'mongodb://localhost:27017/starfleet';
 
-mongoose.connect(DB, { useNewUrlParser: true, useUnifiedTopology:	true, dbName: 'natours' })
+mongoose.connect(DB, { useNewUrlParser: true, useUnifiedTopology:	true })
   .then(() => console.log('MongoDB successfully connected'))
   .catch( err => console.log('Error connecting to db: ', err));
 

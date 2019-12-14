@@ -1,33 +1,51 @@
 const fs = require('fs');
 
-const createResolver = (modelName) => {
+const createResolver = (modelName, modelPath) => {
 
-  const modelResolver = `
-  {
-    Query: {
-	  ${modelName}ById: async (obj, args) => {
-	    return {
-		  name: args,
-		  author: 'Thoreau',
-		}
-	  },
-	  ${modelName}ByIds: async (obj, args
+  const modelResolver = `const mongoose = require('mongoose');
+const ${modelName} = require('${modelPath}');
+
+module.exports = resolvers = {
+  Query: {
+	${modelName}ById: async (obj, args) => {
+	  const ${modelName.toLowerCase()} = await ${modelName}.findById(args._id);
+	  return ${modelName.toLowerCase()};
 	},
-	Mutation: {
-	  ${modelName}CreateOne: async (obj, args) => {
-		const record = {};
-		for (key in args) {
-		  const uModel = new ${modelName}(args[key]);
-		  const newDoc = await uModel.save();
-		  if (!newDoc) {
-			throw new Error('error saving document');
+	${modelName}ByIds: async (obj, args) => {
+
+	},
+	${modelName}One: async (obj, args) => {
+	  for (key in args) {
+	    if (key === 'filter') {
+		  for (prop in args[key]) {
+		    const field = {};
+			field[prop] = args[key][prop];
+			const ${modelName.toLowerCase()} = await ${modelName}.findOne(field);
+		    return ${modelName.toLowerCase()};
 		  }
-		  record[key] = newDoc;
-		  return record;
 		}
 	  }
+	},
+	${modelName}Many: async (obj, args) => {
+
+	},
+
+  },
+  Mutation: {
+	${modelName}CreateOne: async (obj, args) => {
+	  const record = {};
+	  for (key in args) {
+		const uModel = new ${modelName}(args[key]);
+		const newDoc = await uModel.save();
+		if (!newDoc) {
+		  throw new Error('error saving document');
+		}
+		record[key] = newDoc;
+		return record;
+	  }
 	}
-  }`;
+  }
+}`;
 
 
   const stream = fs.createWriteStream('./resolvers-test.js', {flags: 'a'});

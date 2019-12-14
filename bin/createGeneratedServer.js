@@ -9,12 +9,7 @@ function createGeneratedServer(mongoDBUrl = 'Enter your MongoDB Uri here', mongo
     const typeDefs = fs.readFileSync(__dirname.concat('${process.cwd()}/graphqlsrc/models/gqlSDL.gql'))
     const resolvers = require('./graphlsrc/resolvers')
 
-    const DB = process.env.DATABASE.replace(
-        '<PASSWORD>',
-        process.env.DATABASE_PASSWORD
-      );
-
-
+    
     mongoose.connect('${mongoDBUrl}', { useNewUrlParser: true, useUnifiedTopology:	true, dbName: '${mongoDBname}' })
 
     .then(() => console.log('MongoDB successfully connected')) 

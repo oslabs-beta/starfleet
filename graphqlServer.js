@@ -4,13 +4,7 @@
     const { ApolloServer } = require('apollo-server');
     const typeDefs = fs.readFileSync(__dirname.concat('C:\Users\andyr\starfleet\starfleet/graphqlsrc/models/gqlSDL.gql'))
     const resolvers = require('./graphlsrc/resolvers')
-
-    const DB = process.env.DATABASE.replace(
-        '<PASSWORD>',
-        process.env.DATABASE_PASSWORD
-      );
-
-
+    
     mongoose.connect('ass', { useNewUrlParser: true, useUnifiedTopology:	true, dbName: 'ass' })
 
     .then(() => console.log('MongoDB successfully connected')) 

@@ -70,6 +70,12 @@ program
       type: "input"
     },
     {
+      when: (answers) => answers.MONGODB === true,
+      name: "DATABASENAME",
+      message: "What is your database called? ",
+      type: "input"
+    },
+    {
       when: (answers) => answers.MONGODB === false,
       name: "DATABASENAME",
       message: "What would you like to call the name of your database?: ",

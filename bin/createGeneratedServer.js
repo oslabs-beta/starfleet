@@ -1,4 +1,5 @@
 const fs = require("fs");
+const chalk = require('chalk');
 
 function createGeneratedServer(mongoDBUrl = 'Enter your MongoDB Uri here', mongoDBname = 'natours') { 
     const serverText = `
@@ -28,6 +29,7 @@ function createGeneratedServer(mongoDBUrl = 'Enter your MongoDB Uri here', mongo
     `
     fs.writeFile(`${process.cwd()}/graphqlServer.js`, serverText, err => {
         if (err) console.log(err);
+        return console.log(chalk.green('✔'),chalk.cyan.bold('Your graphql server file has been created!'))
     })
 }
 

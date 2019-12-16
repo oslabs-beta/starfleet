@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const inquirer = require('inquirer');
 const CFonts = require('cfonts');
+const chalk = require("chalk");
 
 // Metadata
 const { version } = require('../package.json');
@@ -154,8 +155,8 @@ program
         inquirer.prompt(prompts)
         .then( async answers => {
       	  await createDockerfile(answers.PROJECTNAME, answers.PORT);
-		  await createDockerCompose(answers.PROJECTNAME, answers.PORT);
-		  if (!fs.existsSync('inventory.txt')) {
+		      await createDockerCompose(answers.PROJECTNAME, answers.PORT);
+		     if (!fs.existsSync('inventory.txt')) {
 			const default_containers = 'mongo, starfleet_admin-mongo_1, ';
 			fs.writeFileSync('inventory.txt', default_containers, err => {
 			  if (err) return console.log(err);
@@ -203,5 +204,4 @@ program
 });
 
 program.parse(process.argv);
-
 

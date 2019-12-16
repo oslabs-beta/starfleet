@@ -65,7 +65,23 @@ module.exports = resolvers = {
 	  payload['recordIds'] = recordIds;
 	  payload['createCount'] = records.length;
 	  return payload;
-	}
+	},
+	${modelName}UpdateById: async (obj, args) => {
+	  for (key in args) {
+		if (key === 'record') {
+		  const update = {};
+		  for (field in args[key]) {
+			update[field] = args[key][field];
+		  }
+		  const updatedModel = await ${modelName}.findByIdAndUpdate(args[key]._id, update, {useFindAndModify: false, new: true});
+		  if (!updatedModel) {
+		    throw new Error('error updating document')
+		  }
+		  console.log('updated!', updatedModel);
+		  return { record: updatedModel };
+		}
+	  }
+	},
   }
 }`;
 

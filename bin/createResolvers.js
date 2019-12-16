@@ -35,14 +35,36 @@ module.exports = resolvers = {
 	${modelName}CreateOne: async (obj, args) => {
 	  const record = {};
 	  for (key in args) {
-		const uModel = new ${modelName}(args[key]);
-		const newDoc = await uModel.save();
+		const newModel = new ${modelName}(args[key]);
+		const newDoc = await newModel.save();
 		if (!newDoc) {
 		  throw new Error('error saving document');
 		}
 		record[key] = newDoc;
 		return record;
 	  }
+	},
+	${modelName}CreateMany: async (obj, args) => {
+	  const payload = {};
+	  const records = [];
+	  const recordIds = [];
+	  for (key in args) {
+	    if (key === 'records') {
+		  for (let i = 0; i < args[key].length; i++) { 
+			const newModel = new ${modelName}(args[key][i]);
+			const newDoc = await newModel.save();
+			if (!newDoc) {
+			  throw new Error('error saving document');
+			}
+			records.push(newDoc);
+			recordIds.push(newDoc._id);
+		  };
+		}
+	  };
+	  payload['records'] = records;
+	  payload['recordIds'] = recordIds;
+	  payload['createCount'] = records.length;
+	  return payload;
 	}
   }
 }`;

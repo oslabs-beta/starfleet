@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const inquirer = require('inquirer');
 const CFonts = require('cfonts');
+const chalk = require('chalk');
 
 // Metadata
 const { version } = require('../package.json');
@@ -18,7 +19,7 @@ const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
 const createContainerInventory = require('./createContainerInventory');
 const { build, up, stop } = require('./runDocker')
-const { createResolver, importModel } = require('./createResolvers');
+const { createResolver, importModel, insertModuleExports } = require('./createResolvers');
 
 program
   .version(version)
@@ -46,7 +47,6 @@ program
     const srcPath = `${process.cwd()}/graphqlsrc`
 
     if(!fs.existsSync(srcPath)) {
-      console.log("this is the source path for the currnet working directory: ",srcPath)
       createFileStructure();
     } else {
       console.log('GraphQL structure already exists. Skipping...')
@@ -164,14 +164,34 @@ program
 
 program
   .command('resolve')
-  .action( async () => {
+  .action( () => {
 	console.log('Generating resolvers');
-	const filename = './resolvers-test.js';
-	await createResolver('Book', './models/Book', filename);
-	await importModel('Book', './models/Book', filename);
 
-	fs.readFile('resolvers-test.js', { encoding: 'utf-8' }, (err, data) => {
-	  console.log('Resolvers: ', data);
+	const resolve = () => {
+	  const workdir = 'models';
+	  let startExports = true;
+	  const models = fs.readdirSync('./'+workdir);
+
+	  // 1. Import all Mongoose models
+	  models.forEach( file => {
+		const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name;
+		importModel(filename, `./${workdir}/${file}`, generatedResolverFile);
+	  });
+
+	  // 2. Create resolver functions for each model
+	  models.forEach( file => {
+		if (startExports) {
+		  insertModuleExports(generatedResolverFile);
+		  startExports = false;
+		}
+		const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name;
+		createResolver(filename, `${workdir}/${file}`, generatedResolverFile);
+	  });
+	}
+
+	const generatedResolverFile = `${process.cwd()}/graphqlsrc/starfleet-resolvers.js`
+	fs.access(generatedResolverFile, fs.constants.F_OK, err => {
+	  err ? resolve() : console.log(chalk.red('Skipping resolver file creation. Resolver file already exists in graphqlsrc directory. To generate a new resolver file, either manually delete starfleet-resolvers.js or run command'), chalk.white('starfleet unresolve'),chalk.red('to remove it'));
 	});
 
 

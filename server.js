@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const fs = require('fs');
 const { ApolloServer } = require('apollo-server');
 const typeDefs = `${fs.readFileSync(__dirname.concat('/graphqlsrc/models/Book.graphql'), 'utf8')}` // this path is for testing purpose and should be dynamic on fix.
-const resolvers = require('./resolvers-test')
+const resolvers = require('./graphqlsrc/starfleet-resolvers')
 
 
 // db connection 

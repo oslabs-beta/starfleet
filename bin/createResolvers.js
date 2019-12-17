@@ -1,18 +1,25 @@
 const fs = require('fs');
-const prepend = require('prepend');
+
+const insertModuleExports = filename => {
+  const moduleExports = '\nmodule.exports = resolvers = {';
+  const stream = fs.createWriteStream(filename, {flags: 'a'});
+  stream.write(moduleExports);
+}
+
+const endResolver = () => {
+  
+}
 
 const importModel = (modelName, modelPath, filename) => {
-  const dependencies = `const ${modelName} = require('${modelPath}');`
-  prepend(filename, dependencies, err => {
-	if (err) console.log('Error importing models');
-  });
+  const dependencies = `const ${modelName} = require('${modelPath}');\n`
+  const stream = fs.createWriteStream(filename, {flags: 'a'});
+  stream.write(dependencies);
+  stream.end();
 };
 
 const createResolver = (modelName, modelPath, filename) => {
 
   const modelResolver = `
-
-module.exports = resolvers = {
   Query: {
 	${modelName}ById: async (obj, args) => {
 	  const ${modelName.toLowerCase()} = await ${modelName}.findById(args._id);
@@ -147,4 +154,5 @@ module.exports = resolvers = {
 module.exports = { 
   importModel,
   createResolver,
+  insertModuleExports,
 };

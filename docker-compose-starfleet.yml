@@ -1,0 +1,30 @@
+version: "2"
+services:
+  app:
+    container_name: gql-project
+    restart: always
+    build: .
+    ports:
+      - "4000:4000"
+    links:
+      - mongo
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
+
+  admin-mongo:
+    image: 0x59/admin-mongo:latest
+    ports:
+      - "8082:8082"
+    environment:
+      - PORT=8082
+      - CONN_NAME=mongo
+      - DB_HOST=mongo
+    links:
+      - mongo
+  

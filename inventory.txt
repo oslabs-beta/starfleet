@@ -1,1 +1,1 @@
-mongo, starfleet_admin-mongo_1, 
+mongo, starfleet_admin-mongo_1, gql-project

@@ -1,15 +1,5 @@
 const fs = require('fs');
 
-const insertModuleExports = filename => {
-  const moduleExports = '\nmodule.exports = resolvers = {';
-  const stream = fs.createWriteStream(filename, {flags: 'a'});
-  stream.write(moduleExports);
-}
-
-const endResolver = () => {
-  
-}
-
 const importModel = (modelName, modelPath, filename) => {
   const dependencies = `const ${modelName} = require('${modelPath}');\n`
   const stream = fs.createWriteStream(filename, {flags: 'a'});
@@ -17,10 +7,32 @@ const importModel = (modelName, modelPath, filename) => {
   stream.end();
 };
 
-const createResolver = (modelName, modelPath, filename) => {
+const insertModuleExports = filename => {
+  const moduleExports = '\nmodule.exports = resolvers = {\n';
+  const stream = fs.createWriteStream(filename, {flags: 'a'});
+  stream.write(moduleExports);
+}
+
+const startQueryBlock = filename => {
+  const startQueryBlock = 'Query: {\n';
+  const stream = fs.createWriteStream(filename, {flags: 'a'});
+  stream.write(startQueryBlock);
+}
+
+const startMutationBlock = filename => {
+  const startMutationBlock = 'Mutation: {\n';
+  const stream = fs.createWriteStream(filename, {flags: 'a'});
+  stream.write(startMutationBlock);
+};
+
+const endResolverBlock = (filename, endResolverBlock) => {
+  const stream = fs.createWriteStream(filename, {flags: 'a'});
+  stream.write(endResolverBlock);
+}
+
+const createQueryResolver = (modelName, modelPath, filename) => {
 
   const modelResolver = `
-  Query: {
 	${modelName}ById: async (obj, args) => {
 	  const ${modelName.toLowerCase()} = await ${modelName}.findById(args._id);
 	  return ${modelName.toLowerCase()};
@@ -44,8 +56,20 @@ const createResolver = (modelName, modelPath, filename) => {
 
 	},
 
-  },
-  Mutation: {
+`;
+
+
+  const stream = fs.createWriteStream(filename, {flags: 'a'});
+  stream.write(modelResolver);
+
+  // Not required to explicitly end stream, as default option is AutoClose set to true, but done so here for clarity
+  stream.end()
+
+}
+
+const createMutationResolver = (modelName, modelPath, filename) => {
+
+  const modelResolver = `
 	${modelName}CreateOne: async (obj, args) => {
 	  const record = {};
 	  for (key in args) {
@@ -137,9 +161,7 @@ const createResolver = (modelName, modelPath, filename) => {
 		}
 	  }
 	},
-
-  }
-}`;
+`;
 
 
   const stream = fs.createWriteStream(filename, {flags: 'a'});
@@ -150,9 +172,18 @@ const createResolver = (modelName, modelPath, filename) => {
 
 }
 
+const endResolver = filename => {
+  const stream = fs.createWriteStream(filename, {flags: 'a'});
+  stream.write('}');
+  stream.end();
+}
 
 module.exports = { 
   importModel,
-  createResolver,
+  startQueryBlock,
+  startMutationBlock,
+  createQueryResolver,
+  createMutationResolver,
+  endResolverBlock,
   insertModuleExports,
 };

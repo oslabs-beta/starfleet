@@ -19,8 +19,15 @@ const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
 const createContainerInventory = require('./createContainerInventory');
 const { build, up, stop } = require('./runDocker')
-const { createResolver, importModel, insertModuleExports } = require('./createResolvers');
-
+const { 
+  		importModel,
+  		startQueryBlock,
+   		startMutationBlock,
+  		createQueryResolver,
+  		createMutationResolver,
+  		endResolverBlock,
+		insertModuleExports 
+	  } = require('./createResolvers'); 
 program
   .version(version)
   .description(description)
@@ -170,23 +177,48 @@ program
 	const resolve = () => {
 	  const workdir = 'models';
 	  let startExports = true;
+	  let startQuery = true;
+	  let startMutation = true;
 	  const models = fs.readdirSync('./'+workdir);
 
 	  // 1. Import all Mongoose models
 	  models.forEach( file => {
+		console.log('Importing models', file);
 		const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name;
-		importModel(filename, `./${workdir}/${file}`, generatedResolverFile);
+		importModel(filename, `../${workdir}/${file}`, generatedResolverFile);
 	  });
 
-	  // 2. Create resolver functions for each model
+	  // 2. Create Query resolvers for each model
 	  models.forEach( file => {
 		if (startExports) {
 		  insertModuleExports(generatedResolverFile);
 		  startExports = false;
 		}
+		if (startQuery) {
+		  startQueryBlock(generatedResolverFile);
+		  startQuery = false;
+		}
 		const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name;
-		createResolver(filename, `${workdir}/${file}`, generatedResolverFile);
+		createQueryResolver(filename, `${workdir}/${file}`, generatedResolverFile);
 	  });
+
+	  // 3. Close Query Block
+	  endResolverBlock(generatedResolverFile, '},');
+
+	  // 4. Create Mutation resolvers for each model
+	  models.forEach( file => {
+		if (startMutation) {
+		  startMutationBlock(generatedResolverFile);
+		  startMutation = false;
+		}
+		const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name;
+		createMutationResolver(filename, `${workdir}/${file}`, generatedResolverFile);
+	  });
+
+	  // 4. Close Resolvers Block
+	  endResolverBlock(generatedResolverFile, '},\n');
+	  endResolverBlock(generatedResolverFile, '}');
+
 	}
 
 	const generatedResolverFile = `${process.cwd()}/graphqlsrc/starfleet-resolvers.js`

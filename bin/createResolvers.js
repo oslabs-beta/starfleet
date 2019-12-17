@@ -73,12 +73,25 @@ module.exports = resolvers = {
 		  for (field in args[key]) {
 			update[field] = args[key][field];
 		  }
-		  const updatedModel = await ${modelName}.findByIdAndUpdate(args[key]._id, update, {useFindAndModify: false, new: true});
-		  if (!updatedModel) {
-		    throw new Error('error updating document')
+		  const updatedDoc = await ${modelName}.findByIdAndUpdate(args[key]._id, update, {useFindAndModify: false, new: true})
+		  .catch( err => console.log('No document found'));
+		  if (!updatedDoc) {
+		    throw new Error('error updating document, ensure MongoID is correct')
 		  }
-		  console.log('updated!', updatedModel);
-		  return { record: updatedModel };
+		  return { record: updatedDoc };
+		}
+	  }
+	},
+	${modelName}UpdateOne: async (obj, args) => {
+	  for (key in args) {
+		if (key === 'filter') {
+		  const conditions = args[key];
+		  const updatedDoc = await ${modelName}.findOneAndUpdate(conditions, args.record, { useFindAndModify: false, new: true })
+		    .catch( err => console.log('No document found under given conditions'));
+		  if (!updatedDoc) {
+			throw new Error('error finding and updating document, ensure filter conditions are correct');
+		  };
+		  return { record: updatedDoc };
 		}
 	  }
 	},

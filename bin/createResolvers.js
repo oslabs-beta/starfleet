@@ -103,8 +103,27 @@ module.exports = resolvers = {
 		  throw new Error('error finding and removing document, ensure _id is correct');
 		};
 	    return { record: removedDoc };
- 	  }
+	  } else {
+	    throw new Error('_id is required');
+	  }
 	},
+	${modelName}RemoveOne: async (obj, args) => {
+	  for (key in args) {
+		if (key === 'filter') {
+		  const field = {};
+		  for (prop in args[key]) {
+			field[prop] = args[key][prop];
+		  }
+		  const removedDoc = await ${modelName}.findOneAndRemove(field, { useFindAndModify: false })
+			.catch( err => console.log('Error finding and removing document'));
+		  if (!removedDoc) {
+		    throw new Error('Error finding and removing document, ensure filter conditions are correct')
+		  }
+		  return { record: removedDoc }; 
+		}
+	  }
+	},
+
   }
 }`;
 

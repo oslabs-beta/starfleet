@@ -95,6 +95,16 @@ module.exports = resolvers = {
 		}
 	  }
 	},
+	${modelName}RemoveById: async (obj, args) => {
+	  if (args.hasOwnProperty('_id')) {
+		const removedDoc = await ${modelName}.findByIdAndRemove(args._id, { useFindAndModify: false })
+		  .catch( err => console.log('No document found'));
+		if (!removedDoc) {
+		  throw new Error('error finding and removing document, ensure _id is correct');
+		};
+	    return { record: removedDoc };
+ 	  }
+	},
   }
 }`;
 

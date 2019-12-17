@@ -18,7 +18,7 @@ const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
 const createContainerInventory = require('./createContainerInventory');
 const { build, up, stop } = require('./runDocker')
-const createResolvers = require('./createResolvers');
+const { createResolver, importModel } = require('./createResolvers');
 
 program
   .version(version)
@@ -166,7 +166,9 @@ program
   .command('resolve')
   .action( async () => {
 	console.log('Generating resolvers');
-	await createResolvers('Book', './models/Book');
+	const filename = './resolvers-test.js';
+	await createResolver('Book', './models/Book', filename);
+	await importModel('Book', './models/Book', filename);
 
 	fs.readFile('resolvers-test.js', { encoding: 'utf-8' }, (err, data) => {
 	  console.log('Resolvers: ', data);

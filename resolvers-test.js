@@ -1,48 +1,37 @@
-const fs = require('fs');
-const prepend = require('prepend');
+const Book = require('./models/Book');
 
-const importModel = (modelName, modelPath, filename) => {
-  const dependencies = `const ${modelName} = require('${modelPath}');`
-  prepend(filename, dependencies, err => {
-	if (err) console.log('Error importing models');
-  });
-};
-
-const createResolver = (modelName, modelPath, filename) => {
-
-  const modelResolver = `
 
 module.exports = resolvers = {
   Query: {
-	${modelName}ById: async (obj, args) => {
-	  const ${modelName.toLowerCase()} = await ${modelName}.findById(args._id);
-	  return ${modelName.toLowerCase()};
+	BookById: async (obj, args) => {
+	  const book = await Book.findById(args._id);
+	  return book;
 	},
-	${modelName}ByIds: async (obj, args) => {
+	BookByIds: async (obj, args) => {
 
 	},
-	${modelName}One: async (obj, args) => {
+	BookOne: async (obj, args) => {
 	  for (key in args) {
 	    if (key === 'filter') {
 		  for (prop in args[key]) {
 		    const field = {};
 			field[prop] = args[key][prop];
-			const ${modelName.toLowerCase()} = await ${modelName}.findOne(field);
-		    return ${modelName.toLowerCase()};
+			const book = await Book.findOne(field);
+		    return book;
 		  }
 		}
 	  }
 	},
-	${modelName}Many: async (obj, args) => {
+	BookMany: async (obj, args) => {
 
 	},
 
   },
   Mutation: {
-	${modelName}CreateOne: async (obj, args) => {
+	BookCreateOne: async (obj, args) => {
 	  const record = {};
 	  for (key in args) {
-		const newModel = new ${modelName}(args[key]);
+		const newModel = new Book(args[key]);
 		const newDoc = await newModel.save();
 		if (!newDoc) {
 		  throw new Error('error saving document');
@@ -51,14 +40,14 @@ module.exports = resolvers = {
 		return record;
 	  }
 	},
-	${modelName}CreateMany: async (obj, args) => {
+	BookCreateMany: async (obj, args) => {
 	  const payload = {};
 	  const records = [];
 	  const recordIds = [];
 	  for (key in args) {
 	    if (key === 'records') {
 		  for (let i = 0; i < args[key].length; i++) { 
-			const newModel = new ${modelName}(args[key][i]);
+			const newModel = new Book(args[key][i]);
 			const newDoc = await newModel.save();
 			if (!newDoc) {
 			  throw new Error('error saving document');
@@ -73,14 +62,14 @@ module.exports = resolvers = {
 	  payload['createCount'] = records.length;
 	  return payload;
 	},
-	${modelName}UpdateById: async (obj, args) => {
+	BookUpdateById: async (obj, args) => {
 	  for (key in args) {
 		if (key === 'record') {
 		  const update = {};
 		  for (field in args[key]) {
 			update[field] = args[key][field];
 		  }
-		  const updatedDoc = await ${modelName}.findByIdAndUpdate(args[key]._id, update, {useFindAndModify: false, new: true})
+		  const updatedDoc = await Book.findByIdAndUpdate(args[key]._id, update, {useFindAndModify: false, new: true})
 		  .catch( err => console.log('No document found'));
 		  if (!updatedDoc) {
 		    throw new Error('error updating document, ensure MongoID is correct')
@@ -89,11 +78,11 @@ module.exports = resolvers = {
 		}
 	  }
 	},
-	${modelName}UpdateOne: async (obj, args) => {
+	BookUpdateOne: async (obj, args) => {
 	  for (key in args) {
 		if (key === 'filter') {
 		  const conditions = args[key];
-		  const updatedDoc = await ${modelName}.findOneAndUpdate(conditions, args.record, { useFindAndModify: false, new: true })
+		  const updatedDoc = await Book.findOneAndUpdate(conditions, args.record, { useFindAndModify: false, new: true })
 		    .catch( err => console.log('No document found under given conditions'));
 		  if (!updatedDoc) {
 			throw new Error('error finding and updating document, ensure filter conditions are correct');
@@ -102,9 +91,9 @@ module.exports = resolvers = {
 		}
 	  }
 	},
-	${modelName}RemoveById: async (obj, args) => {
+	BookRemoveById: async (obj, args) => {
 	  if (args.hasOwnProperty('_id')) {
-		const removedDoc = await ${modelName}.findByIdAndRemove(args._id, { useFindAndModify: false })
+		const removedDoc = await Book.findByIdAndRemove(args._id, { useFindAndModify: false })
 		  .catch( err => console.log('No document found'));
 		if (!removedDoc) {
 		  throw new Error('error finding and removing document, ensure _id is correct');
@@ -114,14 +103,14 @@ module.exports = resolvers = {
 	    throw new Error('_id is required');
 	  }
 	},
-	${modelName}RemoveOne: async (obj, args) => {
+	BookRemoveOne: async (obj, args) => {
 	  for (key in args) {
 		if (key === 'filter') {
 		  const field = {};
 		  for (prop in args[key]) {
 			field[prop] = args[key][prop];
 		  }
-		  const removedDoc = await ${modelName}.findOneAndRemove(field, { useFindAndModify: false })
+		  const removedDoc = await Book.findOneAndRemove(field, { useFindAndModify: false })
 			.catch( err => console.log('Error finding and removing document'));
 		  if (!removedDoc) {
 		    throw new Error('Error finding and removing document, ensure filter conditions are correct')
@@ -132,19 +121,4 @@ module.exports = resolvers = {
 	},
 
   }
-}`;
-
-
-  const stream = fs.createWriteStream(filename, {flags: 'a'});
-  stream.write(modelResolver);
-
-  // Not required to explicitly end stream, as default option is AutoClose set to true, but done so here for clarity
-  stream.end()
-
 }
-
-
-module.exports = { 
-  importModel,
-  createResolver,
-};

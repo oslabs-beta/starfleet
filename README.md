@@ -50,7 +50,7 @@ The /graphqlsrc folder will be created in your current working directory:
   -resolvers
     -starfleet-resolvers.graphql
 ```
-Additionally, a '/starfleet-server.js' file will be created in your current working directory. The SDL file and resolvers file (with default CRUD operations) are imported to starfleet-server.js file and used to initialize an [Apollo Server](https://www.apollographql.com/docs/apollo-server/). (If you don't know about Apollo Server, it is a very powerful library that helps you connect a GraphQL schema to an HTTP server in Node.js, and it comes with powerful tools such as cacheing and performance monitoring. Visit their website for more information.)
+Additionally, a '/starfleet-server.js' file will be created in your current working directory. The SDL file and resolvers file (with default CRUD operations) are imported to starfleet-server.js file and used to initialize an [Apollo Server](https://www.apollographql.com/docs/apollo-server/). (If you don't know about Apollo Server, it is a very powerful library for GraphQL that helps you connect a GraphQL schema to an HTTP server in Node.js. It comes with powerful tools such as cacheing and performance monitoring. Visit Apollo's website for more information!)
 
 ## Deployment
 

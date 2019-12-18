@@ -1,13 +1,12 @@
 // Helper function used in starfleet.js; check subcommands sections of starfleet.js file
-const fs = require('fs');
-const shell = require('shelljs');
-const chalk = require('chalk');
+const fs = require('fs'); // node file system
+const shell = require('shelljs'); // Unix shell commands for Node.js
+const chalk = require('chalk'); // Terminal string styling
 
-const createDockerCompose = (PROJECT_NAME, PORT) => {
-  //console.log('Creating docker compose config file');
+const createDockerCompose = (PROJECT_NAME, PORT) => { 
 
-  const filePath = `${process.cwd()}/docker-compose-starfleet.yml`;
-  const text = 
+  const filePath = `${process.cwd()}/docker-compose-starfleet.yml`; // create this file
+  const text = // with this text being written
 `version: "2"
 services:
   app:
@@ -38,15 +37,15 @@ services:
     links:
       - mongo
   `
-  shell.touch(filePath);
-  fs.writeFile(filePath, text, err => {
+  shell.touch(filePath); // this method will create file with filepath variable
+  fs.writeFile(filePath, text, err => { 
 	if (err) {
 	  console.log(chalk.red.bold('Error creating docker-compose.yml'));
 	  throw err;
 	}
 	return;
   });
-
+  
   console.log(chalk.green('✔'),chalk.cyan.bold('Done! Your docker-compose.yml file has been created and put into your working directory!'));
 };
 

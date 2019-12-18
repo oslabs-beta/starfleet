@@ -93,31 +93,9 @@ program
 
     // creates SDL file after reading from user-inputted models file path
     inquirer.prompt(questions)
-    .then(answers => {
-
-      console.log("this is the answers ", answers)
-      
+    .then(answers => {      
       const workdir = `${answers.USERINPUT}`
-      
-    //   fs.readdirSync('./'+workdir).forEach( file => {
-    //     const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name
-    //     // each file name is passed in to createGQL; will be the prefix for all corresponding GQL types and resolvers
-    //     const model = require(`${process.cwd()}/${workdir}/${file}`);
-        
-    //     // if the model file is only exporting one model, it will hit the function if block
-    //     if (typeof model === "function") {
-    //       createGQL(model, filename);
-    //     } else if (typeof model === 'object') { // if the model file has multiple, it will be an object containing all the different schemas inside
-    //       for (const key in model) {
-    //         createGQL(model[key], key);
-    //       }
-    //     }
-    //   });
-    //    createGeneratedServer(answers.URL, answers.DATABASENAME);
-    // })
 
-    //==========================================================================================================
-    
 	  fs.readdirSync('./'+workdir).forEach( file => {
 		const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name
 		// each file name is passed in to createSDL; will be the prefix for all corresponding GQL types and resolvers

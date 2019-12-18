@@ -3,8 +3,7 @@
 [![Package on npm](https://img.shields.io/npm/v/postgraphile.svg?style=flat)](https://www.npmjs.com/)
 
 _**With one command, enable your MongoDB project to be able to utilize the high-performance GraphQL API!**_
-
-_**Interested in trying out GraphQL? Quickly convert all your moongoose schemas to easily editable GraphQL pieces.**_
+_**Interested in trying out GraphQL? Quickly convert all your moongoose schemas to easil viewable GraphQL pieces.**_
 
 **Starfleet** is a command line tool that lets you easily harness the flexibility of MongoDB with the declarative power of GraphQL.
 
@@ -45,7 +44,7 @@ The graphqlsrc folder will be created in your current working directory:
   -resolvers
     -starfleet-resolvers.graphql
 ```
-Additionally, a 'starfleet-server.js' file will be created in your current working directory. The SDL file and resolvers file are imported and added 
+Additionally, a 'starfleet-server.js' file will be created in your current working directory. The SDL file and resolvers file (with default CRUD operations) are imported and added to the starfleet-server.js file, which is set up with the [Apollo server](https://www.apollographql.com/docs/apollo-server/) library.
 
 ## Deployment
 
@@ -55,7 +54,7 @@ Starfleet lets you test your GraphQL project in a docker container. Once you hav
 starfleet deploy --docker
 ```
 
-A 'Dockerfile' and 'docker-compose-starfleet.yml' will be created in your current working directory and then used right after to start docker. To terminate the created
+A 'Dockerfile' and 'docker-compose-starfleet.yml' will be created in your current working directory and then used immediately to start docker. To terminate the created
 docker container, just run:
 
 ```
@@ -75,7 +74,7 @@ We are actively welcoming pull requests or any feedback/requests.
 ## Built With
 
 * [GraphQL](https://graphql.org/)
-* [Apollo Federation](https://www.apollographql.com/docs/apollo-server/)
+* [Apollo Server](https://www.apollographql.com/docs/apollo-server/)
 * [Docker](https://www.docker.com/)
 
 ## Contributors

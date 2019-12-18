@@ -8,12 +8,11 @@ const resolvers = require('./graphqlsrc/starfleet-resolvers')
 
 
 // db connection 
-const DB = 'mongodb+srv://justin:C7S83UKFaWyMK8Az@cluster0-mufvw.mongodb.net/test?retryWrites=true&w=majority';
+const DB = 'mongodb://localhost:27017/starfleet';
 
 mongoose.connect(DB, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
-    dbName: 'natours'
+    useUnifiedTopology: true
   })
   .then(() => console.log('MongoDB successfully connected'))
   .catch(err => console.log('Error connecting to db: ', err));

@@ -39,7 +39,7 @@ const createQueryResolver = (modelName, modelPath, filename) => {
 	},
 	${modelName}ByIds: async (obj, args) => {
 		const ${modelName.toLowerCase()}_ids = await args._ids.map((id) => id);
-		const ${modelName.toLowerCase()} = await Tour.find({
+		const ${modelName.toLowerCase()} = await ${modelName}.find({
 			_id: {
 				$in: ${modelName.toLowerCase()}_ids
 			}

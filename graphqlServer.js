@@ -5,9 +5,9 @@
     const typeDefs = fs.readFileSync('./graphqlsrc/models/starfleet-SDL.graphql', 'utf8');
     const resolvers = require('./graphqlsrc/resolvers/starfleet-resolvers')
 
-    const DB = 'mongodb://localhost:27017/starfleet';
+    const DB = '';
 
-    mongoose.connect(DB, { useNewUrlParser: true, useUnifiedTopology:	true, dbName: 'starfleet' })
+    mongoose.connect(DB, { useNewUrlParser: true, useUnifiedTopology:	true, dbName: '' })
 
     .then(() => console.log('MongoDB successfully connected')) 
 

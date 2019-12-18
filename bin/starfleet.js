@@ -20,14 +20,14 @@ const createDockerCompose= require('./createDockerCompose');
 const createGeneratedServer = require('./createGeneratedServer');
 const { build, up, stop } = require('./runDocker')
 const { 
-  		importModel,
-  		startQueryBlock,
-   		startMutationBlock,
-  		createQueryResolver,
-  		createMutationResolver,
-  		endResolverBlock,
-		insertModuleExports 
-	  } = require('./createResolvers'); 
+				importModel,
+				startQueryBlock,
+				startMutationBlock,
+				createQueryResolver,
+				createMutationResolver,
+				endResolverBlock,
+				insertModuleExports 
+			} = require('./createResolvers'); 
 program
   .version(version)
   .description(description)
@@ -68,7 +68,7 @@ program
 		},
 		{
 		name: "URI",
-		message: "Please enter your MongoDB connection string (URI): ",
+		message: "Please provide your MongoDB connection string (URI): ",
 		type: "input"
 		},
 		{
@@ -223,5 +223,30 @@ program
 
 });
 
-program.parse(process.argv);
+program
+  .command('cleanup')
+  .alias('c')
+  .description('Remove all generated folders & files from init command')
+  .action(() => {
+		const graphqlsrcDir = `${process.cwd()}/graphqlsrc`
+		const modelsDir = `${process.cwd()}/graphqlsrc/models`
+		const resolversDir = `${process.cwd()}/graphqlsrc/resolvers`
+		const gqlFile = `${process.cwd()}/graphqlsrc/models/starfleet-SDL.graphql`;
+		const resolversFile = `${process.cwd()}/graphqlsrc/resolvers/starfleet-resolvers.js`;
+			
+		fs.readdirSync(graphqlsrcDir).forEach(folder => {
+			if (folder === 'models') {
+				fs.unlinkSync(gqlFile)
+				fs.rmdirSync(modelsDir)
+			}
 
+			if (folder === 'resolvers') {				
+				fs.unlinkSync(resolversFile)
+				fs.rmdirSync(resolversDir)
+			}
+		})
+		
+		fs.rmdirSync(graphqlsrcDir)
+});
+
+program.parse(process.argv);

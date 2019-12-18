@@ -11,11 +11,11 @@ _**Interested in trying out GraphQL? Quickly convert all your moongoose schemas 
 
 [**MongoDB**](https://www.mongodb.com/) is one of the most popular NoSQL database management systems out there. Its document-oriented structure lends itself to high horizontal scalability and the enforcement of strong data integrity. It is also open-sourced and has a great community!
 
-GraphQL requires a lot of boilerplate code just to get started, whether or not you're starting from scratch or have an existing codebase. Starfleet gives you a powerful and convenient way to onboard GraphQL. You can access Starfleet via the CLI, with the ability to both create and test any project that utilizes MongoDB with mongoose ODM. You can even use it to spin up your project in a **docker** container! Sound good? Let's get started!
+GraphQL requires a lot of boilerplate code just to get started, whether or not you're starting from scratch or have an existing codebase. Starfleet gives you a powerful and convenient way to onboard GraphQL. You can access Starfleet via the CLI, with both the ability to create and test any project that utilizes MongoDB & Mongoose ODM with GraphQL. You can even use Starfleet to spin up your project in a **docker** container! Sound good? Let's get started!
 
 ## Prerequisites
 
-File(s) of the mongoose models that you'd like converted, preferably in one folder. Starfleet will generate a '/graphqlsrc' file directory containing all the boilerplate GraphQL pieces from these files.
+You should have your file(s) containing the mongoose models you'd like converted in one folder (default: /models). Starfleet will generate a '/graphqlsrc' file directory containing all the boilerplate GraphQL pieces from the files in the provided folder.
 
 If you want to deploy your project using docker, you must set up docker beforehand (https://docs.docker.com/get-started/). 
 
@@ -38,13 +38,12 @@ The /graphqlsrc folder will be created in your current working directory:
 
 ```
 -graphqlsrc
-  -data
   -models
     -starfleetSDL.graphql
   -resolvers
     -starfleet-resolvers.graphql
 ```
-Additionally, a 'starfleet-server.js' file will be created in your current working directory. The SDL file and resolvers file (with default CRUD operations) are imported to starfleet-server.js file and used to initialize the server with the [Apollo server](https://www.apollographql.com/docs/apollo-server/) library.
+Additionally, a '/starfleet-server.js' file will be created in your current working directory. The SDL file and resolvers file (with default CRUD operations) are imported to starfleet-server.js file and used to initialize an [Apollo Server](https://www.apollographql.com/docs/apollo-server/). (If you don't know about Apollo Server, it is a very powerful library that helps you connect a GraphQL schema to an HTTP server in Node.js, and it comes with powerful tools such as cacheing and performance monitoring. Visit their website for more information.)
 
 ## Deployment
 

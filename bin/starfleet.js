@@ -13,7 +13,7 @@ const { version } = require('../package.json');
 const { description } = require('../package.json');
 
 // Subcommands
-const createGQL = require('./createGQL');
+const createSDL = require('./createSDL');
 const createFileStructure = require('./createFileStructure');
 const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
@@ -75,33 +75,33 @@ program
 
 	  fs.readdirSync('./'+workdir).forEach( file => {
 		const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name
-		// each file name is passed in to createGQL; will be the prefix for all corresponding GQL types and resolvers
+		// each file name is passed in to createSDL; will be the prefix for all corresponding GQL types and resolvers
 		const model = require(`${process.cwd()}/${workdir}/${file}`);
 
 		// if the model file is only exporting one model, it will hit the function if block
 		if (typeof model === "function") {
-		  createGQL(model, filename);
+		  createSDL(model, filename);
 		} else if (typeof model === 'object') { // if the model file has multiple, it will be an object containing all the different schemas inside
 			for (const key in model) {
-			  createGQL(model[key], key);
+			  createSDL(model[key], key);
 			}
 		 }
 	  });
 
-	  const resolve = () => {
+	  const resolve = async () => {
 		let startExports = true;
 		let startQuery = true;
 		let startMutation = true;
 		const models = fs.readdirSync('./'+workdir);
 
 		// 1. Import all Mongoose models
-		models.forEach( file => {
+		await models.forEach( file => {
 		  const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name;
 		  importModel(filename, `../${workdir}/${file}`, generatedResolverFile);
 		});
 
 		// 2. Create Query resolvers for each model
-		models.forEach( file => {
+		await models.forEach( file => {
 		  if (startExports) {
 			insertModuleExports(generatedResolverFile);
 			startExports = false;
@@ -115,10 +115,10 @@ program
 		});
 
 		// 3. Close Query Block
-		endResolverBlock(generatedResolverFile, '},\n');
+		await endResolverBlock(generatedResolverFile, '},\n');
 
 		// 4. Create Mutation resolvers for each model
-		models.forEach( file => {
+		await models.forEach( file => {
 		  if (startMutation) {
 			startMutationBlock(generatedResolverFile);
 			startMutation = false;
@@ -128,12 +128,12 @@ program
 		});
 
 		// 4. Close Resolvers Block
-		endResolverBlock(generatedResolverFile, '},\n');
-		endResolverBlock(generatedResolverFile, '}');
-		console.log('Resolver file generated');
+		await endResolverBlock(generatedResolverFile, '},\n');
+		await endResolverBlock(generatedResolverFile, '}');
 	  }
 
-	  const generatedResolverFile = `${process.cwd()}/graphqlsrc/starfleet-resolvers.js`
+	  const generatedResolverFile = `${process.cwd()}/graphqlsrc/resolvers/starfleet-resolvers.js`;
+	  
 	  fs.access(generatedResolverFile, fs.constants.F_OK, err => {
 		err ? resolve() : console.log(chalk.red('Skipping resolver file creation. Resolver file already exists in graphqlsrc directory. To generate a new resolver file, either manually delete starfleet-resolvers.js or run command'), chalk.white('starfleet unresolve'),chalk.red('to remove it'));
 	  });
@@ -141,13 +141,12 @@ program
   })
 })
 
-// "starfleet deploy/d ['-d', '--docker', '-l', '--l']" command to deploy to desired service; default docker"
+// "starfleet deploy/d ['-d', '--docker']" command to deploy to desired service; default docker"
 program
   .command('deploy')
   .alias('d')
   .description('Deploy newly created GQL service')
   .option("-d, --docker", "deploy to docker")
-  .option("-l, --lambda", "deploy to lambda")
   .action( () => {
 	if (!process.argv[3]) {
 	  console.log(chalk.red('\nPlease enter a valid deployment option. See'),chalk.white('--help'), chalk.red(' for assistance\n'));
@@ -155,7 +154,7 @@ program
 	}
     const env = process.argv[3].toLowerCase() || 'deploy';
     if (env === 'docker' || env === '-d') {
-      
+
       CFonts.say('Now Deploying to Docker', {
         font: 'chrome',              
         align: 'left',              
@@ -204,7 +203,7 @@ program
 program
   .command('land')
   .alias('l')
-  .description('Stop all created microservices')
+  .description('Stop all created containers')
   .option('-d, --docker', 'terminate docker containers')
   .action( () => {
 

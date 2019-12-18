@@ -80,20 +80,5 @@ describe('starfleet tests:', () => {
             }
         })
     })
-
-    test(chalk.yellow('creation of container inventory'), async() => {
-        let result;
-        await fs.access('./inventory.txt', fs.F_OK, (err) => {
-            if (!err) { 
-                result = true;
-                return expect(result).toBe(true);
-            } else { 
-                result = true;
-                createContainerInventory('Test');
-                fs.unlinkSync('./inventory.txt');
-                return expect(result).toBe(true);
-            }
-        })
-    })
 })
 })

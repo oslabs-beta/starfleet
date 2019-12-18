@@ -207,17 +207,9 @@ program
         inquirer.prompt(prompts)
         .then( async answers => {
       	  await createDockerfile(answers.PROJECTNAME, answers.PORT);
-		      await createDockerCompose(answers.PROJECTNAME, answers.PORT);
-		     if (!fs.existsSync('inventory.txt')) {
-			const default_containers = 'mongo, starfleet_admin-mongo_1, ';
-			fs.writeFileSync('inventory.txt', default_containers, err => {
-			  if (err) return console.log(err);
-			  console.log('Created inventory file');
-			});
-		  } 
-		  await createContainerInventory(answers.PROJECTNAME);
-		  await build();
-		  await up();
+          await createDockerCompose(answers.PROJECTNAME, answers.PORT);
+          await build();
+          await up();
 		});
     }
     else if (env === 'lambda' || env === '-l') console.log('deploying to lambda');

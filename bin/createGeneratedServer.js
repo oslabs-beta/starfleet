@@ -1,7 +1,7 @@
 const fs = require("fs");
 const chalk = require('chalk');
 
-function createGeneratedServer(mongoDBUrl = 'Enter your MongoDB Url here', mongoDBname = 'starfleet') { 
+function createGeneratedServer(mongoDBUrl = 'mongodb://localhost:27017/starfleet', mongoDBname = 'starfleet') { 
     const serverText = `
     const mongoose = require('mongoose'); 
     const fs = require('fs');
@@ -9,7 +9,9 @@ function createGeneratedServer(mongoDBUrl = 'Enter your MongoDB Url here', mongo
     const typeDefs = fs.readFileSync('./graphqlsrc/models/starfleet-SDL.graphql', 'utf8');
     const resolvers = require('./graphqlsrc/resolvers/starfleet-resolvers')
 
-    mongoose.connect('${mongoDBUrl}', { useNewUrlParser: true, useUnifiedTopology:	true, dbName: '${mongoDBname}' })
+    const DB = '${mongoDBUrl}';
+
+    mongoose.connect(DB, { useNewUrlParser: true, useUnifiedTopology:	true, dbName: '${mongoDBname}' })
 
     .then(() => console.log('MongoDB successfully connected')) 
 

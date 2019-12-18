@@ -1,7 +1,6 @@
 // Helper function used in starfleet.js; check subcommands sections of starfleet.js file
 const shell = require("shelljs"); // portable unix shell commands for node.js 
 
-console.log("this is the current working directory: ", process.cwd())
 const createFileStructure = () => {
     // creates new src folder
     const srcText = `graphqlsrc`

@@ -3,8 +3,8 @@ const fs = require('fs');
 const {
   ApolloServer
 } = require('apollo-server');
-const typeDefs = `${fs.readFileSync(__dirname.concat('./graphqlsrc/models/starfleet-SDL.graphql'), 'utf8')}` // this path is for testing purpose and should be dynamic on fix.
-const resolvers = require('./graphqlsrc/resolvers/starfleet-resolvers')
+const typeDefs = `${fs.readFileSync(__dirname.concat('./graphqlsrc/models/starfleet-SDL.graphql'), 'utf8')}`;
+const resolvers = require('./graphqlsrc/resolvers/starfleet-resolvers');
 
 
 // db connection 

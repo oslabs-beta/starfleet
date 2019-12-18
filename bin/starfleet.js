@@ -18,7 +18,6 @@ const createFileStructure = require('./createFileStructure');
 const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
 const createGeneratedServer = require('./createGeneratedServer');
-const createContainerInventory = require('./createContainerInventory');
 const { build, up, stop } = require('./runDocker')
 const { 
   		importModel,
@@ -111,20 +110,20 @@ program
 		 }
 	  });
 
-	  const resolve = async () => {
+	  const resolve = () => {
 		let startExports = true;
 		let startQuery = true;
 		let startMutation = true;
 		const models = fs.readdirSync('./'+workdir);
 
 		// 1. Import all Mongoose models
-		await models.forEach( file => {
+		models.forEach( file => {
 		  const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name;
-		  importModel(filename, `../${workdir}/${file}`, generatedResolverFile);
+		  importModel(filename, `../../${workdir}/${file}`, generatedResolverFile);
 		});
 
 		// 2. Create Query resolvers for each model
-		await models.forEach( file => {
+		models.forEach( file => {
 		  if (startExports) {
 			insertModuleExports(generatedResolverFile);
 			startExports = false;
@@ -138,10 +137,10 @@ program
 		});
 
 		// 3. Close Query Block
-		await endResolverBlock(generatedResolverFile, '},\n');
+		endResolverBlock(generatedResolverFile, '},\n');
 
 		// 4. Create Mutation resolvers for each model
-		await models.forEach( file => {
+		models.forEach( file => {
 		  if (startMutation) {
 			startMutationBlock(generatedResolverFile);
 			startMutation = false;
@@ -150,13 +149,13 @@ program
 		  createMutationResolver(filename, `${workdir}/${file}`, generatedResolverFile);
 		});
 
-		// 4. Close Resolvers Block
-		await endResolverBlock(generatedResolverFile, '},\n');
-		await endResolverBlock(generatedResolverFile, '}');
+		// 5. Close Resolvers Block
+		endResolverBlock(generatedResolverFile, '},\n');
+		endResolverBlock(generatedResolverFile, '}');
+		console.log('Resolver file generated');
 	  }
 
-	  const generatedResolverFile = `${process.cwd()}/graphqlsrc/resolvers/starfleet-resolvers.js`;
-	  
+	  const generatedResolverFile = `${process.cwd()}/graphqlsrc/resolvers/starfleet-resolvers.js`
 	  fs.access(generatedResolverFile, fs.constants.F_OK, err => {
 		err ? resolve() : console.log(chalk.red('Skipping resolver file creation. Resolver file already exists in graphqlsrc directory. To generate a new resolver file, either manually delete starfleet-resolvers.js or run command'), chalk.white('starfleet unresolve'),chalk.red('to remove it'));
 	  });
@@ -205,11 +204,11 @@ program
     ]
 
         inquirer.prompt(prompts)
-        .then( async answers => {
-      	  await createDockerfile(answers.PROJECTNAME, answers.PORT);
-          await createDockerCompose(answers.PROJECTNAME, answers.PORT);
-          await build();
-          await up();
+        .then( answers => {
+      	  createDockerfile(answers.PROJECTNAME, answers.PORT);
+          createDockerCompose(answers.PROJECTNAME, answers.PORT);
+          build();
+          up();
 		});
     }
     else if (env === 'lambda' || env === '-l') console.log('deploying to lambda');

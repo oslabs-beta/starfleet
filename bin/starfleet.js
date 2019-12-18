@@ -17,7 +17,7 @@ const createSDL = require('./createSDL');
 const createFileStructure = require('./createFileStructure');
 const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
-const createContainerInventory = require('./createContainerInventory');
+const createGeneratedServer = require('./createGeneratedServer');
 const { build, up, stop } = require('./runDocker')
 const { 
 				importModel,
@@ -50,7 +50,6 @@ program
       maxLength: '0',            
     });
     
-    // const srcPath = path.resolve(__dirname, '../graphqlsrc') 
     const srcPath = `${process.cwd()}/graphqlsrc`
 
     if(!fs.existsSync(srcPath)) {
@@ -65,12 +64,35 @@ program
       message: "Please enter the name of the folder where your schema is in:",
       type: "input",
       default: "models"
+    },
+    {
+      name: "MONGODB",
+      message: "Do you have a existing MongoDB table?",
+      type: "confirm",
+    },
+    {
+      when: (answers) => answers.MONGODB === true,
+      name: "URL",
+      message: "Please enter your MongoDB url: ",
+      type: "input"
+    },
+    {
+      when: (answers) => answers.MONGODB === true,
+      name: "DATABASENAME",
+      message: "What is your database called? ",
+      type: "input"
+    },
+    {
+      when: (answers) => answers.MONGODB === false,
+      name: "DATABASENAME",
+      message: "What would you like to call the name of your database?: ",
+      type: "input"
     }
   ];
 
     // creates SDL file after reading from user-inputted models file path
     inquirer.prompt(questions)
-    .then(answers => {
+    .then(answers => {      
       const workdir = `${answers.USERINPUT}`
 
 	  fs.readdirSync('./'+workdir).forEach( file => {
@@ -88,20 +110,20 @@ program
 		 }
 	  });
 
-	  const resolve = async () => {
+	  const resolve = () => {
 		let startExports = true;
 		let startQuery = true;
 		let startMutation = true;
 		const models = fs.readdirSync('./'+workdir);
 
 		// 1. Import all Mongoose models
-		models.forEach(file => {
+		models.forEach( file => {
 		  const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name;
-		  importModel(filename, `../${workdir}/${file}`, generatedResolverFile);
+		  importModel(filename, `../../${workdir}/${file}`, generatedResolverFile);
 		});
 
 		// 2. Create Query resolvers for each model
-		models.forEach(file => {
+		models.forEach( file => {
 		  if (startExports) {
 			insertModuleExports(generatedResolverFile);
 			startExports = false;
@@ -118,7 +140,7 @@ program
 		endResolverBlock(generatedResolverFile, '},\n');
 
 		// 4. Create Mutation resolvers for each model
-		models.forEach(file => {
+		models.forEach( file => {
 		  if (startMutation) {
 			startMutationBlock(generatedResolverFile);
 			startMutation = false;
@@ -127,17 +149,17 @@ program
 		  createMutationResolver(filename, `${workdir}/${file}`, generatedResolverFile);
 		});
 
-		// 4. Close Resolvers Block
+		// 5. Close Resolvers Block
 		endResolverBlock(generatedResolverFile, '},\n');
 		endResolverBlock(generatedResolverFile, '}');
+		console.log('Resolver file generated');
 	  }
 
-	  const generatedResolverFile = `${process.cwd()}/graphqlsrc/resolvers/starfleet-resolvers.js`;
-	  
+	  const generatedResolverFile = `${process.cwd()}/graphqlsrc/resolvers/starfleet-resolvers.js`
 	  fs.access(generatedResolverFile, fs.constants.F_OK, err => {
 		err ? resolve() : console.log(chalk.red('Skipping resolver file creation. Resolver file already exists in graphqlsrc directory. To generate a new resolver file, either manually delete starfleet-resolvers.js or run command'), chalk.white('starfleet unresolve'),chalk.red('to remove it'));
 	  });
-
+    createGeneratedServer(answers.URL, answers.DATABASENAME)
   })
 })
 
@@ -182,19 +204,11 @@ program
     ]
 
         inquirer.prompt(prompts)
-        .then( async answers => {
-      	  await createDockerfile(answers.PROJECTNAME, answers.PORT);
-		  await createDockerCompose(answers.PROJECTNAME, answers.PORT);
-		  if (!fs.existsSync('inventory.txt')) {
-			const default_containers = 'mongo, starfleet_admin-mongo_1, ';
-			fs.writeFileSync('inventory.txt', default_containers, err => {
-			  if (err) return console.log(err);
-			  console.log('Created inventory file');
-			});
-		  } 
-		  await createContainerInventory(answers.PROJECTNAME);
-		  await build();
-		  await up();
+        .then( answers => {
+      	  createDockerfile(answers.PROJECTNAME, answers.PORT);
+          createDockerCompose(answers.PROJECTNAME, answers.PORT);
+          build();
+          up();
 		});
     }
     else if (env === 'lambda' || env === '-l') console.log('deploying to lambda');
@@ -220,9 +234,9 @@ program
 });
 
 program
-  .command('terminate')
-  .alias('t')
-  .description('Remove all generated files from init command')
+  .command('cleanup')
+  .alias('c')
+  .description('Remove all generated folders & files from init command')
   .action(() => {
 		const graphqlsrcDir = `${process.cwd()}/graphqlsrc`
 		const modelsDir = `${process.cwd()}/graphqlsrc/models`

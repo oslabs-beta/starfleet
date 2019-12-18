@@ -3,7 +3,8 @@ const fs = require('fs'); // node file system
 const shell = require('shelljs'); // Unix shell commands for Node.js
 const chalk = require('chalk'); // Terminal string styling
 
-const createDockerCompose = (PROJECT_NAME, PORT) => { 
+const createDockerCompose = (PROJECT_NAME, PORT) => {
+
 
   const filePath = `${process.cwd()}/docker-compose-starfleet.yml`; // create this file
   const text = // with this text being written

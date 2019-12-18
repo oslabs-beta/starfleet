@@ -255,7 +255,7 @@ program
 				fs.rmdirSync(resolversDir)
 			}
 		})
-		
+    
 		fs.rmdirSync(graphqlsrcDir)
 });
 

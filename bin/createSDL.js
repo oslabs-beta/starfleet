@@ -6,7 +6,7 @@ const { composeWithMongoose } = require('graphql-compose-mongoose');
 const { schemaComposer } = require('graphql-compose');
 const { printSchema } = require('graphql');
 
-const createGQL = (model, modelName) => {
+const createSDL = (model, modelName) => {
   // converts passed in mongoose schemas to graphql pieces
   const customizationOptions = {};
   const ModelTC = composeWithMongoose(model, customizationOptions); 
@@ -40,21 +40,14 @@ const createGQL = (model, modelName) => {
   const graphqlSDL = printSchema(graphqlSchemaObj, { commentDescriptions: true });
 
   // generates SDL file and writes to desginated path
-  fs.writeFile('./graphqlsrc/models/starfleetSDL.gql', graphqlSDL, err => {
+  fs.writeFile('./graphqlsrc/models/starfleet-SDL.graphql', graphqlSDL, err => {
 		if (err) {
 			return console.log(err);
 		}
 		console.log(chalk.green('✔'), chalk.cyan.bold('Done! Your GraphQL'), chalk.blue(modelName),chalk.cyan.bold('schema has been created and added to your'), chalk.blue('graphqlsrc'), chalk.cyan.bold('directory!'));
   });
 
-  // generates resolver file and writes to designated path
-//   fs.writeFile('./graphqlsrc/resolvers/gqlResolvers.js', graphqlResolvers, err => {
-// 	  if (err) {
-// 		  return console.log(err);
-// 	  }
-// 	  console.log(chalk.green('✔'), chalk.cyan.bold('Done! Your GraphQL'), chalk.blue(modelName),chalk.cyan.bold('resolver has been created and added to your'), chalk.blue('graphqlsrc'), chalk.cyan.bold('directory!'));
-//   })
 };
 
 
-module.exports = createGQL; 
+module.exports = createSDL; 

@@ -38,7 +38,13 @@ const createQueryResolver = (modelName, modelPath, filename) => {
 	  return ${modelName.toLowerCase()};
 	},
 	${modelName}ByIds: async (obj, args) => {
-
+		const ${modelName.toLowerCase()}_ids = await args._ids.map((id) => id);
+		const ${modelName.toLowerCase()} = await ${modelName}.find({
+			_id: {
+				$in: ${modelName.toLowerCase()}_ids
+			}
+		});
+		return  ${modelName.toLowerCase()};	
 	},
 	${modelName}One: async (obj, args) => {
 	  for (key in args) {
@@ -53,9 +59,17 @@ const createQueryResolver = (modelName, modelPath, filename) => {
 	  }
 	},
 	${modelName}Many: async (obj, args) => {
-
+	  for (key in args) {
+	    if (key === 'filter') {
+		  for (prop in args[key]) {
+		    const field = {};
+			field[prop] = args[key][prop];
+			const ${modelName.toLowerCase()} = await ${modelName}.find(field);
+		    return ${modelName.toLowerCase()};
+		  }
+		}
+	  }
 	},
-
 `;
 
 
@@ -179,11 +193,11 @@ const endResolver = filename => {
 }
 
 module.exports = { 
-  importModel,
+	importModel,
   startQueryBlock,
   startMutationBlock,
   createQueryResolver,
   createMutationResolver,
   endResolverBlock,
-  insertModuleExports,
+	insertModuleExports,
 };

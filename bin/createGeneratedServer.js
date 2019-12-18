@@ -3,11 +3,11 @@ const chalk = require('chalk');
 
 function createGeneratedServer(mongoDBUrl = 'Enter your MongoDB Url here', mongoDBname = 'starfleet') { 
     const serverText = `
-    const mongoose = (require('mongoose')); 
+    const mongoose = require('mongoose'); 
     const fs = require('fs');
     const { ApolloServer } = require('apollo-server');
-    const typeDefs = fs.readFileSync('./graphqlsrc/models/starfleetSDL.gql')
-    const resolvers = require('./graphlsrc/resolvers')
+    const typeDefs = fs.readFileSync('./graphqlsrc/models/starfleet-SDL.graphql', 'utf8');
+    const resolvers = require('./graphqlsrc/resolvers/starfleet-resolvers')
 
     mongoose.connect('${mongoDBUrl}', { useNewUrlParser: true, useUnifiedTopology:	true, dbName: '${mongoDBname}' })
 

@@ -207,10 +207,10 @@ const endResolver = filename => {
 
 module.exports = { 
 	importModel,
-  startQueryBlock,
-  startMutationBlock,
-  createQueryResolver,
-  createMutationResolver,
-  endResolverBlock,
+	startQueryBlock,
+	startMutationBlock,
+	createQueryResolver,
+	createMutationResolver,
+	endResolverBlock,
 	insertModuleExports,
 };

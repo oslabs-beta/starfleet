@@ -20,14 +20,15 @@ const createDockerCompose= require('./createDockerCompose');
 const createGeneratedServer = require('./createGeneratedServer');
 const { build, up, stop } = require('./runDocker')
 const { 
-				importModel,
-				startQueryBlock,
-				startMutationBlock,
-				createQueryResolver,
-				createMutationResolver,
-				endResolverBlock,
-				insertModuleExports 
-			} = require('./createResolvers'); 
+	importModel,
+	startQueryBlock,
+	startMutationBlock,
+	createQueryResolver,
+	createMutationResolver,
+	endResolverBlock,
+	insertModuleExports 
+} = require('./createResolvers'); 
+
 program
   .version(version)
   .description(description)
@@ -90,11 +91,14 @@ program
 
 		// if the model file is only exporting one model, it will hit the function if block
 		if (typeof model === "function") {
-		  createSDL(model, filename);
-		} else if (typeof model === 'object') { // if the model file has multiple, it will be an object containing all the different schemas inside
+			// no edge case for if provided model is incorrect function
+		  	createSDL(model, filename);
+		} else if (typeof model === 'object' && Object.entries(model).length !== 0) { // if the model file has multiple, it will be an object containing all the different schemas inside
 			for (const key in model) {
 			  createSDL(model[key], key);
 			}
+		 } else {
+			 console.log(chalk.red('Skipping SDL file creation. An invalid Mongoose model was provided. Please make sure that you are exporting your models correctly.'))
 		 }
 	  });
 

@@ -1,13 +1,20 @@
+<div align="center">
+  <a href="https://github.com/Traversal-Labs/starfleet">
+    <img width="200" height="200" src="https://i.imgur.com/VRfXvfh.jpg">
+  </a>
+  <br>
+  <br>
+
 # Starfleet
 
 [![Package on npm](https://img.shields.io/npm/v/postgraphile.svg?style=flat)](https://www.npmjs.com/)
 
 _**With one command, enable your MongoDB project to be able to utilize the high-performance GraphQL API!**_
-_**Interested in trying out GraphQL? Quickly convert all your moongoose schemas to easily viewable GraphQL pieces.**_
+_**Interested in trying out GraphQL? Quickly convert all your mongoose schemas to easily viewable GraphQL pieces.**_
 
 **Starfleet** is a command line tool that lets you easily harness the flexibility of MongoDB with the declarative power of GraphQL.
 
-[**GraphQL**](https://graphql.org/) is a popular and rapidly growing data query and manipulation language for APIs, eliminating issues that come with RESTful API services, such as the over- and under-fetching data. GraphQL is language agnostic and it incorporates strong data types. It even has built in instrospection - what more is there to love?
+[**GraphQL**](https://graphql.org/) is a popular and rapidly growing data query and manipulation language for APIs, eliminating issues that come with RESTful API services, such as the over- and under-fetching data. GraphQL is language agnostic and it incorporates strong data types. It even has built in introspection - what more is there to love?
 
 [**MongoDB**](https://www.mongodb.com/) is one of the most popular NoSQL database management systems out there. Its document-oriented structure lends itself to high horizontal scalability and the enforcement of strong data integrity. It is also open-sourced and has a great community!
 

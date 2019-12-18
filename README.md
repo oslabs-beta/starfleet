@@ -39,7 +39,7 @@ The /graphqlsrc folder will be created in your current working directory:
 ```
 -graphqlsrc
   -models
-    -starfleetSDL.graphql
+    -starfleet-SDL.graphql
   -resolvers
     -starfleet-resolvers.graphql
 ```

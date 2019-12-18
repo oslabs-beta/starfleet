@@ -58,37 +58,25 @@ program
       console.log('GraphQL structure already exists. Skipping...')
     }
 
-  const questions = [
-    {
-      name: "USERINPUT",
-      message: "Please enter the name of the folder where your schema is in:",
-      type: "input",
-      default: "models"
-    },
-    {
-      name: "MONGODB",
-      message: "Do you have a existing MongoDB table?",
-      type: "confirm",
-    },
-    {
-      when: (answers) => answers.MONGODB === true,
-      name: "URL",
-      message: "Please enter your MongoDB url: ",
-      type: "input"
-    },
-    {
-      when: (answers) => answers.MONGODB === true,
-      name: "DATABASENAME",
-      message: "What is your database called? ",
-      type: "input"
-    },
-    {
-      when: (answers) => answers.MONGODB === false,
-      name: "DATABASENAME",
-      message: "What would you like to call the name of your database?: ",
-      type: "input"
-    }
-  ];
+	// questions used by inquirer to create variable inputs
+	const questions = [
+		{
+		name: "USERINPUT",
+		message: "Please enter the name of the folder where your schema is in:",
+		type: "input",
+		default: "models"
+		},
+		{
+		name: "URI",
+		message: "Please enter your MongoDB connection string (URI): ",
+		type: "input"
+		},
+		{
+		name: "DATABASENAME",
+		message: "What is the name of your database?",
+		type: "input"
+		},
+	];
 
     // creates SDL file after reading from user-inputted models file path
     inquirer.prompt(questions)
@@ -110,6 +98,7 @@ program
 		 }
 	  });
 
+	  // creates resolver file
 	  const resolve = () => {
 		let startExports = true;
 		let startQuery = true;
@@ -152,30 +141,31 @@ program
 		// 5. Close Resolvers Block
 		endResolverBlock(generatedResolverFile, '},\n');
 		endResolverBlock(generatedResolverFile, '}');
-		console.log('Resolver file generated');
 	  }
 
 	  const generatedResolverFile = `${process.cwd()}/graphqlsrc/resolvers/starfleet-resolvers.js`
 	  fs.access(generatedResolverFile, fs.constants.F_OK, err => {
 		err ? resolve() : console.log(chalk.red('Skipping resolver file creation. Resolver file already exists in graphqlsrc directory. To generate a new resolver file, either manually delete starfleet-resolvers.js or run command'), chalk.white('starfleet unresolve'),chalk.red('to remove it'));
 	  });
-    createGeneratedServer(answers.URL, answers.DATABASENAME)
+
+	  // creates server file
+      createGeneratedServer(answers.URI, answers.DATABASENAME)
   })
 })
 
-// "starfleet deploy/d ['-d', '--docker']" command to deploy to desired service; default docker"
+// "starfleet deploy/d ['-d', '--docker']" command to deploy to docker"
 program
   .command('deploy')
   .alias('d')
-  .description('Deploy newly created GQL service')
+  .description('Deploys newly created GQL service to docker')
   .option("-d, --docker", "deploy to docker")
   .action( () => {
 	if (!process.argv[3]) {
 	  console.log(chalk.red('\nPlease enter a valid deployment option. See'),chalk.white('--help'), chalk.red(' for assistance\n'));
 	  return;
 	}
-    const env = process.argv[3].toLowerCase() || 'deploy';
-    if (env === 'docker' || env === '-d') {
+    const env = process.argv[3].toLowerCase();
+    if (env === '--docker' || env === '-d') {
 
       CFonts.say('Now Deploying to Docker', {
         font: 'chrome',              
@@ -217,7 +207,7 @@ program
 program
   .command('land')
   .alias('l')
-  .description('Stop all created containers')
+  .description('Stops created docker container')
   .option('-d, --docker', 'terminate docker containers')
   .action( () => {
 
@@ -226,7 +216,7 @@ program
 	  return;
 	}
 
-	const dockerComposeStarfleet = fs.access('./docker-compose-starfleet.yml', fs.constants.F_OK, err => {
+	fs.access('./docker-compose-starfleet.yml', fs.constants.F_OK, err => {
 	  if (err) console.log('Missing file docker-compose-starfleet.yml, run command `starfleet deploy -d` to generate Docker containers');
 	  stop();
   });

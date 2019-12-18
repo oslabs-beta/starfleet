@@ -97,7 +97,7 @@ program
 		// 1. Import all Mongoose models
 		models.forEach( file => {
 		  const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name;
-		  importModel(filename, `../${workdir}/${file}`, generatedResolverFile);
+		  importModel(filename, `../../${workdir}/${file}`, generatedResolverFile);
 		});
 
 		// 2. Create Query resolvers for each model
@@ -133,7 +133,7 @@ program
 		console.log('Resolver file generated');
 	  }
 
-	  const generatedResolverFile = `${process.cwd()}/graphqlsrc/starfleet-resolvers.js`
+	  const generatedResolverFile = `${process.cwd()}/graphqlsrc/resolvers/starfleet-resolvers.js`
 	  fs.access(generatedResolverFile, fs.constants.F_OK, err => {
 		err ? resolve() : console.log(chalk.red('Skipping resolver file creation. Resolver file already exists in graphqlsrc directory. To generate a new resolver file, either manually delete starfleet-resolvers.js or run command'), chalk.white('starfleet unresolve'),chalk.red('to remove it'));
 	  });

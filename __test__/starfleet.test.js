@@ -15,14 +15,14 @@ describe('starfleet tests:', () => {
         test(chalk.yellow('creates new file structure in working directory'), async() => {
             let result;
             await find.dir('graphqlsrc', dir => {
-                if (dir.length === 3) { 
+                if (dir.length === 2) { 
                     result = true;
                     expect(result).toBe(true);
                 }
             })
             await createFileStructure();
             await find.dir('graphqlsrc', dir => {
-                if (dir.length === 3) { 
+                if (dir.length === 2) { 
                     result = true;
                     expect(result).toBe(true);
                     shell.exec(`rmdir ${dir}`);

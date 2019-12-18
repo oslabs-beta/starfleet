@@ -236,7 +236,8 @@ program
 		const modelsDir = `${process.cwd()}/graphqlsrc/models`
 		const resolversDir = `${process.cwd()}/graphqlsrc/resolvers`
 		const gqlFile = `${process.cwd()}/graphqlsrc/models/starfleet-SDL.graphql`;
-		const resolversFile = `${process.cwd()}/graphqlsrc/resolvers/starfleet-resolvers.js`;
+    	const resolversFile = `${process.cwd()}/graphqlsrc/resolvers/starfleet-resolvers.js`;
+    	const gqlServerFile = `${process.cwd()}/graphqlServer.js`
 			
 		fs.readdirSync(graphqlsrcDir).forEach(folder => {
 			if (folder === 'models') {
@@ -249,8 +250,9 @@ program
 				fs.rmdirSync(resolversDir)
 			}
 		})
-		
-		fs.rmdirSync(graphqlsrcDir)
+    
+    fs.rmdirSync(graphqlsrcDir)
+    fs.unlinkSync(gqlServerFile)
 });
 
 program.parse(process.argv);

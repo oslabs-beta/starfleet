@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const inquirer = require('inquirer');
 const CFonts = require('cfonts');
-const chalk = require("chalk");
+const chalk = require('chalk');
 
 // Metadata
 const { version } = require('../package.json');
@@ -20,7 +20,15 @@ const createDockerCompose= require('./createDockerCompose');
 const createGeneratedServer = require('./createGeneratedServer');
 const createContainerInventory = require('./createContainerInventory');
 const { build, up, stop } = require('./runDocker')
-
+const { 
+  		importModel,
+  		startQueryBlock,
+   		startMutationBlock,
+  		createQueryResolver,
+  		createMutationResolver,
+  		endResolverBlock,
+		insertModuleExports 
+	  } = require('./createResolvers'); 
 program
   .version(version)
   .description(description)
@@ -46,7 +54,6 @@ program
     const srcPath = `${process.cwd()}/graphqlsrc`
 
     if(!fs.existsSync(srcPath)) {
-      console.log("this is the source path for the currnet working directory: ",srcPath)
       createFileStructure();
     } else {
       console.log('GraphQL structure already exists. Skipping...')
@@ -92,22 +99,91 @@ program
       
       const workdir = `${answers.USERINPUT}`
       
-      fs.readdirSync('./'+workdir).forEach( file => {
-        const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name
-        // each file name is passed in to createGQL; will be the prefix for all corresponding GQL types and resolvers
-        const model = require(`${process.cwd()}/${workdir}/${file}`);
+    //   fs.readdirSync('./'+workdir).forEach( file => {
+    //     const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name
+    //     // each file name is passed in to createGQL; will be the prefix for all corresponding GQL types and resolvers
+    //     const model = require(`${process.cwd()}/${workdir}/${file}`);
         
-        // if the model file is only exporting one model, it will hit the function if block
-        if (typeof model === "function") {
-          createGQL(model, filename);
-        } else if (typeof model === 'object') { // if the model file has multiple, it will be an object containing all the different schemas inside
-          for (const key in model) {
-            createGQL(model[key], key);
-          }
-        }
-      });
-       createGeneratedServer(answers.URL, answers.DATABASENAME);
-    })
+    //     // if the model file is only exporting one model, it will hit the function if block
+    //     if (typeof model === "function") {
+    //       createGQL(model, filename);
+    //     } else if (typeof model === 'object') { // if the model file has multiple, it will be an object containing all the different schemas inside
+    //       for (const key in model) {
+    //         createGQL(model[key], key);
+    //       }
+    //     }
+    //   });
+    //    createGeneratedServer(answers.URL, answers.DATABASENAME);
+    // })
+
+    //==========================================================================================================
+    
+	  fs.readdirSync('./'+workdir).forEach( file => {
+		const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name
+		// each file name is passed in to createGQL; will be the prefix for all corresponding GQL types and resolvers
+		const model = require(`${process.cwd()}/${workdir}/${file}`);
+
+		// if the model file is only exporting one model, it will hit the function if block
+		if (typeof model === "function") {
+		  createGQL(model, filename);
+		} else if (typeof model === 'object') { // if the model file has multiple, it will be an object containing all the different schemas inside
+			for (const key in model) {
+			  createGQL(model[key], key);
+			}
+		 }
+	  });
+
+	  const resolve = () => {
+		let startExports = true;
+		let startQuery = true;
+		let startMutation = true;
+		const models = fs.readdirSync('./'+workdir);
+
+		// 1. Import all Mongoose models
+		models.forEach( file => {
+		  const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name;
+		  importModel(filename, `../${workdir}/${file}`, generatedResolverFile);
+		});
+
+		// 2. Create Query resolvers for each model
+		models.forEach( file => {
+		  if (startExports) {
+			insertModuleExports(generatedResolverFile);
+			startExports = false;
+		  }
+		  if (startQuery) {
+			startQueryBlock(generatedResolverFile);
+			startQuery = false;
+		  }
+		  const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name;
+		  createQueryResolver(filename, `${workdir}/${file}`, generatedResolverFile);
+		});
+
+		// 3. Close Query Block
+		endResolverBlock(generatedResolverFile, '},\n');
+
+		// 4. Create Mutation resolvers for each model
+		models.forEach( file => {
+		  if (startMutation) {
+			startMutationBlock(generatedResolverFile);
+			startMutation = false;
+		  }
+		  const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name;
+		  createMutationResolver(filename, `${workdir}/${file}`, generatedResolverFile);
+		});
+
+		// 4. Close Resolvers Block
+		endResolverBlock(generatedResolverFile, '},\n');
+		endResolverBlock(generatedResolverFile, '}');
+		console.log('Resolver file generated');
+	  }
+
+	  const generatedResolverFile = `${process.cwd()}/graphqlsrc/starfleet-resolvers.js`
+	  fs.access(generatedResolverFile, fs.constants.F_OK, err => {
+		err ? resolve() : console.log(chalk.red('Skipping resolver file creation. Resolver file already exists in graphqlsrc directory. To generate a new resolver file, either manually delete starfleet-resolvers.js or run command'), chalk.white('starfleet unresolve'),chalk.red('to remove it'));
+	  });
+
+  })
 })
 
 

@@ -40,7 +40,7 @@ const createGQL = (model, modelName) => {
   const graphqlSDL = printSchema(graphqlSchemaObj, { commentDescriptions: true });
 
   // generates SDL file and writes to desginated path
-  fs.writeFile('./graphqlsrc/models/gqlSDL.gql', graphqlSDL, err => {
+  fs.writeFile('./graphqlsrc/models/starfleetSDL.gql', graphqlSDL, err => {
 		if (err) {
 			return console.log(err);
 		}

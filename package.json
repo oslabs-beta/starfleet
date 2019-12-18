@@ -52,7 +52,7 @@
   "devDependencies": {
     "jest": "^24.9.0"
   },
-  "jest": { 
+  "jest": {
     "testEnvironment": "node"
-}
+  }
 }

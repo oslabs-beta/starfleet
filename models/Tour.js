@@ -139,6 +139,6 @@ tourSchema.pre('aggregate', function(next) {
   next();
 });
 
-const Tour = mongoose.model('Tour', tourSchema); // mongoose model is a wrapper for schema
+const Tour = mongoose.model('tour', tourSchema); // mongoose model is a wrapper for schema
 
 module.exports = Tour;

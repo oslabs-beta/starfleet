@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Tour = require('./models/tourModel');
+const Book = require('./models/Book');
 
 module.exports = resolvers = {
   Query: {
@@ -24,7 +25,14 @@ module.exports = resolvers = {
     },
     tourModelCount: async () => {
 
-    }
+	},
+	BookById: async (parent, args) => {
+	  return {
+		_id: args._id,
+		name: 'Walden',
+		author: 'Thoreau'
+	  }
+	}
   },
   Mutation: {
     tourModelCreateOne: async (_, args) => {
@@ -50,6 +58,19 @@ module.exports = resolvers = {
     },
     tourModelRemoveMany: async () => {
 
-    }
+	},
+
+	BookCreateOne: async (parent, args) => {
+	  const record = {}
+	  for (key in args) {
+		const uModel = new Book(args[key]);
+		const newDoc = await uModel.save();
+		if (!newDoc) {
+		  throw new Error('error');
+		}
+		record[key] = newDoc;
+		return record;
+	  }
+	}
   }
 };

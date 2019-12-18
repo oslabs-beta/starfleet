@@ -1,12 +1,12 @@
 const fs = require("fs");
 const chalk = require('chalk');
 
-function createGeneratedServer(mongoDBUrl = 'Enter your MongoDB Uri here', mongoDBname = 'natours') { 
+function createGeneratedServer(mongoDBUrl = 'Enter your MongoDB Url here', mongoDBname = 'starfleet') { 
     const serverText = `
     const mongoose = (require('mongoose')); 
     const fs = require('fs');
     const { ApolloServer } = require('apollo-server');
-    const typeDefs = fs.readFileSync('./graphqlsrc/models/gqlSDL.gql')
+    const typeDefs = fs.readFileSync('./graphqlsrc/models/starfleetSDL.gql')
     const resolvers = require('./graphlsrc/resolvers')
 
     mongoose.connect('${mongoDBUrl}', { useNewUrlParser: true, useUnifiedTopology:	true, dbName: '${mongoDBname}' })
@@ -23,7 +23,6 @@ function createGeneratedServer(mongoDBUrl = 'Enter your MongoDB Uri here', mongo
     `
     fs.writeFile(`${process.cwd()}/graphqlServer.js`, serverText, err => {
         if (err) console.log(err);
-        console.log("this is the process.cwd() ",process.cwd())
         return console.log(chalk.green('✔'),chalk.cyan.bold('Your graphql server file has been created!'))
     })
 }

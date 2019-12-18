@@ -2,10 +2,10 @@
     const mongoose = (require('mongoose')); 
     const fs = require('fs');
     const { ApolloServer } = require('apollo-server');
-    const typeDefs = fs.readFileSync('./graphqlsrc/models/gqlSDL.gql')
-    const resolvers = require('./graphlsrc/resolvers')
+    const typeDefs = fs.readFileSync('./graphqlsrc/models/starfleetSDL.gql')
+    const resolvers = require('./graphqlsrc/resolvers/starfleet-resolvers.js')
 
-    mongoose.connect('Enter your MongoDB Uri here', { useNewUrlParser: true, useUnifiedTopology:	true, dbName: 'lol' })
+    mongoose.connect('URL', { useNewUrlParser: true, useUnifiedTopology: true, dbName: 'starfleet' })
 
     .then(() => console.log('MongoDB successfully connected')) 
 

@@ -1,11 +1,12 @@
+// Helper function used in starfleet.js; check subcommands sections of starfleet.js file
 const fs = require('fs');
 const shell = require('shelljs');
 const chalk = require('chalk');
 
 const createDockerCompose = (PROJECT_NAME, PORT) => {
-  //console.log('Creating docker compose config file');
 
-  const filePath = `${process.cwd()}/docker-compose.yml`;
+
+  const filePath = `${process.cwd()}/docker-compose-starfleet.yml`;
   const text = 
 `version: "2"
 services:
@@ -46,7 +47,7 @@ services:
 	return;
   });
 
-  console.log(chalk.green('✔'),chalk.cyan.bold('Done! Your docker-compose.yml file has been created and put into your working directory'));
+  console.log(chalk.green('✔'),chalk.cyan.bold('Done! Your docker-compose.yml file has been created and put into your working directory!'));
 };
 
 module.exports = createDockerCompose;

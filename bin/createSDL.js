@@ -1,14 +1,17 @@
+// Helper function used in starfleet.js; check subcommands sections of starfleet.js file
 const fs = require('fs');
 const chalk = require("chalk");
 
-const { printSchema } = require('graphql');
 const { composeWithMongoose } = require('graphql-compose-mongoose');
 const { schemaComposer } = require('graphql-compose');
+const { printSchema } = require('graphql');
 
-const customizationOptions = {};
-const createGQL = (model, modelName) => {
-  const ModelTC = composeWithMongoose(model, customizationOptions);
+const createSDL = (model, modelName) => {
+  // converts passed in mongoose schemas to graphql pieces
+  const customizationOptions = {};
+  const ModelTC = composeWithMongoose(model, customizationOptions); 
 
+  // adds basic CRUD operations to converted schema
   schemaComposer.Query.addFields({
 	[modelName+"ById"] : ModelTC.getResolver('findById'),
 	[modelName+"ByIds"] : ModelTC.getResolver('findByIds'),
@@ -17,7 +20,7 @@ const createGQL = (model, modelName) => {
 	[modelName+"Count"] : ModelTC.getResolver('count'),
 	[modelName+"Connection"] : ModelTC.getResolver('connection'),
 	[modelName+"Pagination"] : ModelTC.getResolver('pagination'),
-  });
+	});
 
   schemaComposer.Mutation.addFields({
 	[modelName+"CreateOne"] : ModelTC.getResolver('createOne'),
@@ -28,19 +31,23 @@ const createGQL = (model, modelName) => {
 	[modelName+"RemoveById"] : ModelTC.getResolver('removeById'),
 	[modelName+"RemoveOne"] : ModelTC.getResolver('removeOne'),
 	[modelName+"RemoveMany"] : ModelTC.getResolver('removeMany'),
-  });
+	});
 
+  // utilizes schemaComposer library's .buildSchema to add CRUD operations
+  // this is different than graphql's native buildSchema() - that only adds default resolvers
   const graphqlSchemaObj = schemaComposer.buildSchema();
+  // printSchema is graphQL's built in GraphQL to SDL converter
   const graphqlSDL = printSchema(graphqlSchemaObj, { commentDescriptions: true });
-  const filename = modelName + '.graphql';
-  fs.writeFile(`./graphqlsrc/models/${filename}`, graphqlSDL, err => {
+
+  // generates SDL file and writes to desginated path
+  fs.writeFile('./graphqlsrc/models/starfleet-SDL.graphql', graphqlSDL, err => {
 		if (err) {
 			return console.log(err);
 		}
-	console.log(chalk.white.bgGreen.bold(`Done! Your graphqlSchema has been created and put into your working directory!`, String.fromCharCode(10003)))
-	console.log(String.fromCharCode(10003));
+		console.log(chalk.green('✔'), chalk.cyan.bold('Done! Your GraphQL'), chalk.blue(modelName),chalk.cyan.bold('schema has been created and added to your'), chalk.blue('graphqlsrc'), chalk.cyan.bold('directory!'));
   });
+
 };
 
-module.exports = { createGQL }
 
+module.exports = createSDL; 

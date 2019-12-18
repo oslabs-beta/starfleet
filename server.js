@@ -1,34 +1,30 @@
-const express = require('express');
-const app = express();
 const mongoose = require('mongoose');
 const fs = require('fs');
-
-// GraphQL dependecies and schemas
-const graphqlExpress = require('express-graphql');
-const { buildSchema } = require('graphql');
-//const bookSchema = require('./src/resolvers/BookSchema').BookSchema;
-const book = fs.readFileSync('./graphqlsrc/models/Book.graphql', 'utf-8');
-const bookSchema = buildSchema(book, { commentDescription: true });
+const {
+  ApolloServer
+} = require('apollo-server');
+const typeDefs = `${fs.readFileSync(__dirname.concat('./graphqlsrc/models/starfleet-SDL.graphql'), 'utf8')}`;
+const resolvers = require('./graphqlsrc/resolvers/starfleet-resolvers');
 
 
 // db connection 
-const mongoURI = 'mongodb://mongo:27017/starfleet' //require('./response.json');
+const DB = 'mongodb://localhost:27017/starfleet';
 
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology:	true })
-  .then( () => console.log('MongoDB successfully connected'))
-  .catch( err => console.log('Error connecting to db: ', err));
+mongoose.connect(DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => console.log('MongoDB successfully connected'))
+  .catch(err => console.log('Error connecting to db: ', err));
 
-// GraphQL endpoint
-app.use('/graphql', graphqlExpress({
-  schema: bookSchema,
-  rootValue: global,
-  graphiql: true
-}));
+const server = new ApolloServer({
+  typeDefs,
+  resolvers
+});
 
-
-const PORT = process.env.PORT || 4000;
-app.set('port', PORT);
-
-app.listen(app.get('port'), () => {
-  console.log(`Listening on port ${PORT}`);
+// The `listen` method launches a web server.
+server.listen().then(({
+  url
+}) => {
+  console.log(`🚀  Server ready at ${url}`);
 });

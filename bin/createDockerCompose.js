@@ -4,7 +4,7 @@ const shell = require('shelljs');
 const chalk = require('chalk');
 
 const createDockerCompose = (PROJECT_NAME, PORT) => {
-  //console.log('Creating docker compose config file');
+
 
   const filePath = `${process.cwd()}/docker-compose-starfleet.yml`;
   const text = 

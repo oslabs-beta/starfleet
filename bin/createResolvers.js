@@ -1,33 +1,47 @@
 const fs = require('fs');
 
 const importModel = (modelName, modelPath, filename) => {
-  const dependencies = `const ${modelName} = require('${modelPath}');\n`
-  const stream = fs.createWriteStream(filename, {flags: 'a'});
-  stream.write(dependencies);
-  stream.end();
+  const dependencies = `const ${modelName} = require('${modelPath}');\n`;
+  try {
+    fs.writeFileSync(filename, dependencies, {flag: 'a'});
+  } catch (err) {
+	console.log('Error writing model imports: ', err);
+  }
 };
 
 const insertModuleExports = filename => {
   const moduleExports = '\nmodule.exports = resolvers = {\n';
-  const stream = fs.createWriteStream(filename, {flags: 'a'});
-  stream.write(moduleExports);
+  try {
+	fs.writeFileSync(filename, moduleExports, {flag: 'a'});
+  } catch (err) {
+	console.log('Error writing module exports: ', err);
+  }
 }
 
 const startQueryBlock = filename => {
   const startQueryBlock = 'Query: {\n';
-  const stream = fs.createWriteStream(filename, {flags: 'a'});
-  stream.write(startQueryBlock);
+  try {
+	fs.writeFileSync(filename, startQueryBlock, {flag: 'a'});
+  } catch (err) {
+	console.log('Error writing query block(s): ', err);
+  }
 }
 
 const startMutationBlock = filename => {
   const startMutationBlock = 'Mutation: {\n';
-  const stream = fs.createWriteStream(filename, {flags: 'a'});
-  stream.write(startMutationBlock);
+  try {
+    fs.writeFileSync(filename, startMutationBlock, {flag: 'a'});
+  } catch (err) {
+	console.log('Error writing startMutationBlock: ', err);
+  }
 };
 
 const endResolverBlock = (filename, endResolverBlock) => {
-  const stream = fs.createWriteStream(filename, {flags: 'a'});
-  stream.write(endResolverBlock);
+  try {
+	fs.writeFileSync(filename, endResolverBlock, {flag: 'a'});
+  } catch (err) {
+	console.log('Error writing endResolverBlock: ', err);
+  }
 }
 
 const createQueryResolver = (modelName, modelPath, filename) => {
@@ -38,7 +52,13 @@ const createQueryResolver = (modelName, modelPath, filename) => {
 	  return ${modelName.toLowerCase()};
 	},
 	${modelName}ByIds: async (obj, args) => {
-
+	  const ${modelName.toLowerCase()}_ids = await args._ids.map((id) => id);
+		const ${modelName.toLowerCase()} = await ${modelName}.find({
+			_id: {
+				$in: ${modelName.toLowerCase()}_ids
+			}
+		});
+	  return  ${modelName.toLowerCase()};	
 	},
 	${modelName}One: async (obj, args) => {
 	  for (key in args) {
@@ -53,17 +73,25 @@ const createQueryResolver = (modelName, modelPath, filename) => {
 	  }
 	},
 	${modelName}Many: async (obj, args) => {
-
+	  for (key in args) {
+	    if (key === 'filter') {
+		  for (prop in args[key]) {
+		    const field = {};
+			field[prop] = args[key][prop];
+			const ${modelName.toLowerCase()} = await ${modelName}.find(field);
+		    return ${modelName.toLowerCase()};
+		  }
+		}
+	  }
 	},
 
 `;
 
-
-  const stream = fs.createWriteStream(filename, {flags: 'a'});
-  stream.write(modelResolver);
-
-  // Not required to explicitly end stream, as default option is AutoClose set to true, but done so here for clarity
-  stream.end()
+  try {
+    fs.writeFileSync(filename, modelResolver, {flag: 'a'});
+  } catch (err) {
+	console.log('Error writing query resolvers: ', err);
+  }
 
 }
 
@@ -163,19 +191,19 @@ const createMutationResolver = (modelName, modelPath, filename) => {
 	},
 `;
 
-
-  const stream = fs.createWriteStream(filename, {flags: 'a'});
-  stream.write(modelResolver);
-
-  // Not required to explicitly end stream, as default option is AutoClose set to true, but done so here for clarity
-  stream.end()
-
+  try {
+	fs.writeFileSync(filename, modelResolver, {flag: 'a'});
+  } catch (err) {
+	console.log('Error writing mutation resolvers: ', err);
+  } 
 }
 
 const endResolver = filename => {
-  const stream = fs.createWriteStream(filename, {flags: 'a'});
-  stream.write('}');
-  stream.end();
+  try {
+    fs.writeFileSync(filename, '}', {flag: 'a'});
+  } catch (err) {
+	console.log('Error writing end resolver block: ', err);
+  }
 }
 
 module.exports = { 

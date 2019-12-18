@@ -127,7 +127,7 @@ program
 		  createMutationResolver(filename, `${workdir}/${file}`, generatedResolverFile);
 		});
 
-		// 4. Close Resolvers Block
+		// 5. Close Resolvers Block
 		endResolverBlock(generatedResolverFile, '},\n');
 		endResolverBlock(generatedResolverFile, '}');
 		console.log('Resolver file generated');

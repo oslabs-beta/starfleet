@@ -88,20 +88,20 @@ program
 		 }
 	  });
 
-	  const resolve = () => {
+	  const resolve = async () => {
 		let startExports = true;
 		let startQuery = true;
 		let startMutation = true;
 		const models = fs.readdirSync('./'+workdir);
 
 		// 1. Import all Mongoose models
-		models.forEach( file => {
+		await models.forEach( file => {
 		  const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name;
 		  importModel(filename, `../${workdir}/${file}`, generatedResolverFile);
 		});
 
 		// 2. Create Query resolvers for each model
-		models.forEach( file => {
+		await models.forEach( file => {
 		  if (startExports) {
 			insertModuleExports(generatedResolverFile);
 			startExports = false;
@@ -115,10 +115,10 @@ program
 		});
 
 		// 3. Close Query Block
-		endResolverBlock(generatedResolverFile, '},\n');
+		await endResolverBlock(generatedResolverFile, '},\n');
 
 		// 4. Create Mutation resolvers for each model
-		models.forEach( file => {
+		await models.forEach( file => {
 		  if (startMutation) {
 			startMutationBlock(generatedResolverFile);
 			startMutation = false;
@@ -128,8 +128,8 @@ program
 		});
 
 		// 4. Close Resolvers Block
-		endResolverBlock(generatedResolverFile, '},\n');
-		endResolverBlock(generatedResolverFile, '}');
+		await endResolverBlock(generatedResolverFile, '},\n');
+		await endResolverBlock(generatedResolverFile, '}');
 		console.log('Resolver file generated');
 	  }
 

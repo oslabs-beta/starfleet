@@ -4,7 +4,6 @@
 </a>
 </div>
 
-
 # Starfleet
 
 [![Package on npm](https://img.shields.io/npm/v/postgraphile.svg?style=flat)](https://www.npmjs.com/)
@@ -85,14 +84,17 @@ We are actively welcoming pull requests or any feedback/requests.
 
 ## Built With
 
-* [GraphQL](https://graphql.org/) <a href="https://github.com/Traversal-Labs/starfleet"><img width="50" height="50" src="https://avatars0.githubusercontent.com/u/12972006?s=200&v=4"></a>
+* [GraphQL](https://graphql.org/) 
+<a href="https://github.com/Traversal-Labs/starfleet">
+  <img width="50" height="50" src="https://avatars0.githubusercontent.com/u/12972006">
+</a>
 * [Apollo Server](https://www.apollographql.com/docs/apollo-server/) 
 <a href="https://github.com/Traversal-Labs/starfleet">
-  <img width="50" height="50" src="https://cdn.glitch.com/team-avatar/87/small?2018-04-23T16:07:57.336Z">
+  <img width="50" height="50" src="https://user-images.githubusercontent.com/841294/53402609-b97a2180-39ba-11e9-8100-812bab86357c.png">
 </a>
 * [Docker](https://www.docker.com/) 
 <a href="https://github.com/Traversal-Labs/starfleet">
-  <img width="50" height="50" src="(https://www.docker.com/sites/default/files/d8/styles/role_icon/public/2019-07/vertical-logo-monochromatic.png">
+  <img width="50" height="50" src="(https://avatars0.githubusercontent.com/u/5429470">
 </a>
 
 ## Contributors

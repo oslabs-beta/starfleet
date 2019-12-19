@@ -31,7 +31,7 @@ If you want to deploy your project using docker, you must set up docker beforeha
 To get started, install Starfleet globally or locally:
 
 ```
-npm install -g starfleet
+npm install -g starfleet-command
 ```
 
 Then, navigate into your project directory and run:

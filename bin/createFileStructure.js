@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+// Helper function used in starfleet.js; check subcommands sections of starfleet.js file
 const shell = require("shelljs"); // portable unix shell commands for node.js 
 
 const createFileStructure = () => {
@@ -6,8 +6,8 @@ const createFileStructure = () => {
     const srcText = `graphqlsrc`
     shell.mkdir(srcText);
     
-    // creates file structure in the new src folder
-    const text = ['data', 'models'];
+    // creates file structure in the new src folder; folder names taken from text arr
+    const text = ['models', 'resolvers'];
     text.forEach(element => {
         let filepath = `${process.cwd()}/graphqlsrc/${element}`
         shell.mkdir(filepath);

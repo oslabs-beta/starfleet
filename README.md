@@ -85,9 +85,15 @@ We are actively welcoming pull requests or any feedback/requests.
 
 ## Built With
 
-* [GraphQL](https://graphql.org/) <a href="https://github.com/Traversal-Labs/starfleet"><img width="50" height="50" src="https://commons.wikimedia.org/wiki/File:GraphQL_Logo.svg"></a>
-* [Apollo Server](https://www.apollographql.com/docs/apollo-server/) <a href="https://github.com/Traversal-Labs/starfleet"><img width="50" height="50" src="https://cdn.glitch.com/team-avatar/87/small?2018-04-23T16:07:57.336Z"></a>
-* [Docker](https://www.docker.com/) <a href="https://github.com/Traversal-Labs/starfleet"><img width="50" height="50" src="(https://www.docker.com/sites/default/files/d8/styles/role_icon/public/2019-07/vertical-logo-monochromatic.png?itok=erja9lKc"></a>
+* [GraphQL](https://graphql.org/) <a href="https://github.com/Traversal-Labs/starfleet"><img width="50" height="50" src="https://avatars0.githubusercontent.com/u/12972006?s=200&v=4"></a>
+* [Apollo Server](https://www.apollographql.com/docs/apollo-server/) 
+<a href="https://github.com/Traversal-Labs/starfleet">
+  <img width="50" height="50" src="https://cdn.glitch.com/team-avatar/87/small?2018-04-23T16:07:57.336Z">
+</a>
+* [Docker](https://www.docker.com/) 
+<a href="https://github.com/Traversal-Labs/starfleet">
+  <img width="50" height="50" src="(https://www.docker.com/sites/default/files/d8/styles/role_icon/public/2019-07/vertical-logo-monochromatic.png">
+</a>
 
 ## Contributors
 

@@ -70,12 +70,14 @@ program
 		{
 		name: "URI",
 		message: "Please provide your MongoDB connection string (URI): ",
-		type: "input"
+		type: "input",
+		default: "mongodb://localhost:27017/"
 		},
 		{
 		name: "DATABASENAME",
 		message: "What is the name of your database?",
-		type: "input"
+		type: "input",
+		default: "starfleet"
 		},
 	];
 
@@ -237,7 +239,7 @@ program
 		const resolversDir = `${process.cwd()}/graphqlsrc/resolvers`
 		const gqlFile = `${process.cwd()}/graphqlsrc/models/starfleet-SDL.graphql`;
     	const resolversFile = `${process.cwd()}/graphqlsrc/resolvers/starfleet-resolvers.js`;
-    	const gqlServerFile = `${process.cwd()}/graphqlServer.js`
+    		const gqlServerFile = `${process.cwd()}/graphqlServer.js`
 			
 		fs.readdirSync(graphqlsrcDir).forEach(folder => {
 			if (folder === 'models') {

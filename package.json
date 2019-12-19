@@ -1,10 +1,11 @@
 {
-  "name": "starfleet2",
-  "version": "0.0.8",
-  "description": "Create GraphQL schemas with full CRUD functionality from Mongoose schemas and deploy them to the cloud",
+  "name": "starfleet",
+  "version": "0.0.9",
+  "description": "Creates GraphQL pieces from Mongoose schemas with full CRUD functionality with options to deploy to docker.",
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "start": "node server.js",
     "dev": "nodemon server.js"
   },

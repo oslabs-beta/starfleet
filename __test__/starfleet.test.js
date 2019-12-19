@@ -5,9 +5,9 @@ const createFileStructure = require('../bin/createFileStructure');
 const createGeneratedServer = require('../bin/createGeneratedServer');
 const createDockerCompose = require('../bin/createDockerCompose');
 const createDockerfile = require('../bin/createDockerfile');
-const createContainerInventory = require('../bin/createContainerInventory');
 const chalk = require('chalk');
 
+// tests do not properly delete generated files/folders
 
 //test to see if the file structure has been invoked and created:
 describe('starfleet tests:', () => {
@@ -15,14 +15,14 @@ describe('starfleet tests:', () => {
         test(chalk.yellow('creates new file structure in working directory'), async() => {
             let result;
             await find.dir('graphqlsrc', dir => {
-                if (dir.length === 3) { 
+                if (dir.length === 2) { 
                     result = true;
                     expect(result).toBe(true);
                 }
             })
             await createFileStructure();
             await find.dir('graphqlsrc', dir => {
-                if (dir.length === 3) { 
+                if (dir.length === 2) { 
                     result = true;
                     expect(result).toBe(true);
                     shell.exec(`rmdir ${dir}`);

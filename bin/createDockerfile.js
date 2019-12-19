@@ -15,7 +15,6 @@ const createDockerfile = (PROJECT_NAME, PORT) => {
 		  return;
 		}
 	});
-  //return;
 }
 
 module.exports =  createDockerfile;

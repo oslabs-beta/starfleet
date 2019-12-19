@@ -1,5 +1,5 @@
 {
-  "name": "starfleet",
+  "name": "starfleet-command",
   "version": "0.1.0",
   "description": "Creates GraphQL pieces from Mongoose schemas with full CRUD functionality with options to deploy to docker.",
   "main": "index.js",

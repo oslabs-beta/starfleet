@@ -1,10 +1,8 @@
-<div align="center">
-  <a href="https://github.com/Traversal-Labs/starfleet">
-    <img width="200" height="200" src="https://i.imgur.com/VRfXvfh.jpg">
-  </a>
-<div>
-  <br>
-  <br>
+<a href="https://github.com/Traversal-Labs/starfleet" align = "center">
+  <img width="200" height="200" src="https://i.imgur.com/VRfXvfh.jpg">
+</a>
+<br>
+<br>
 
 
 # Starfleet
@@ -74,7 +72,13 @@ starfleet land --docker
 All possible commands and flags and additional information can be viewed in the CLI by running:
 
 ```
-starfleet -help
+starfleet --help
+```
+
+If at any time you'd like to delete the generated files, enter:
+
+```
+starfleet cleanup
 ```
 
 We are actively welcoming pull requests or any feedback/requests.

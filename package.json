@@ -1,7 +1,7 @@
 {
-  "name": "starfleet2",
-  "version": "0.0.8",
-  "description": "Create GraphQL schemas with full CRUD functionality from Mongoose schemas and deploy them to the cloud",
+  "name": "starfleet",
+  "version": "0.0.9",
+  "description": "Creates GraphQL pieces from Mongoose schemas with full CRUD functionality with options to deploy to docker.",
   "main": "index.js",
   "scripts": {
     "test": "jest",
@@ -36,10 +36,8 @@
     "commander": "^4.0.1",
     "docker": "^1.0.0",
     "docker-compose": "^0.23.1",
-    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-graphql": "^0.9.0",
-    "figlet": "^1.2.4",
     "find": "^0.3.0",
     "graphql": "^14.5.8",
     "graphql-compose": "^7.6.1",

@@ -5,9 +5,9 @@ const createFileStructure = require('../bin/createFileStructure');
 const createGeneratedServer = require('../bin/createGeneratedServer');
 const createDockerCompose = require('../bin/createDockerCompose');
 const createDockerfile = require('../bin/createDockerfile');
-const createContainerInventory = require('../bin/createContainerInventory');
 const chalk = require('chalk');
 
+// tests do not properly delete generated files/folders
 
 //test to see if the file structure has been invoked and created:
 describe('starfleet tests:', () => {

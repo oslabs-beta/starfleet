@@ -1,8 +1,8 @@
-<a href="https://github.com/Traversal-Labs/starfleet" align = "center">
-  <img width="200" height="200" src="https://i.imgur.com/VRfXvfh.jpg">
+<div text-align = "center">
+<a href="https://github.com/Traversal-Labs/starfleet">
+  <img width="300" height="300" src="https://i.imgur.com/VRfXvfh.jpg">
 </a>
-<br>
-<br>
+</div>
 
 
 # Starfleet

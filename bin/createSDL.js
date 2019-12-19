@@ -17,9 +17,9 @@ const createSDL = (model, modelName) => {
 	[modelName+"ByIds"] : ModelTC.getResolver('findByIds'),
 	[modelName+"One"] : ModelTC.getResolver('findOne'),
 	[modelName+"Many"] : ModelTC.getResolver('findMany'),
-	[modelName+"Count"] : ModelTC.getResolver('count'),
-	[modelName+"Connection"] : ModelTC.getResolver('connection'),
-	[modelName+"Pagination"] : ModelTC.getResolver('pagination'),
+	// [modelName+"Count"] : ModelTC.getResolver('count'),
+	// [modelName+"Connection"] : ModelTC.getResolver('connection'),
+	// [modelName+"Pagination"] : ModelTC.getResolver('pagination'),
 	});
 
   schemaComposer.Mutation.addFields({

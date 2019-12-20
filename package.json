@@ -44,7 +44,13 @@
     "graphql-compose-pagination": "^6.0.3",
     "graphql-tools": "^4.0.6",
     "inquirer": "^7.0.0",
+<<<<<<< .merge_file_a22236
     "shelljs": "^0.8.3"
+=======
+    "mongoose": "^5.7.13",
+    "shelljs": "^0.8.3",
+    "starfleet-command": "^0.1.1"
+>>>>>>> .merge_file_a01304
   },
   "devDependencies": {
     "jest": "^24.9.0",

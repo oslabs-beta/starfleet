@@ -17,7 +17,7 @@ const createSDL = require('./createSDL');
 const createFileStructure = require('./createFileStructure');
 const createDockerfile = require('./createDockerfile');
 const createDockerCompose= require('./createDockerCompose');
-const createGeneratedServer = require('./createGeneratedServer');
+const { createGeneratedServer, createGeneratedDeployServer } = require('./createGeneratedServer');
 const { build, up, stop } = require('./runDocker')
 const { 
 	importModel,
@@ -200,7 +200,8 @@ program
     ]
 
         inquirer.prompt(prompts)
-        .then( answers => {
+		.then( answers => {
+		  createGeneratedDeployServer('mongodb://mongo:27017/', 'starfleet');
       	  createDockerfile(answers.PROJECTNAME, answers.PORT);
           createDockerCompose(answers.PROJECTNAME, answers.PORT);
           build();

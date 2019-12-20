@@ -8,8 +8,8 @@
 
 [![Package on npm](https://img.shields.io/npm/v/postgraphile.svg?style=flat)](https://www.npmjs.com/)
 
-_**With one command, enable your MongoDB project to be able to utilize the high-performance GraphQL API!**_
-_**Interested in trying out GraphQL? Quickly convert all your mongoose schemas to easily viewable GraphQL pieces.**_
+_**With one command, enable your MongoDB project to utilize the high-performance GraphQL API!**_
+_**Interested in trying out GraphQL? Quickly convert all your mongoose schemas to viewable and editable GraphQL pieces.**_
 
 **Starfleet** is a command line tool that lets you easily harness the flexibility of MongoDB with the declarative power of GraphQL.
 
@@ -49,7 +49,7 @@ The /graphqlsrc folder will be created in your current working directory:
   -resolvers
     -starfleet-resolvers.graphql
 ```
-Additionally, a '/starfleet-server.js' file will be created in your current working directory. The SDL file and resolvers file (with default CRUD operations) are imported to starfleet-server.js file and used to initialize an [Apollo Server](https://www.apollographql.com/docs/apollo-server/). (If you don't know about Apollo Server, it is a very powerful library for GraphQL that helps you connect a GraphQL schema to an HTTP server in Node.js. It comes with powerful tools such as caching and performance monitoring. Visit Apollo's website for more information!)
+Additionally, a '/starfleet-server.js' file will be created in your current working directory. The SDL file and resolvers file (with default CRUD operations) are automatically imported to starfleet-server.js file and used to initialize an [Apollo Server](https://www.apollographql.com/docs/apollo-server/). (If you don't already know about Apollo Server, it is a very powerful library for GraphQL that helps you connect a GraphQL schema to an HTTP server in Node.js. It comes with powerful tools such as caching and performance monitoring. Visit Apollo's website for more information!)
 
 If you want to try out your converted mongoose schemas with GraphQL, install Apollo Server by running
 
@@ -57,7 +57,7 @@ If you want to try out your converted mongoose schemas with GraphQL, install Apo
 npm install apollo-server graphql
 ```
 
-and then modify your package.json file to start with the newly generated server file!
+modify your package.json file, and then run npm start to test it out in a GraphQL playground!
 
 ## Deployment
 

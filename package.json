@@ -46,7 +46,6 @@
     "graphql-compose-pagination": "^6.0.3",
     "graphql-tools": "^4.0.6",
     "inquirer": "^7.0.0",
-    "mongoose": "^5.7.13",
     "shelljs": "^0.8.3"
   },
   "devDependencies": {

@@ -5,7 +5,6 @@ const program = require('commander');
 const fs = require('fs');
 const path = require('path');
 const inquirer = require('inquirer');
-const CFonts = require('cfonts');
 const chalk = require('chalk');
 
 // Metadata
@@ -44,17 +43,6 @@ program
   .description('Initializing GraphQL services')
   .action(() => {
     
-    CFonts.say('Starfleet', {
-      font: '3d',              
-      align: 'left',              
-      colors: ['yellow', 'blue'],         
-      background: 'black',  
-      letterSpacing: 1,           
-      lineHeight: 1,              
-      space: true,               
-      maxLength: '0',            
-    });
-    
     const srcPath = `${process.cwd()}/graphqlsrc`
 
     if(!fs.existsSync(srcPath)) {
@@ -84,80 +72,6 @@ program
 		default: "starfleet"
 		},
 	];
-
-    // creates SDL file after reading from user-inputted models file path
-    inquirer.prompt(questions)
-    .then(answers => {      
-      const workdir = `${answers.USERINPUT}`
-
-	  fs.readdirSync('./'+workdir).forEach( file => {
-		const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name
-		// each file name is passed in to createSDL; will be the prefix for all corresponding GQL types and resolvers
-		const model = require(`${process.cwd()}/${workdir}/${file}`);
-
-		// if the model file is only exporting one model, it will hit the function if block
-		if (typeof model === "function") {
-			// no edge case for if provided model is incorrect function
-		  	createSDL(model, filename);
-		} else if (typeof model === 'object' && Object.entries(model).length !== 0) { // if the model file has multiple, it will be an object containing all the different schemas inside
-			for (const key in model) {
-			  createSDL(model[key], key);
-			}
-		 } else {
-			 console.log(chalk.red('Skipping SDL file creation. An invalid Mongoose model was provided. Please make sure that you are exporting your models correctly.'))
-		 }
-	  });
-
-	  // creates resolver file
-	  const resolve = () => {
-		let startExports = true;
-		let startQuery = true;
-		let startMutation = true;
-		const models = fs.readdirSync('./'+workdir);
-
-		// 1. Import all Mongoose models
-		models.forEach( file => {
-		  const filename = path.parse(`${process.cwd()}/${workdir}/${file}`).name;
-		  importModel(filename, `../../${workdir}/${file}`, generatedResolverFile);
-		});
-
-		CFonts.say('Starfleet', {
-			font: '3d',
-			align: 'left',
-			colors: ['yellow', 'blue'],
-			background: 'black',
-			letterSpacing: 1,
-			lineHeight: 1,
-			space: true,
-			maxLength: '0',
-		});
-
-		const srcPath = `${process.cwd()}/graphqlsrc`
-
-		if (!fs.existsSync(srcPath)) {
-			createFileStructure();
-		} else {
-			console.log('GraphQL structure already exists. Skipping...')
-		}
-
-		// questions used by inquirer to create variable inputs
-		const questions = [{
-				name: "USERINPUT",
-				message: "Please enter the name of the folder where your schema is in:",
-				type: "input",
-				default: "models"
-			},
-			{
-				name: "URI",
-				message: "Please provide your MongoDB connection string (URI): ",
-				type: "input"
-			},
-			{
-				name: "DATABASENAME",
-				message: "What is the name of your database?",
-				type: "input"
-			},
-		];
 
 		// creates SDL file after reading from user-inputted models file path
 		inquirer.prompt(questions)
@@ -267,8 +181,9 @@ program
 				// creates server file
 				createGeneratedServer(answers.URI, answers.DATABASENAME)
 			})
-	})
+});
 
+	
 // "starfleet deploy/d ['-d', '--docker']" command to deploy to docker"
 program
   .command('deploy')
@@ -282,17 +197,6 @@ program
 	}
     const env = process.argv[3].toLowerCase();
     if (env === '--docker' || env === '-d') {
-
-      CFonts.say('Now Deploying to Docker', {
-        font: 'chrome',              
-        align: 'left',              
-        colors: ['blue', 'yellow', 'cyan'],         
-        background: 'black',  
-        letterSpacing: 1,           
-        lineHeight: 1,              
-        space: true,               
-        maxLength: '0',  
-    })
     
     const prompts = [
       {

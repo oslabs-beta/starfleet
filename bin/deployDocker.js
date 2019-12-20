@@ -3,18 +3,6 @@ const inquirer = require('inquirer');
 const createDockerfile = require('./createDockerfile.js');
 const createDockerCompose= require('./createDockerCompose.js');
 const { build, up } = require('./runDocker.js');
-const CFonts = require('cfonts');
-
-CFonts.say('Now Deploying Dockers', {
-    font: 'chrome',              
-    align: 'left',              
-    colors: ['blue', 'yellow', 'cyan'],         
-    background: 'black',  
-    letterSpacing: 1,           
-    lineHeight: 1,              
-    space: true,               
-    maxLength: '0',  
-})
 
 const deployDocker = () => { 
     const prompts = [

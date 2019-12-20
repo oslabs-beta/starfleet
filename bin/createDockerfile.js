@@ -5,7 +5,7 @@ const fs = require("fs");
 const createDockerfile = (PROJECT_NAME, PORT) => {
 
 	const filePath = `${process.cwd()}/Dockerfile`
-	const text = `FROM node:latest \n\nWORKDIR /usr/src/app/${PROJECT_NAME} \n\nCOPY package.json /usr/src/app/${PROJECT_NAME}/  \n\nRUN npm install \n\nCOPY . /usr/src/app/${PROJECT_NAME} \n\nEXPOSE ${PORT} \n\nCMD npm start`;
+  const text = `FROM node:latest \n\nWORKDIR /usr/src/app/${PROJECT_NAME} \n\nCOPY package.json /usr/src/app/${PROJECT_NAME}/  \n\nRUN npm install \n\nCOPY . /usr/src/app/${PROJECT_NAME} \n\nEXPOSE ${PORT} \n\nENTRYPOINT ["node", "./starfleet-server.js"]`;
 	shell.touch(filePath);
 	fs.writeFile(filePath, text, (err) => {
 		if (err) { 

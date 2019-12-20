@@ -1,9 +1,8 @@
 <div align="center">
-  <a href="https://github.com/Traversal-Labs/starfleet">
-    <img width="200" height="200" src="https://i.imgur.com/VRfXvfh.jpg">
-  </a>
-  <br>
-  <br>
+<a href="https://github.com/Traversal-Labs/starfleet">
+  <img width="300" height="300" src="https://i.imgur.com/VRfXvfh.jpg">
+</a>
+</div>
 
 # Starfleet
 
@@ -32,7 +31,7 @@ If you want to deploy your project using docker, you must set up docker beforeha
 To get started, install Starfleet globally or locally:
 
 ```
-npm install -g starfleet
+npm install -g starfleet-command
 ```
 
 Then, navigate into your project directory and run:
@@ -72,16 +71,23 @@ starfleet land --docker
 All possible commands and flags and additional information can be viewed in the CLI by running:
 
 ```
-starfleet -help
+starfleet --help
+```
+
+If at any time you'd like to delete the generated files, enter:
+
+```
+starfleet cleanup
 ```
 
 We are actively welcoming pull requests or any feedback/requests.
 
 ## Built With
 
-* [GraphQL](https://graphql.org/)
-* [Apollo Server](https://www.apollographql.com/docs/apollo-server/)
-* [Docker](https://www.docker.com/)
+* [GraphQL](https://graphql.org/) 
+* [Apollo Server](https://www.apollographql.com/docs/apollo-server/) 
+* [Docker](https://www.docker.com/) 
+
 
 ## Contributors
 

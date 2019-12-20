@@ -191,6 +191,7 @@ program
   .description('Deploys newly created GQL service to docker')
   .option("-d, --docker", "deploy to docker")
   .action( () => {
+	console.log('NOTE: You must have docker daemon running in order to deploy docker containers via starfleet');
 	if (!process.argv[3]) {
 	  console.log(chalk.red('\nPlease enter a valid deployment option. See'),chalk.white('--help'), chalk.red(' for assistance\n'));
 	  return;

@@ -30,7 +30,7 @@ const up = () => {
   });
 
   newDeploy.on('exit', (code, signal) => {
-	console.log('Deploy process terminated ' + `code ${code} and signal ${signal}`);
+	console.log('Deploy process status ' + `code ${code} and signal ${signal}`);
   });
 
 };

@@ -47,7 +47,8 @@
     "graphql-tools": "^4.0.6",
     "inquirer": "^7.0.0",
     "mongoose": "^5.7.13",
-    "shelljs": "^0.8.3"
+    "shelljs": "^0.8.3",
+    "starfleet-command": "^0.1.1"
   },
   "devDependencies": {
     "jest": "^24.9.0",
